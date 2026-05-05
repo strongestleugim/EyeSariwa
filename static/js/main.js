@@ -246,7 +246,7 @@ var TRANSLATIONS = {
 var HISTORY_KEY      = 'eyesariwa_scans';
 var HISTORY_MAX      = 50;
 var LANG_KEY         = 'eyesariwa_language';
-var CLASSIFY_TIMEOUT = 15000;
+var CLASSIFY_TIMEOUT = 120000;
 
 var SPECIES_CUTS = {
   beef:    ['beef_shank', 'beef_sirloin'],

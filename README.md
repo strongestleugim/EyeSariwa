@@ -268,13 +268,13 @@ Use these settings:
 ```text
 Runtime: Python 3
 Build Command: pip install -r requirements.txt
-Start Command: gunicorn app:app
+Start Command: gunicorn --timeout 180 app:app
 ```
 
 The repository also includes this `Procfile`:
 
 ```text
-web: gunicorn app:app
+web: gunicorn --timeout 180 app:app
 ```
 
 After deployment, test:
@@ -292,6 +292,6 @@ POST https://your-render-service.onrender.com/classify
 
 Render free-tier services may sleep after inactivity. The first request after sleep may take longer while the server starts again.
 
-The first request that uses background removal may also take longer because `rembg` downloads and loads the `u2netp` model.
+The first request that uses background removal may also take longer because `rembg` downloads and loads the `u2netp` model. The Gunicorn timeout is set to 180 seconds so slower first scans on Render have time to finish.
 
 No `.env` file or secrets are required for the current prototype.
