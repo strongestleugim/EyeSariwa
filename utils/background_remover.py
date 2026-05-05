@@ -14,11 +14,27 @@ from utils.hsv_extractor import (
 
 
 REMBG_MODEL = os.getenv("EYESARIWA_REMBG_MODEL", "u2netp")
+ENABLE_REMBG_VALUES = {"1", "true", "yes", "on"}
 COMPONENT_ALPHA_THRESHOLD = 128
 FOREGROUND_CROP_PADDING_RATIO = 0.08
 FOREGROUND_CROP_MIN_PADDING = 12
 
 _SESSION = None
+
+
+def get_positive_int_env(name: str, default: int) -> int:
+    try:
+        value = int(os.getenv(name, str(default)))
+    except ValueError:
+        return default
+    return value if value > 0 else default
+
+
+REMBG_MAX_DIMENSION = get_positive_int_env("EYESARIWA_REMBG_MAX_DIMENSION", 768)
+
+
+def is_rembg_enabled() -> bool:
+    return os.getenv("EYESARIWA_ENABLE_REMBG", "true").strip().lower() in ENABLE_REMBG_VALUES
 
 
 def get_rembg_session():
@@ -40,10 +56,31 @@ def remove_background(image_bytes: bytes) -> bytes:
     try:
         from rembg import remove
 
-        foreground_bytes = remove(image_bytes, session=get_rembg_session())
+        foreground_bytes = remove(resize_for_rembg(image_bytes), session=get_rembg_session())
         return keep_largest_foreground_component(foreground_bytes)
     except Exception as exc:
         raise ValueError("Background removal failed.") from exc
+
+
+def resize_for_rembg(image_bytes: bytes) -> bytes:
+    with Image.open(BytesIO(image_bytes)) as image:
+        image.load()
+        image_rgb = image.convert("RGB")
+
+    longest_edge = max(image_rgb.size)
+    if longest_edge <= REMBG_MAX_DIMENSION:
+        return image_bytes
+
+    scale = REMBG_MAX_DIMENSION / longest_edge
+    new_size = (
+        max(1, int(image_rgb.width * scale)),
+        max(1, int(image_rgb.height * scale)),
+    )
+    resized_image = image_rgb.resize(new_size, Image.LANCZOS)
+
+    output = BytesIO()
+    resized_image.save(output, format="JPEG", quality=90)
+    return output.getvalue()
 
 
 def keep_largest_foreground_component(image_bytes: bytes) -> bytes:
@@ -110,6 +147,10 @@ def crop_to_foreground_bounds(
 
 
 def extract_hsv_with_rembg_fallback(image_bytes: bytes) -> tuple[dict, str]:
+    if not is_rembg_enabled():
+        hsv_means = extract_hsv_means(image_bytes)
+        return hsv_means, "center_crop_rembg_disabled"
+
     try:
         foreground_bytes = remove_background(image_bytes)
         hsv_means = extract_hsv_means_from_foreground(foreground_bytes)

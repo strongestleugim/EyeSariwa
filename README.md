@@ -45,8 +45,8 @@ Backend:
 - Pillow
 - OpenCV headless
 - NumPy
-- rembg
-- ONNX Runtime
+- rembg (optional foreground removal path)
+- ONNX Runtime (used only when `rembg` is enabled)
 
 Frontend later:
 
@@ -161,7 +161,27 @@ Expected error response:
 }
 ```
 
-The current backend validates the request, validates and compresses the image, tries `rembg` foreground extraction, keeps the largest foreground component, crops to the foreground bounding box with padding, falls back to center-crop HSV extraction if needed, and classifies against cut-specific fresh lighting baselines in `reference_data.json`.
+The current backend validates the request, validates and compresses the image, extracts HSV values, and classifies against cut-specific fresh lighting baselines in `reference_data.json`.
+
+By default, `/classify` uses `rembg` foreground extraction because the current `reference_data.json` baseline was generated from the same pipeline. To reduce server work, the image passed into `rembg` is resized to a maximum edge of 768px by default.
+
+You can tune the rembg input size before starting Flask:
+
+```powershell
+$env:EYESARIWA_REMBG_MAX_DIMENSION = "768"
+python app.py
+```
+
+When `rembg` is enabled, the backend tries foreground extraction, keeps the largest foreground component, crops to the foreground bounding box with padding, and falls back to center-crop HSV extraction if foreground removal fails.
+
+If Render still cannot return results reliably, you can disable `rembg`:
+
+```powershell
+$env:EYESARIWA_ENABLE_REMBG = "false"
+python app.py
+```
+
+That fallback is faster, but it should be paired with a matching center-crop generated baseline before final study use.
 
 Classification compares the uploaded HSV values against `just_flash`, `warm_lighting`, `cool_lighting`, and `red_lighting` fresh baselines for the selected species/cut, then uses the lowest anomaly score. It uses circular Hue distance for OpenCV HSV values and a minimum Hue standard deviation so small Hue changes do not dominate the result. Current score thresholds are `FRESH <= 2.0`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
 
@@ -271,6 +291,20 @@ Build Command: pip install -r requirements.txt
 Start Command: gunicorn --timeout 180 app:app
 ```
 
+Optional Render environment variables:
+
+```text
+EYESARIWA_REMBG_MAX_DIMENSION=768
+```
+
+If `/classify` still times out on Render, add this emergency fallback:
+
+```text
+EYESARIWA_ENABLE_REMBG=false
+```
+
+Use that fallback for reliability testing only until the baseline is regenerated with the same center-crop pipeline.
+
 The repository also includes this `Procfile`:
 
 ```text
@@ -292,6 +326,6 @@ POST https://your-render-service.onrender.com/classify
 
 Render free-tier services may sleep after inactivity. The first request after sleep may take longer while the server starts again.
 
-The first request that uses background removal may also take longer because `rembg` downloads and loads the `u2netp` model. The Gunicorn timeout is set to 180 seconds so slower first scans on Render have time to finish.
+The first request that uses background removal may also take longer because `rembg` downloads and loads the `u2netp` model. The Gunicorn timeout is set to 180 seconds, and `EYESARIWA_REMBG_MAX_DIMENSION=768` keeps the foreground-removal input smaller for faster scans.
 
 No `.env` file or secrets are required for the current prototype.

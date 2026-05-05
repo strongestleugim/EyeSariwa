@@ -61,17 +61,20 @@ The current backend pipeline is:
 1. Receive an image and metadata from the frontend.
 2. Validate the uploaded image and request fields.
 3. Compress and resize the image if needed.
-4. Try background removal with `rembg`.
-5. Keep the largest foreground component from the rembg mask.
-6. Crop to the foreground bounding box with padding so off-center meat is analyzed around the detected object.
-7. Extract HSV mean values from the foreground meat region.
-8. Fall back to center-crop HSV extraction if background removal fails.
-9. Compute calibrated Z-scores against every fresh lighting baseline for the selected cut and use the lowest anomaly score.
-10. Return Fresh, Suspicious, or Stale.
+4. Try background removal with `rembg` unless `EYESARIWA_ENABLE_REMBG=false`.
+5. Resize the image passed to `rembg` to a maximum edge of 768px by default to reduce inference time.
+6. Keep the largest foreground component from the rembg mask.
+7. Crop to the foreground bounding box with padding so off-center meat is analyzed around the detected object.
+8. Extract HSV mean values from the foreground meat region.
+9. Fall back to center-crop HSV extraction if background removal fails or if `rembg` is disabled.
+10. Compute calibrated Z-scores against every fresh lighting baseline for the selected cut and use the lowest anomaly score.
+11. Return Fresh, Suspicious, or Stale.
 
 The current reference values are cut-specific and lighting-aware fresh baselines generated from the collected dataset. They should still be treated as preliminary until validated.
 
 The current calibration compares each uploaded image against `just_flash`, `warm_lighting`, `cool_lighting`, and `red_lighting` fresh baselines for the selected species/cut. It uses circular Hue distance for OpenCV HSV values, applies a minimum Hue standard deviation to reduce sensitivity to very small Hue variance in the baseline, and uses score thresholds of `<= 2.0` for Fresh, `> 2.0` and `<= 4.0` for Suspicious, and `> 4.0` for Stale.
+
+For deployment reliability, the image passed into `rembg` is downsized using `EYESARIWA_REMBG_MAX_DIMENSION` with a default of `768`. If Render still cannot return results reliably, set `EYESARIWA_ENABLE_REMBG=false` as an emergency fallback. That fallback is faster, but it should be paired with a matching center-crop generated baseline before final study use.
 
 ## Reference Data Workflow
 
