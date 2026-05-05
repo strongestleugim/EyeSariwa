@@ -1,0 +1,2 @@
+status,error,species,cut,dataset_category,freshness_label,lighting,condition,exposure_time,filename,path,hsv_method,H,S,V,z_H,z_S,z_V,deviation_score,computed_classification
+ok,,beef,beef_shank,experimental,,just_flash,air_exposure,1hr,BS1_AIR1.jpg,beef/beef_shank/experimental/air_exposure/just_flash/1hr/BS1_AIR1.jpg,rembg,7.9407,129.2488,134.6291,,,,,

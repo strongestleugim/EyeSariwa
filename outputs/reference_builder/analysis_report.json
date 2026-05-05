@@ -1,0 +1,351 @@
+{
+  "generated_at_utc": "2026-05-02T11:41:04.597010+00:00",
+  "record_count": 324,
+  "dataset_category_counts": {
+    "experimental": 84,
+    "fresh": 240
+  },
+  "computed_classification_counts": {
+    "FRESH": 40,
+    "STALE": 238,
+    "SUSPICIOUS": 46
+  },
+  "experimental_condition_counts": [
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "n": 2
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "n": 2
+    }
+  ]
+}

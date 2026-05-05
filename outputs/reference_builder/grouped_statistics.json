@@ -1,0 +1,1997 @@
+{
+  "by_species": {
+    "beef": {
+      "n": 108,
+      "H": {
+        "mean": 16.4615,
+        "std": 17.0444
+      },
+      "S": {
+        "mean": 130.2512,
+        "std": 19.6567
+      },
+      "V": {
+        "mean": 138.6152,
+        "std": 27.0144
+      }
+    },
+    "chicken": {
+      "n": 108,
+      "H": {
+        "mean": 14.7308,
+        "std": 12.374
+      },
+      "S": {
+        "mean": 111.6176,
+        "std": 24.1332
+      },
+      "V": {
+        "mean": 149.6846,
+        "std": 25.1269
+      }
+    },
+    "pork": {
+      "n": 108,
+      "H": {
+        "mean": 15.1908,
+        "std": 13.8737
+      },
+      "S": {
+        "mean": 123.3427,
+        "std": 21.2228
+      },
+      "V": {
+        "mean": 143.004,
+        "std": 20.8318
+      }
+    }
+  },
+  "by_species_cut": [
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "stats": {
+        "n": 54,
+        "H": {
+          "mean": 16.5148,
+          "std": 16.3018
+        },
+        "S": {
+          "mean": 119.8433,
+          "std": 19.0267
+        },
+        "V": {
+          "mean": 148.8006,
+          "std": 30.1559
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "stats": {
+        "n": 54,
+        "H": {
+          "mean": 16.4083,
+          "std": 17.9095
+        },
+        "S": {
+          "mean": 140.659,
+          "std": 14.0469
+        },
+        "V": {
+          "mean": 128.4299,
+          "std": 18.7763
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "stats": {
+        "n": 54,
+        "H": {
+          "mean": 11.7147,
+          "std": 1.5451
+        },
+        "S": {
+          "mean": 120.2908,
+          "std": 19.3969
+        },
+        "V": {
+          "mean": 152.0806,
+          "std": 12.7181
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "stats": {
+        "n": 54,
+        "H": {
+          "mean": 17.7469,
+          "std": 16.9764
+        },
+        "S": {
+          "mean": 102.9445,
+          "std": 25.4222
+        },
+        "V": {
+          "mean": 147.2886,
+          "std": 33.1842
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "stats": {
+        "n": 54,
+        "H": {
+          "mean": 18.8183,
+          "std": 18.3559
+        },
+        "S": {
+          "mean": 131.1623,
+          "std": 14.966
+        },
+        "V": {
+          "mean": 129.6502,
+          "std": 14.9713
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "stats": {
+        "n": 54,
+        "H": {
+          "mean": 11.5632,
+          "std": 4.9834
+        },
+        "S": {
+          "mean": 115.523,
+          "std": 23.6798
+        },
+        "V": {
+          "mean": 156.3578,
+          "std": 16.9882
+        }
+      }
+    }
+  ],
+  "by_dataset_category": {
+    "experimental": {
+      "n": 84,
+      "H": {
+        "mean": 22.7373,
+        "std": 20.5583
+      },
+      "S": {
+        "mean": 127.2739,
+        "std": 19.3459
+      },
+      "V": {
+        "mean": 130.4662,
+        "std": 20.2415
+      }
+    },
+    "fresh": {
+      "n": 240,
+      "H": {
+        "mean": 12.9143,
+        "std": 10.659
+      },
+      "S": {
+        "mean": 119.7993,
+        "std": 23.8967
+      },
+      "V": {
+        "mean": 148.4236,
+        "std": 24.6071
+      }
+    }
+  },
+  "by_species_cut_category": [
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "dataset_category": "experimental",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 24.7729,
+          "std": 18.4407
+        },
+        "S": {
+          "mean": 132.7208,
+          "std": 18.6032
+        },
+        "V": {
+          "mean": 122.4008,
+          "std": 14.6883
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "dataset_category": "fresh",
+      "stats": {
+        "n": 40,
+        "H": {
+          "mean": 13.6244,
+          "std": 14.6541
+        },
+        "S": {
+          "mean": 115.3362,
+          "std": 17.2118
+        },
+        "V": {
+          "mean": 158.0406,
+          "std": 28.7428
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "dataset_category": "experimental",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 36.0677,
+          "std": 26.5785
+        },
+        "S": {
+          "mean": 142.2773,
+          "std": 9.1909
+        },
+        "V": {
+          "mean": 110.1954,
+          "std": 23.4667
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "dataset_category": "fresh",
+      "stats": {
+        "n": 40,
+        "H": {
+          "mean": 9.5275,
+          "std": 3.622
+        },
+        "S": {
+          "mean": 140.0926,
+          "std": 15.4506
+        },
+        "V": {
+          "mean": 134.8119,
+          "std": 11.5937
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "dataset_category": "experimental",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 10.945,
+          "std": 1.8767
+        },
+        "S": {
+          "mean": 126.5582,
+          "std": 21.1351
+        },
+        "V": {
+          "mean": 144.6236,
+          "std": 11.7787
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "dataset_category": "fresh",
+      "stats": {
+        "n": 40,
+        "H": {
+          "mean": 11.9841,
+          "std": 1.3354
+        },
+        "S": {
+          "mean": 118.0971,
+          "std": 18.5301
+        },
+        "V": {
+          "mean": 154.6906,
+          "std": 12.1086
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "dataset_category": "experimental",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 12.1439,
+          "std": 1.9719
+        },
+        "S": {
+          "mean": 115.2855,
+          "std": 18.0928
+        },
+        "V": {
+          "mean": 144.3965,
+          "std": 12.7194
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "dataset_category": "fresh",
+      "stats": {
+        "n": 40,
+        "H": {
+          "mean": 19.708,
+          "std": 19.3686
+        },
+        "S": {
+          "mean": 98.6252,
+          "std": 26.3697
+        },
+        "V": {
+          "mean": 148.3009,
+          "std": 37.9276
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "dataset_category": "experimental",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 37.5913,
+          "std": 28.2562
+        },
+        "S": {
+          "mean": 129.7022,
+          "std": 14.4491
+        },
+        "V": {
+          "mean": 120.5691,
+          "std": 15.7238
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "dataset_category": "fresh",
+      "stats": {
+        "n": 40,
+        "H": {
+          "mean": 12.2477,
+          "std": 4.5786
+        },
+        "S": {
+          "mean": 131.6734,
+          "std": 15.2892
+        },
+        "V": {
+          "mean": 132.8286,
+          "std": 13.4989
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "dataset_category": "experimental",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 14.9031,
+          "std": 8.7162
+        },
+        "S": {
+          "mean": 117.0994,
+          "std": 20.7036
+        },
+        "V": {
+          "mean": 140.6119,
+          "std": 12.1635
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "dataset_category": "fresh",
+      "stats": {
+        "n": 40,
+        "H": {
+          "mean": 10.3943,
+          "std": 1.7378
+        },
+        "S": {
+          "mean": 114.9713,
+          "std": 24.8583
+        },
+        "V": {
+          "mean": 161.8689,
+          "std": 14.9242
+        }
+      }
+    }
+  ],
+  "by_species_cut_category_lighting": [
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "dataset_category": "experimental",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 24.7729,
+          "std": 18.4407
+        },
+        "S": {
+          "mean": 132.7208,
+          "std": 18.6032
+        },
+        "V": {
+          "mean": 122.4008,
+          "std": 14.6883
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "dataset_category": "fresh",
+      "lighting": "cool_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 11.8624,
+          "std": 1.3381
+        },
+        "S": {
+          "mean": 106.0728,
+          "std": 7.9994
+        },
+        "V": {
+          "mean": 159.5036,
+          "std": 16.8019
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "dataset_category": "fresh",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 12.7703,
+          "std": 5.281
+        },
+        "S": {
+          "mean": 100.3471,
+          "std": 12.1472
+        },
+        "V": {
+          "mean": 141.7873,
+          "std": 20.1349
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "dataset_category": "fresh",
+      "lighting": "red_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 8.777,
+          "std": 1.3142
+        },
+        "S": {
+          "mean": 129.3587,
+          "std": 11.4163
+        },
+        "V": {
+          "mean": 174.8573,
+          "std": 13.9402
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "dataset_category": "fresh",
+      "lighting": "warm_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 21.088,
+          "std": 28.4057
+        },
+        "S": {
+          "mean": 125.5662,
+          "std": 16.1899
+        },
+        "V": {
+          "mean": 156.014,
+          "std": 45.6426
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "dataset_category": "experimental",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 36.0677,
+          "std": 26.5785
+        },
+        "S": {
+          "mean": 142.2773,
+          "std": 9.1909
+        },
+        "V": {
+          "mean": 110.1954,
+          "std": 23.4667
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "dataset_category": "fresh",
+      "lighting": "cool_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 8.9874,
+          "std": 1.3544
+        },
+        "S": {
+          "mean": 132.2385,
+          "std": 7.2093
+        },
+        "V": {
+          "mean": 132.6306,
+          "std": 8.5262
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "dataset_category": "fresh",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 9.6319,
+          "std": 1.9408
+        },
+        "S": {
+          "mean": 123.8237,
+          "std": 7.2407
+        },
+        "V": {
+          "mean": 120.9803,
+          "std": 6.21
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "dataset_category": "fresh",
+      "lighting": "red_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 6.8551,
+          "std": 0.6754
+        },
+        "S": {
+          "mean": 155.0888,
+          "std": 9.8187
+        },
+        "V": {
+          "mean": 145.885,
+          "std": 3.4201
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "dataset_category": "fresh",
+      "lighting": "warm_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 12.6356,
+          "std": 5.6378
+        },
+        "S": {
+          "mean": 149.2195,
+          "std": 11.3399
+        },
+        "V": {
+          "mean": 139.7517,
+          "std": 8.8484
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "dataset_category": "experimental",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 10.945,
+          "std": 1.8767
+        },
+        "S": {
+          "mean": 126.5582,
+          "std": 21.1351
+        },
+        "V": {
+          "mean": 144.6236,
+          "std": 11.7787
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "dataset_category": "fresh",
+      "lighting": "cool_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 13.285,
+          "std": 1.2109
+        },
+        "S": {
+          "mean": 107.7603,
+          "std": 8.5091
+        },
+        "V": {
+          "mean": 154.252,
+          "std": 7.9855
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "dataset_category": "fresh",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 11.559,
+          "std": 0.7681
+        },
+        "S": {
+          "mean": 104.004,
+          "std": 7.0787
+        },
+        "V": {
+          "mean": 143.0512,
+          "std": 7.147
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "dataset_category": "fresh",
+      "lighting": "red_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 10.8208,
+          "std": 1.0605
+        },
+        "S": {
+          "mean": 132.1738,
+          "std": 21.0593
+        },
+        "V": {
+          "mean": 159.4624,
+          "std": 15.7091
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "dataset_category": "fresh",
+      "lighting": "warm_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 12.2718,
+          "std": 0.9324
+        },
+        "S": {
+          "mean": 128.4504,
+          "std": 15.5958
+        },
+        "V": {
+          "mean": 161.9968,
+          "std": 6.1945
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "dataset_category": "experimental",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 12.1439,
+          "std": 1.9719
+        },
+        "S": {
+          "mean": 115.2855,
+          "std": 18.0928
+        },
+        "V": {
+          "mean": 144.3965,
+          "std": 12.7194
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "dataset_category": "fresh",
+      "lighting": "cool_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 23.3612,
+          "std": 24.7091
+        },
+        "S": {
+          "mean": 78.871,
+          "std": 9.4394
+        },
+        "V": {
+          "mean": 142.8642,
+          "std": 40.5248
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "dataset_category": "fresh",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 21.0061,
+          "std": 21.368
+        },
+        "S": {
+          "mean": 76.6232,
+          "std": 16.1858
+        },
+        "V": {
+          "mean": 130.9189,
+          "std": 37.331
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "dataset_category": "fresh",
+      "lighting": "red_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 12.6544,
+          "std": 6.0955
+        },
+        "S": {
+          "mean": 117.6292,
+          "std": 24.5228
+        },
+        "V": {
+          "mean": 165.3284,
+          "std": 29.1055
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "dataset_category": "fresh",
+      "lighting": "warm_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 21.8104,
+          "std": 21.0816
+        },
+        "S": {
+          "mean": 121.3774,
+          "std": 10.6241
+        },
+        "V": {
+          "mean": 154.092,
+          "std": 40.2811
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "dataset_category": "experimental",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 37.5913,
+          "std": 28.2562
+        },
+        "S": {
+          "mean": 129.7022,
+          "std": 14.4491
+        },
+        "V": {
+          "mean": 120.5691,
+          "std": 15.7238
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "dataset_category": "fresh",
+      "lighting": "cool_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 11.7798,
+          "std": 2.1303
+        },
+        "S": {
+          "mean": 122.0785,
+          "std": 6.571
+        },
+        "V": {
+          "mean": 131.6314,
+          "std": 11.9569
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "dataset_category": "fresh",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 13.5109,
+          "std": 4.6607
+        },
+        "S": {
+          "mean": 116.2857,
+          "std": 6.9101
+        },
+        "V": {
+          "mean": 118.0944,
+          "std": 8.3794
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "dataset_category": "fresh",
+      "lighting": "red_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 7.3856,
+          "std": 1.0865
+        },
+        "S": {
+          "mean": 148.0998,
+          "std": 8.9646
+        },
+        "V": {
+          "mean": 141.6314,
+          "std": 8.2419
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "dataset_category": "fresh",
+      "lighting": "warm_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 16.3146,
+          "std": 4.0918
+        },
+        "S": {
+          "mean": 140.2295,
+          "std": 9.7537
+        },
+        "V": {
+          "mean": 139.9572,
+          "std": 11.0969
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "dataset_category": "experimental",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 14,
+        "H": {
+          "mean": 14.9031,
+          "std": 8.7162
+        },
+        "S": {
+          "mean": 117.0994,
+          "std": 20.7036
+        },
+        "V": {
+          "mean": 140.6119,
+          "std": 12.1635
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "dataset_category": "fresh",
+      "lighting": "cool_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 11.549,
+          "std": 0.7196
+        },
+        "S": {
+          "mean": 95.3376,
+          "std": 6.7875
+        },
+        "V": {
+          "mean": 158.5951,
+          "std": 8.7764
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "dataset_category": "fresh",
+      "lighting": "just_flash",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 10.3477,
+          "std": 1.214
+        },
+        "S": {
+          "mean": 88.1834,
+          "std": 6.3013
+        },
+        "V": {
+          "mean": 142.3162,
+          "std": 9.2929
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "dataset_category": "fresh",
+      "lighting": "red_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 7.9233,
+          "std": 0.7533
+        },
+        "S": {
+          "mean": 136.8091,
+          "std": 10.2349
+        },
+        "V": {
+          "mean": 173.9101,
+          "std": 6.2661
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "dataset_category": "fresh",
+      "lighting": "warm_lighting",
+      "stats": {
+        "n": 10,
+        "H": {
+          "mean": 11.757,
+          "std": 0.443
+        },
+        "S": {
+          "mean": 139.5548,
+          "std": 7.7577
+        },
+        "V": {
+          "mean": 172.6542,
+          "std": 5.9564
+        }
+      }
+    }
+  ],
+  "by_experimental_condition": [
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 7.2735,
+          "std": 0.9435
+        },
+        "S": {
+          "mean": 121.986,
+          "std": 10.2713
+        },
+        "V": {
+          "mean": 135.2633,
+          "std": 0.8969
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 28.377,
+          "std": 3.5869
+        },
+        "S": {
+          "mean": 133.7544,
+          "std": 7.1908
+        },
+        "V": {
+          "mean": 117.0665,
+          "std": 9.4182
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 53.5071,
+          "std": 0.8142
+        },
+        "S": {
+          "mean": 134.6457,
+          "std": 0.121
+        },
+        "V": {
+          "mean": 110.0575,
+          "std": 14.0972
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 8.7505,
+          "std": 3.4704
+        },
+        "S": {
+          "mean": 165.4205,
+          "std": 8.053
+        },
+        "V": {
+          "mean": 128.7645,
+          "std": 8.8202
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 7.9919,
+          "std": 0.8338
+        },
+        "S": {
+          "mean": 105.0092,
+          "std": 14.2686
+        },
+        "V": {
+          "mean": 138.9201,
+          "std": 0.1919
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 25.6303,
+          "std": 1.4609
+        },
+        "S": {
+          "mean": 131.3003,
+          "std": 9.7908
+        },
+        "V": {
+          "mean": 122.7413,
+          "std": 2.5537
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_shank",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 41.8797,
+          "std": 20.937
+        },
+        "S": {
+          "mean": 136.9296,
+          "std": 4.8595
+        },
+        "V": {
+          "mean": 103.9922,
+          "std": 20.8527
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 6.9603,
+          "std": 1.1542
+        },
+        "S": {
+          "mean": 150.6246,
+          "std": 3.5531
+        },
+        "V": {
+          "mean": 117.2013,
+          "std": 2.0477
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 39.5184,
+          "std": 2.2861
+        },
+        "S": {
+          "mean": 147.0705,
+          "std": 2.0336
+        },
+        "V": {
+          "mean": 102.7856,
+          "std": 13.2552
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 55.842,
+          "std": 7.7713
+        },
+        "S": {
+          "mean": 142.116,
+          "std": 3.2092
+        },
+        "V": {
+          "mean": 100.1923,
+          "std": 8.7086
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 13.6103,
+          "std": 8.9109
+        },
+        "S": {
+          "mean": 141.5537,
+          "std": 23.5596
+        },
+        "V": {
+          "mean": 152.9463,
+          "std": 1.8823
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 5.4357,
+          "std": 1.0541
+        },
+        "S": {
+          "mean": 131.708,
+          "std": 0.4125
+        },
+        "V": {
+          "mean": 124.2172,
+          "std": 8.6379
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 68.8058,
+          "std": 7.3621
+        },
+        "S": {
+          "mean": 136.6898,
+          "std": 1.1748
+        },
+        "V": {
+          "mean": 86.0405,
+          "std": 10.524
+        }
+      }
+    },
+    {
+      "species": "beef",
+      "cut": "beef_sirloin",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 62.3015,
+          "std": 8.724
+        },
+        "S": {
+          "mean": 146.1782,
+          "std": 3.4327
+        },
+        "V": {
+          "mean": 87.9845,
+          "std": 10.2016
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 10.6331,
+          "std": 1.2196
+        },
+        "S": {
+          "mean": 124.4672,
+          "std": 2.2542
+        },
+        "V": {
+          "mean": 156.5142,
+          "std": 2.0654
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 10.0993,
+          "std": 0.4582
+        },
+        "S": {
+          "mean": 135.1073,
+          "std": 7.4385
+        },
+        "V": {
+          "mean": 141.8243,
+          "std": 3.3584
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 9.0443,
+          "std": 0.6471
+        },
+        "S": {
+          "mean": 142.8995,
+          "std": 3.3023
+        },
+        "V": {
+          "mean": 137.6493,
+          "std": 5.8158
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 14.3024,
+          "std": 0.024
+        },
+        "S": {
+          "mean": 127.9085,
+          "std": 6.2086
+        },
+        "V": {
+          "mean": 149.4196,
+          "std": 6.7683
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 12.4617,
+          "std": 0.0205
+        },
+        "S": {
+          "mean": 79.7615,
+          "std": 4.4956
+        },
+        "V": {
+          "mean": 159.772,
+          "std": 7.3316
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 11.0076,
+          "std": 0.2415
+        },
+        "S": {
+          "mean": 134.4112,
+          "std": 1.8051
+        },
+        "V": {
+          "mean": 131.4212,
+          "std": 13.1755
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_breast",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 9.0669,
+          "std": 0.7451
+        },
+        "S": {
+          "mean": 141.3522,
+          "std": 6.3329
+        },
+        "V": {
+          "mean": 135.7649,
+          "std": 8.6503
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 12.9569,
+          "std": 0.8058
+        },
+        "S": {
+          "mean": 108.1316,
+          "std": 3.4905
+        },
+        "V": {
+          "mean": 150.7392,
+          "std": 10.7726
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 12.1114,
+          "std": 1.2795
+        },
+        "S": {
+          "mean": 118.8626,
+          "std": 8.3963
+        },
+        "V": {
+          "mean": 133.96,
+          "std": 13.9961
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 11.0555,
+          "std": 0.3178
+        },
+        "S": {
+          "mean": 127.9604,
+          "std": 7.9939
+        },
+        "V": {
+          "mean": 132.4671,
+          "std": 11.3548
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 12.7263,
+          "std": 6.2175
+        },
+        "S": {
+          "mean": 121.1363,
+          "std": 21.2529
+        },
+        "V": {
+          "mean": 145.7395,
+          "std": 18.129
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 12.4617,
+          "std": 0.0205
+        },
+        "S": {
+          "mean": 79.7615,
+          "std": 4.4956
+        },
+        "V": {
+          "mean": 159.772,
+          "std": 7.3316
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 12.8615,
+          "std": 0.6294
+        },
+        "S": {
+          "mean": 126.7984,
+          "std": 9.4959
+        },
+        "V": {
+          "mean": 139.0491,
+          "std": 2.6473
+        }
+      }
+    },
+    {
+      "species": "chicken",
+      "cut": "chicken_drumstick",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 10.8338,
+          "std": 0.2703
+        },
+        "S": {
+          "mean": 124.3474,
+          "std": 8.7144
+        },
+        "V": {
+          "mean": 149.0487,
+          "std": 10.6339
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 8.8061,
+          "std": 4.2953
+        },
+        "S": {
+          "mean": 122.6379,
+          "std": 0.3126
+        },
+        "V": {
+          "mean": 135.6537,
+          "std": 2.2682
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 29.5041,
+          "std": 3.3383
+        },
+        "S": {
+          "mean": 132.2159,
+          "std": 2.5633
+        },
+        "V": {
+          "mean": 114.4638,
+          "std": 6.3269
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 66.3526,
+          "std": 11.291
+        },
+        "S": {
+          "mean": 135.3853,
+          "std": 0.2623
+        },
+        "V": {
+          "mean": 112.8622,
+          "std": 0.7316
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 16.0013,
+          "std": 2.5363
+        },
+        "S": {
+          "mean": 152.0848,
+          "std": 11.4089
+        },
+        "V": {
+          "mean": 126.5655,
+          "std": 11.874
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 21.2329,
+          "std": 6.1212
+        },
+        "S": {
+          "mean": 105.1282,
+          "std": 10.0257
+        },
+        "V": {
+          "mean": 139.3307,
+          "std": 17.5878
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 36.8422,
+          "std": 20.5906
+        },
+        "S": {
+          "mean": 126.3521,
+          "std": 4.7562
+        },
+        "V": {
+          "mean": 105.7838,
+          "std": 16.8193
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_belly",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 84.4001,
+          "std": 21.4783
+        },
+        "S": {
+          "mean": 134.1109,
+          "std": 2.4411
+        },
+        "V": {
+          "mean": 109.3239,
+          "std": 17.9089
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 7.6405,
+          "std": 0.3132
+        },
+        "S": {
+          "mean": 111.1576,
+          "std": 1.4678
+        },
+        "V": {
+          "mean": 154.6996,
+          "std": 3.9957
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 11.7819,
+          "std": 0.2842
+        },
+        "S": {
+          "mean": 116.8248,
+          "std": 0.0843
+        },
+        "V": {
+          "mean": 133.3983,
+          "std": 0.009
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "air_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "6hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 31.0811,
+          "std": 10.7948
+        },
+        "S": {
+          "mean": 121.0135,
+          "std": 2.2304
+        },
+        "V": {
+          "mean": 130.6964,
+          "std": 1.3525
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "pork_blood",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 12.3489,
+          "std": 0.8011
+        },
+        "S": {
+          "mean": 155.6121,
+          "std": 10.8493
+        },
+        "V": {
+          "mean": 133.1472,
+          "std": 22.3341
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "1hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 9.4281,
+          "std": 0.4973
+        },
+        "S": {
+          "mean": 83.9551,
+          "std": 7.8073
+        },
+        "V": {
+          "mean": 156.3197,
+          "std": 0.3239
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "3hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 11.5106,
+          "std": 2.4864
+        },
+        "S": {
+          "mean": 110.7403,
+          "std": 3.4773
+        },
+        "V": {
+          "mean": 141.2078,
+          "std": 1.027
+        }
+      }
+    },
+    {
+      "species": "pork",
+      "cut": "pork_chop",
+      "condition": "sun_exposure",
+      "lighting": "just_flash",
+      "exposure_time": "4hr",
+      "stats": {
+        "n": 2,
+        "H": {
+          "mean": 20.5305,
+          "std": 7.4885
+        },
+        "S": {
+          "mean": 120.3926,
+          "std": 2.6255
+        },
+        "V": {
+          "mean": 134.8144,
+          "std": 5.9248
+        }
+      }
+    }
+  ]
+}

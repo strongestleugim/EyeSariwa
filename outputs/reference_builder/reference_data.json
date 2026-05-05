@@ -1,0 +1,139 @@
+{
+  "_note": "Generated from verified fresh dataset images using the EyeSariwa backend pipeline. Experimental records are excluded from the baseline and kept for analysis only. Review QA output before replacing the project reference_data.json.",
+  "_generated_at_utc": "2026-05-02T11:41:04.557975+00:00",
+  "_baseline_rule": {
+    "baseline_scope": "species_cut",
+    "source_dataset_category": "fresh",
+    "source_freshness_label": "fresh",
+    "excluded_dataset_categories": [
+      "experimental",
+      "labeled"
+    ],
+    "hsv_pipeline": "rembg foreground extraction with center-crop fallback",
+    "preferred_lighting": [
+      "flash",
+      "just_flash"
+    ],
+    "fallback": "Uses all fresh records for a species when preferred lighting is absent."
+  },
+  "beef": {
+    "cuts": {
+      "beef_shank": {
+        "fresh": {
+          "n": 10,
+          "H": {
+            "mean": 12.7703,
+            "std": 5.281
+          },
+          "S": {
+            "mean": 100.3471,
+            "std": 12.1472
+          },
+          "V": {
+            "mean": 141.7873,
+            "std": 20.1349
+          },
+          "selection_method": "preferred_lighting"
+        }
+      },
+      "beef_sirloin": {
+        "fresh": {
+          "n": 10,
+          "H": {
+            "mean": 9.6319,
+            "std": 1.9408
+          },
+          "S": {
+            "mean": 123.8237,
+            "std": 7.2407
+          },
+          "V": {
+            "mean": 120.9803,
+            "std": 6.21
+          },
+          "selection_method": "preferred_lighting"
+        }
+      }
+    }
+  },
+  "chicken": {
+    "cuts": {
+      "chicken_breast": {
+        "fresh": {
+          "n": 10,
+          "H": {
+            "mean": 11.559,
+            "std": 0.7681
+          },
+          "S": {
+            "mean": 104.004,
+            "std": 7.0787
+          },
+          "V": {
+            "mean": 143.0512,
+            "std": 7.147
+          },
+          "selection_method": "preferred_lighting"
+        }
+      },
+      "chicken_drumstick": {
+        "fresh": {
+          "n": 10,
+          "H": {
+            "mean": 21.0061,
+            "std": 21.368
+          },
+          "S": {
+            "mean": 76.6232,
+            "std": 16.1858
+          },
+          "V": {
+            "mean": 130.9189,
+            "std": 37.331
+          },
+          "selection_method": "preferred_lighting"
+        }
+      }
+    }
+  },
+  "pork": {
+    "cuts": {
+      "pork_belly": {
+        "fresh": {
+          "n": 10,
+          "H": {
+            "mean": 13.5109,
+            "std": 4.6607
+          },
+          "S": {
+            "mean": 116.2857,
+            "std": 6.9101
+          },
+          "V": {
+            "mean": 118.0944,
+            "std": 8.3794
+          },
+          "selection_method": "preferred_lighting"
+        }
+      },
+      "pork_chop": {
+        "fresh": {
+          "n": 10,
+          "H": {
+            "mean": 10.3477,
+            "std": 1.214
+          },
+          "S": {
+            "mean": 88.1834,
+            "std": 6.3013
+          },
+          "V": {
+            "mean": 142.3162,
+            "std": 9.2929
+          },
+          "selection_method": "preferred_lighting"
+        }
+      }
+    }
+  }
+}

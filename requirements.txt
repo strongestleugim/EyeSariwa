@@ -1,0 +1,8 @@
+flask
+flask-cors
+gunicorn
+pillow
+opencv-python-headless
+numpy
+rembg
+onnxruntime

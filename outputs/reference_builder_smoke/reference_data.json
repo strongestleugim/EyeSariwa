@@ -1,0 +1,28 @@
+{
+  "_note": "Generated from verified fresh dataset images using the EyeSariwa backend pipeline. Experimental records are excluded from the baseline and kept for analysis only. Treat these values as preliminary until validated.",
+  "_generated_at_utc": "2026-05-02T16:15:12.500211+00:00",
+  "_baseline_rule": {
+    "baseline_scope": "species_cut",
+    "source_dataset_category": "fresh",
+    "source_freshness_label": "fresh",
+    "excluded_dataset_categories": [
+      "experimental",
+      "labeled"
+    ],
+    "hsv_pipeline": "rembg foreground extraction with largest-component bounding-box crop and center-crop fallback",
+    "preferred_lighting": [
+      "flash",
+      "just_flash"
+    ],
+    "fallback": "Uses all fresh records for a species when preferred lighting is absent."
+  },
+  "beef": {
+    "cuts": {}
+  },
+  "chicken": {
+    "cuts": {}
+  },
+  "pork": {
+    "cuts": {}
+  }
+}

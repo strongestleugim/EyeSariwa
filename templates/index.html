@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="fil">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#a8222c">
+  <title>EyeSariwa</title>
+  <link rel="icon" href="/static/assets/icon-192.png" type="image/png">
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ============================================================
+       1. LOADING SCREEN
+       ============================================================ -->
+  <section class="screen active" id="screen-loading" aria-label="Loading">
+    <div class="loading-wrap">
+      <div class="wordmark">Eye<em>Sariwa</em></div>
+      <div class="spinner" role="status" aria-label="Loading"></div>
+      <p class="loading-text" data-i18n="loading_text">Inihahanda ang scanner…</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       2. HOME / MAIN SCREEN
+       ============================================================ -->
+  <section class="screen" id="screen-main" aria-label="Home">
+    <div class="main-wrap">
+
+      <div class="main-header">
+        <div class="main-header-spacer" aria-hidden="true"></div>
+        <!-- lang-switcher injected here by main.js -->
+      </div>
+
+      <div class="main-hero-wrap">
+        <img src="/static/assets/home_hero_fresh_meat_market_cropped.png"
+             alt="Illustration of a fresh meat market stall"
+             class="main-hero-img"
+             onerror="this.outerHTML='<div class=\'main-hero-placeholder\' aria-hidden=\'true\'>🥩</div>'">
+      </div>
+
+      <div class="main-brand-lockup" aria-label="EyeSariwa">
+        <div class="main-welcome" data-i18n="home_welcome">welcome to</div>
+        <img src="/static/assets/logo_transparent_wordmark_cropped.png"
+             alt="EyeSariwa"
+             class="main-logo-img"
+             onerror="this.outerHTML='<div class=\'wordmark main-logo-fallback\'>Eye<em>Sariwa</em></div>'">
+      </div>
+
+      <div class="home-kicker" data-i18n="home_kicker">Safe &amp; Contactless Meat Assessment</div>
+
+      <div class="home-benefits" aria-label="EyeSariwa benefits">
+        <div class="home-benefit">
+          <img src="/static/assets/home_contactless_icon.png"
+               alt=""
+               class="home-benefit-icon"
+               aria-hidden="true">
+          <div class="home-benefit-title" data-i18n="benefit_contactless_title">Contactless</div>
+          <div class="home-benefit-copy" data-i18n="benefit_contactless_copy">Hindi kailangang hawakan ang karne.</div>
+        </div>
+        <div class="home-benefit">
+          <img src="/static/assets/home_fast_icon.png"
+               alt=""
+               class="home-benefit-icon"
+               aria-hidden="true">
+          <div class="home-benefit-title" data-i18n="benefit_fast_title">Mabilis</div>
+          <div class="home-benefit-copy" data-i18n="benefit_fast_copy">Resulta sa ilang segundo.</div>
+        </div>
+        <div class="home-benefit">
+          <img src="/static/assets/home_easy_to_use_icon.png"
+               alt=""
+               class="home-benefit-icon"
+               aria-hidden="true">
+          <div class="home-benefit-title" data-i18n="benefit_easy_title">Madaling Gamitin</div>
+          <div class="home-benefit-copy" data-i18n="benefit_easy_copy">Kumuha o mag-upload ng kuha.</div>
+        </div>
+      </div>
+
+      <div class="main-cta">
+        <button class="btn btn-primary" onclick="showScreen('screen-select-type')" data-i18n="btn_start_scan">Magsimula</button>
+        <button class="btn btn-secondary" onclick="openHistory()" data-i18n="btn_view_history">Tingnan ang Mga Na-scan</button>
+      </div>
+
+      <p class="main-disclaimer" data-i18n="disclaimer_short">
+        Kulay lang ng karne sa kuha ang tinitingnan. Hindi ito kapalit ng opisyal na inspeksyon.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3. HISTORY SCREEN (single screen, empty + data modes)
+       ============================================================ -->
+  <section class="screen" id="screen-history" aria-label="Mga Na-scan">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('screen-main')" aria-label="Back to home">&#8592;</button>
+      <span class="screen-title" data-i18n="history_title">Mga Na-scan</span>
+      <button class="history-header-clear hidden" id="btn-clear-history"
+              aria-label="Burahin ang mga na-scan"
+              data-i18n="btn_clear">Burahin</button>
+    </div>
+
+    <!-- DATA STATE -->
+    <div class="history-body hidden" id="history-content-data">
+      <div class="stats-grid">
+        <div class="stat-card s-fresh">
+          <div class="stat-number" id="stat-fresh">0</div>
+        <div class="stat-label" data-i18n="stat_fresh">Sariwa</div>
+        </div>
+        <div class="stat-card s-suspicious">
+          <div class="stat-number" id="stat-suspicious">0</div>
+          <div class="stat-label" data-i18n="stat_suspicious">Kaduda-duda</div>
+        </div>
+        <div class="stat-card s-stale">
+          <div class="stat-number" id="stat-stale">0</div>
+          <div class="stat-label" data-i18n="stat_stale">Hindi Sariwa</div>
+        </div>
+        <div class="stat-card s-total">
+          <div class="stat-number" id="stat-total">0</div>
+          <div class="stat-label" data-i18n="stat_total">Lahat ng Scan</div>
+        </div>
+      </div>
+
+      <div class="section-label" data-i18n="recent_scans">Mga Na-scan</div>
+      <div class="card-stack" id="history-list"></div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="history-body hidden" id="history-content-empty">
+      <div class="empty-state">
+        <div class="empty-icon" aria-hidden="true">📋</div>
+        <div class="empty-title" data-i18n="history_empty_title">Wala pang na-scan.</div>
+        <p class="empty-sub" data-i18n="history_empty_sub">Dito lalabas ang mga karne na na-scan mo.</p>
+        <p class="empty-helper" data-i18n="history_empty_helper">Subukan ang unang scan para makita ang resulta dito.</p>
+        <button class="btn btn-primary empty-cta"
+                onclick="showScreen('screen-select-type')"
+                data-i18n="btn_first_scan">Mag-scan na</button>
+      </div>
+    </div>
+
+    <!-- CLEAR HISTORY DIALOG -->
+    <dialog id="dialog-clear-history" aria-labelledby="clear-dialog-title" aria-describedby="clear-dialog-msg">
+      <h2 class="dialog-title" id="clear-dialog-title" data-i18n="clear_confirm_title">
+        Burahin ang mga na-scan?
+      </h2>
+      <p class="dialog-message" id="clear-dialog-msg" data-i18n="clear_confirm_msg">
+        Mawawala ang lahat ng na-save na scan.
+      </p>
+      <div class="dialog-actions">
+        <button class="btn btn-secondary" id="btn-cancel-clear" data-i18n="btn_cancel">Kanselahin</button>
+        <button class="btn btn-primary"   id="btn-confirm-clear" data-i18n="btn_clear_all">Burahin</button>
+      </div>
+    </dialog>
+  </section>
+
+  <!-- ============================================================
+       4. SELECT MEAT TYPE  (Step 1 of 4)
+       ============================================================ -->
+  <section class="screen" id="screen-select-type" aria-label="Select meat type, step 1 of 4">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('screen-main')" aria-label="Back to home">&#8592;</button>
+      <span class="screen-title" data-i18n="step1_title">Pumili ng Uri ng Karne</span>
+    </div>
+    <div class="stepper" aria-label="Step 1 of 4">
+      <div class="step-dot on" aria-hidden="true"></div>
+      <div class="step-dot" aria-hidden="true"></div>
+      <div class="step-dot" aria-hidden="true"></div>
+      <div class="step-dot" aria-hidden="true"></div>
+      <span class="step-label" aria-hidden="true">Step 1 of 4</span>
+    </div>
+
+    <div class="select-body">
+      <p class="select-helper" data-i18n="step1_helper">Anong karne ang gusto mong tingnan?</p>
+      <div class="select-grid">
+
+        <button class="select-card" type="button" data-species="beef"
+                aria-pressed="false" aria-label="Baka — Bulalo Cut at Tapa Cut">
+          <img src="/static/assets/icon_beef.png" alt="Baka" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🥩</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="species_beef">Baka</div>
+            <div class="select-sub"   data-i18n="species_beef_sub">Bulalo Cut · Tapa Cut</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+        <button class="select-card" type="button" data-species="pork"
+                aria-pressed="false" aria-label="Baboy — Liempo at Pork Chop">
+          <img src="/static/assets/icon_pork.png" alt="Baboy" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🥓</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="species_pork">Baboy</div>
+            <div class="select-sub"   data-i18n="species_pork_sub">Liempo · Pork Chop</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+        <button class="select-card" type="button" data-species="chicken"
+                aria-pressed="false" aria-label="Manok — Hita at Dibdib">
+          <img src="/static/assets/icon_chicken.png" alt="Manok" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🍗</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="species_chicken">Manok</div>
+            <div class="select-sub"   data-i18n="species_chicken_sub">Hita · Dibdib</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+      </div>
+    </div>
+
+    <div class="select-footer">
+      <button class="btn btn-primary" id="btn-continue-type" disabled
+              aria-disabled="true" data-i18n="btn_continue">Ituloy</button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       5. SELECT CUT  (Step 2 of 4)
+       ============================================================ -->
+  <section class="screen" id="screen-select-cut" aria-label="Select cut, step 2 of 4">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('screen-select-type')" aria-label="Back to meat type">&#8592;</button>
+      <span class="screen-title" data-i18n="step2_title">Pumili ng Hiwa</span>
+    </div>
+    <div class="stepper" aria-label="Step 2 of 4">
+      <div class="step-dot" aria-hidden="true"></div>
+      <div class="step-dot on" aria-hidden="true"></div>
+      <div class="step-dot" aria-hidden="true"></div>
+      <div class="step-dot" aria-hidden="true"></div>
+      <span class="step-label" aria-hidden="true">Step 2 of 4</span>
+    </div>
+
+    <div class="select-body">
+      <p class="select-helper" data-i18n="step2_helper">Piliin ang hiwa na pinakakatulad ng karne mo.</p>
+      <div class="select-grid">
+
+        <button class="select-card" type="button" data-cut="beef_shank"
+                aria-pressed="false" aria-label="Bulalo Cut">
+          <img src="/static/assets/icon_beef_shank.png" alt="Bulalo Cut" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🦴</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="cut_beef_shank">Bulalo Cut</div>
+            <div class="select-sub"   data-i18n="species_beef">Baka</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+        <button class="select-card" type="button" data-cut="beef_sirloin"
+                aria-pressed="false" aria-label="Tapa Cut">
+          <img src="/static/assets/icon_beef_sirloin.png" alt="Tapa Cut" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🥩</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="cut_beef_sirloin">Tapa Cut</div>
+            <div class="select-sub"   data-i18n="species_beef">Baka</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+        <button class="select-card" type="button" data-cut="pork_belly"
+                aria-pressed="false" aria-label="Liempo">
+          <img src="/static/assets/icon_pork_belly.png" alt="Liempo" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🥓</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="cut_pork_belly">Liempo</div>
+            <div class="select-sub"   data-i18n="species_pork">Baboy</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+        <button class="select-card" type="button" data-cut="pork_chop"
+                aria-pressed="false" aria-label="Pork Chop">
+          <img src="/static/assets/icon_pork_chop.png" alt="Pork Chop" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🍖</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="cut_pork_chop">Pork Chop</div>
+            <div class="select-sub"   data-i18n="species_pork">Baboy</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+        <button class="select-card" type="button" data-cut="chicken_drumstick"
+                aria-pressed="false" aria-label="Hita ng Manok">
+          <img src="/static/assets/icon_chicken_drumstick.png" alt="Hita ng Manok" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🍗</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="cut_chicken_drumstick">Hita ng Manok</div>
+            <div class="select-sub"   data-i18n="species_chicken">Manok</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+        <button class="select-card" type="button" data-cut="chicken_breast"
+                aria-pressed="false" aria-label="Dibdib ng Manok">
+          <img src="/static/assets/icon_chicken_breast.png" alt="Dibdib ng Manok" width="64" height="64" class="select-icon-img"
+               onerror="this.outerHTML='<span class=\'select-icon-emoji\' aria-hidden=\'true\'>🐔</span>'">
+          <div class="select-text">
+            <div class="select-label" data-i18n="cut_chicken_breast">Dibdib ng Manok</div>
+            <div class="select-sub"   data-i18n="species_chicken">Manok</div>
+          </div>
+          <div class="select-check" aria-hidden="true"></div>
+        </button>
+
+      </div>
+    </div>
+
+    <div class="select-footer">
+      <button class="btn btn-primary" id="btn-continue-cut" disabled
+              aria-disabled="true" data-i18n="btn_continue">Ituloy</button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       6. BEFORE YOU SCAN  (Step 3 of 4)
+       ============================================================ -->
+  <section class="screen" id="screen-before-scan" aria-label="Before you scan, step 3 of 4">
+    <div class="screen-header">
+      <button class="btn-back" onclick="showScreen('screen-select-cut')" aria-label="Back to select cut">&#8592;</button>
+      <span class="screen-title" data-i18n="step3_title">Bago Mag-scan</span>
+    </div>
+    <div class="stepper" aria-label="Step 3 of 4">
+      <div class="step-dot" aria-hidden="true"></div>
+      <div class="step-dot" aria-hidden="true"></div>
+      <div class="step-dot on" aria-hidden="true"></div>
+      <div class="step-dot" aria-hidden="true"></div>
+      <span class="step-label" aria-hidden="true">Step 3 of 4</span>
+    </div>
+
+    <div class="tips-screen-body">
+      <!-- title is in the screen-header above; no duplicate h1 here -->
+      <p class="tips-intro" data-i18n="step3_sub">Sundin ang mga ito para mas malinaw ang kuha.</p>
+
+      <ul class="tip-list" aria-label="Scanning tips">
+        <li class="tip-row">
+          <div class="tip-icon-wrap" aria-hidden="true">
+            <img src="/static/assets/icon_lighting.png" alt="" width="26" height="26" class="tip-icon-img"
+                 onerror="this.outerHTML='<span class=\'tip-icon-emoji\'>💡</span>'">
+          </div>
+          <p class="tip-text" data-i18n="tip_lighting">Siguraduhing maliwanag ang kuha. Gumamit ng flash kung kailangan.</p>
+        </li>
+        <li class="tip-row">
+          <div class="tip-icon-wrap" aria-hidden="true">
+            <img src="/static/assets/icon_focus.png" alt="" width="26" height="26" class="tip-icon-img"
+                 onerror="this.outerHTML='<span class=\'tip-icon-emoji\'>🔍</span>'">
+          </div>
+          <p class="tip-text" data-i18n="tip_focus">Igitna ang karne sa loob ng frame.</p>
+        </li>
+        <li class="tip-row">
+          <div class="tip-icon-wrap" aria-hidden="true">
+            <img src="/static/assets/icon_blur.png" alt="" width="26" height="26" class="tip-icon-img"
+                 onerror="this.outerHTML='<span class=\'tip-icon-emoji\'>📷</span>'">
+          </div>
+          <p class="tip-text" data-i18n="tip_blur">Iwasang malabo ang kuha — huwag igalaw ang telepono.</p>
+        </li>
+        <li class="tip-row">
+          <div class="tip-icon-wrap" aria-hidden="true">
+            <img src="/static/assets/icon_confirm_cut.png" alt="" width="26" height="26" class="tip-icon-img"
+                 onerror="this.outerHTML='<span class=\'tip-icon-emoji\'>✅</span>'">
+          </div>
+          <p class="tip-text" data-i18n="tip_confirm">Siguraduhing tama ang napiling hiwa bago mag-scan.</p>
+        </li>
+      </ul>
+
+      <div class="tips-divider" aria-hidden="true"></div>
+      <p class="tips-disclaimer" data-i18n="disclaimer_short">
+        Kulay lang ng karne sa kuha ang tinitingnan. Hindi ito kapalit ng opisyal na inspeksyon.
+      </p>
+    </div>
+
+    <div class="select-footer">
+      <button class="btn btn-primary" onclick="showScreen('screen-scan')" data-i18n="btn_continue_scan">
+        Ituloy sa Pag-scan
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       7. SCAN MEAT SURFACE  (Step 4 of 4)
+       ============================================================ -->
+  <section class="screen" id="screen-scan" aria-label="Scan meat surface, step 4 of 4">
+    <div class="camera-screen">
+
+      <div class="camera-topbar">
+        <button class="btn-back" onclick="showScreen('screen-before-scan')" aria-label="Back to tips">&#8592;</button>
+        <span class="camera-top-title" data-i18n="step4_title">I-scan ang Karne</span>
+      </div>
+      <div class="camera-stepper stepper" aria-label="Step 4 of 4">
+        <div class="step-dot" aria-hidden="true"></div>
+        <div class="step-dot" aria-hidden="true"></div>
+        <div class="step-dot" aria-hidden="true"></div>
+        <div class="step-dot on" aria-hidden="true"></div>
+        <span class="step-label" aria-hidden="true">Step 4 of 4</span>
+      </div>
+
+      <!-- Context strip: selected meat + cut -->
+      <div class="camera-context-strip" id="camera-context-strip" aria-live="polite">—</div>
+
+      <div class="camera-preview" role="img" aria-label="Camera preview area">
+        <!-- Live camera feed -->
+        <video id="camera-video" class="hidden" autoplay playsinline muted aria-hidden="true"></video>
+        <!-- Captured image preview -->
+        <img  id="capture-preview" class="hidden" src="" alt="Captured meat photo" aria-hidden="true">
+        <!-- Empty placeholder -->
+        <div id="cam-placeholder" class="cam-placeholder">
+          <div class="cam-placeholder-icon" aria-hidden="true">📷</div>
+          <p class="cam-placeholder-text" data-i18n="scan_empty_hint">Pindutin ang “Kuhanan ang Karne” para magsimula. Igitna ang karne sa frame.</p>
+        </div>
+        <div class="scan-frame" aria-hidden="true"></div>
+      </div>
+
+      <!-- Hidden canvas + inputs -->
+      <canvas id="camera-canvas" class="hidden" aria-hidden="true"></canvas>
+      <input type="file" id="camera-input"  accept="image/*" capture="environment" class="hidden" aria-hidden="true">
+      <input type="file" id="gallery-input" accept="image/*" class="hidden" aria-hidden="true">
+
+      <div class="camera-controls">
+        <!-- Inline error -->
+        <p id="scan-error" class="scan-error hidden" role="alert" aria-live="assertive"></p>
+
+        <!-- Default actions: Take Photo + Gallery -->
+        <div id="scan-actions-default">
+          <p class="scan-hint" data-i18n="scan_empty_hint">Pindutin ang “Kuhanan ang Karne” para magsimula. Igitna ang karne sa frame.</p>
+          <div class="btn-stack" style="margin-top:10px">
+            <button class="btn btn-cam-primary"   id="btn-take-photo"     data-i18n="btn_take_photo">Kuhanan ang Karne</button>
+            <button class="btn btn-cam-secondary" id="btn-upload-gallery" data-i18n="btn_upload_gallery">Pumili sa Gallery</button>
+          </div>
+        </div>
+
+        <!-- Captured actions: Check Meat + Retake -->
+        <div id="scan-actions-captured" class="hidden">
+          <p class="scan-hint" data-i18n="scan_captured_hint">Mukhang okay? Pindutin ang Tingnan ang Karne.</p>
+          <div class="btn-stack" style="margin-top:10px">
+            <button class="btn btn-primary"       id="btn-analyze"  data-i18n="btn_check_meat">Tingnan ang Karne</button>
+            <button class="btn btn-cam-secondary" id="btn-retake"   data-i18n="btn_retake">Ulitin ang Scan</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       8. ANALYZING IMAGE
+       ============================================================ -->
+  <section class="screen" id="screen-analyzing" aria-label="Analyzing">
+    <div class="analyzing-wrap">
+      <div class="analyzing-spinner" role="status" aria-label="Analyzing image"></div>
+      <div class="analyzing-title" data-i18n="analyzing_title">Tinitingnan…</div>
+      <p class="analyzing-sub" data-i18n="analyzing_sub">
+        Sandali lang habang tinitingnan ng EyeSariwa ang kulay sa kuha.
+      </p>
+      <p class="analyzing-note" data-i18n="analyzing_note">Maaaring tumagal ng ilang segundo.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       9. RESULT SCREEN (single, driven by JS)
+       ============================================================ -->
+  <section class="screen" id="screen-result" aria-label="Scan result">
+    <div class="screen-header">
+      <button class="btn-back" id="btn-result-back" onclick="resetAndGoHome()" aria-label="Back to home">&#8592;</button>
+      <span class="screen-title" data-i18n="result_title">Resulta ng Scan</span>
+    </div>
+
+    <div class="result-body">
+
+      <!-- Hero: icon + badge + interpretation -->
+      <div class="result-hero" id="result-hero" role="status" aria-live="polite">
+        <img id="result-icon-img" src="" alt="" width="96" height="96" class="result-icon-img">
+        <span class="status-badge" id="result-badge"></span>
+        <p class="result-explanation" id="result-explanation"></p>
+      </div>
+
+      <!-- Recommendation -->
+      <div class="result-rec" id="result-rec">
+        <div class="rec-label" data-i18n="rec_label">Rekomendasyon</div>
+        <div class="rec-text" id="result-rec-text"></div>
+      </div>
+
+      <!-- Scan summary -->
+      <p class="result-summary" id="result-summary"></p>
+
+      <!-- Collapsed technical details -->
+      <details class="result-details" id="result-details">
+        <summary data-i18n="details_label">Ipakita ang teknikal na detalye</summary>
+        <dl class="details-dl">
+          <dt>Score</dt>  <dd id="detail-score">—</dd>
+          <dt>H mean</dt> <dd id="detail-h">—</dd>
+          <dt>S mean</dt> <dd id="detail-s">—</dd>
+          <dt>V mean</dt> <dd id="detail-v">—</dd>
+          <dt>H z-score</dt> <dd id="detail-zh">—</dd>
+          <dt>S z-score</dt> <dd id="detail-zs">—</dd>
+          <dt>V z-score</dt> <dd id="detail-zv">—</dd>
+        </dl>
+      </details>
+
+      <p class="scope-note" data-i18n="scope_note">
+        Batay sa kulay lang ng karne sa kuha. Hindi ito kapalit ng opisyal na inspeksyon.
+      </p>
+
+      <div class="btn-stack">
+        <button class="btn btn-primary"   id="btn-scan-again" onclick="startNewScan()" data-i18n="btn_scan_again">Ulitin ang Scan</button>
+        <button class="btn btn-secondary" onclick="resetAndGoHome()" data-i18n="btn_back_home">Bumalik sa Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       10. PWA — OFFLINE
+       ============================================================ -->
+  <section class="screen" id="screen-pwa-offline" aria-label="Offline">
+    <div class="pwa-wrap">
+      <img src="/static/assets/asset_offline.png" alt="" width="180" height="180" class="pwa-asset"
+           onerror="this.outerHTML='<div class=\'pwa-asset-emoji\' aria-hidden=\'true\'>📡</div>'">
+      <div class="pwa-title" data-i18n="offline_title">Wala kang koneksyon.</div>
+      <p class="pwa-message" data-i18n="offline_msg">
+        Kailangan ng internet ng EyeSariwa para tingnan ang kulay ng karne sa kuha.
+      </p>
+      <div class="pwa-btn-stack">
+        <button class="btn btn-primary"   onclick="retryClassify()" data-i18n="btn_try_again">Ulitin ang Scan</button>
+        <button class="btn btn-secondary" onclick="resetAndGoHome()" data-i18n="btn_back_home_pwa">Bumalik sa Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       11. PWA — PAGE DID NOT LOAD
+       ============================================================ -->
+  <section class="screen" id="screen-pwa-error" aria-label="Page error">
+    <div class="pwa-wrap">
+      <img src="/static/assets/asset_server_unavailable.png" alt="" width="180" height="180" class="pwa-asset"
+           onerror="this.outerHTML='<div class=\'pwa-asset-emoji\' aria-hidden=\'true\'>⚠️</div>'">
+      <div class="pwa-title" data-i18n="pwa_error_title">Hindi na-load ang page.</div>
+      <p class="pwa-message" data-i18n="pwa_error_msg">May problema. I-reload ang page at subukang muli.</p>
+      <div class="pwa-btn-stack">
+        <button class="btn btn-primary"   onclick="window.location.reload()" data-i18n="btn_try_again">Ulitin ang Scan</button>
+        <button class="btn btn-secondary" onclick="resetAndGoHome()" data-i18n="btn_back_home_pwa">Bumalik sa Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       12. PWA — TAKING TOO LONG
+       ============================================================ -->
+  <section class="screen" id="screen-pwa-slow" aria-label="Connection slow">
+    <div class="pwa-wrap">
+      <img src="/static/assets/asset_server_unavailable.png" alt="" width="180" height="180" class="pwa-asset"
+           onerror="this.outerHTML='<div class=\'pwa-asset-emoji\' aria-hidden=\'true\'>⏳</div>'">
+      <div class="pwa-title" data-i18n="pwa_slow_title">Matagal na.</div>
+      <p class="pwa-message" data-i18n="pwa_slow_msg">
+        Maaaring mabagal ang koneksyon. Subukan muli o bumalik sa susunod.
+      </p>
+      <div class="pwa-btn-stack">
+        <button class="btn btn-primary"   onclick="retryClassify()" data-i18n="btn_try_again">Ulitin ang Scan</button>
+        <button class="btn btn-secondary" onclick="resetAndGoHome()" data-i18n="btn_back_home_pwa">Bumalik sa Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       13. PWA — SERVER TEMPORARILY UNAVAILABLE
+       ============================================================ -->
+  <section class="screen" id="screen-pwa-unavailable" aria-label="Server unavailable">
+    <div class="pwa-wrap">
+      <img src="/static/assets/asset_server_unavailable.png" alt="" width="180" height="180" class="pwa-asset"
+           onerror="this.outerHTML='<div class=\'pwa-asset-emoji\' aria-hidden=\'true\'>🔧</div>'">
+      <div class="pwa-title" data-i18n="pwa_unavailable_title">Abala ang server.</div>
+      <p class="pwa-message" data-i18n="pwa_unavailable_msg">
+        Hindi namin ma-reach ang analyzer ng EyeSariwa. Subukan muli mamaya.
+      </p>
+      <div class="pwa-btn-stack">
+        <button class="btn btn-primary"   onclick="retryClassify()" data-i18n="btn_try_again">Ulitin ang Scan</button>
+        <button class="btn btn-secondary" onclick="resetAndGoHome()" data-i18n="btn_back_home_pwa">Bumalik sa Home</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /.app-shell -->
+
+<script src="/static/js/main.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker
+        .register('/sw.js', { scope: '/' })
+        .catch(function (err) {
+          console.warn('Service worker registration failed:', err);
+        });
+    });
+  }
+</script>
+</body>
+</html>

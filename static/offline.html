@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fil">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#a8222c">
+  <title>EyeSariwa — Offline</title>
+  <link rel="icon" href="/static/assets/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    /* Standalone offline page: give the pwa-wrap a full viewport height
+       without relying on the SPA screen/.active flex parent. */
+    html, body { height: 100%; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .offline-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 14px;
+      padding: 40px 20px;
+      width: 100%;
+      max-width: 430px;
+    }
+  </style>
+</head>
+<body>
+<div class="offline-page">
+  <img src="/static/assets/asset_offline.png"
+       alt=""
+       width="180"
+       height="180"
+       class="pwa-asset"
+       onerror="this.outerHTML='<div style=\'font-size:4rem;opacity:.5\' aria-hidden=\'true\'>📡</div>'">
+
+  <div class="pwa-title">Wala kang koneksyon.</div>
+
+  <p class="pwa-message">
+    Kailangan ng internet ng EyeSariwa para tingnan ang kulay ng karne sa kuha.
+  </p>
+
+  <div class="pwa-btn-stack">
+    <button class="btn btn-primary" onclick="window.location.reload()">Ulitin ang Scan</button>
+  </div>
+</div>
+</body>
+</html>

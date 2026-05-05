@@ -1,0 +1,15 @@
+{
+  "generated_at_utc": "2026-05-02T11:41:04.597010+00:00",
+  "total_images": 324,
+  "successful_images": 324,
+  "failed_images": 0,
+  "dataset_category_counts": {
+    "experimental": 84,
+    "fresh": 240
+  },
+  "hsv_method_counts": {
+    "rembg": 324
+  },
+  "warnings": [],
+  "failed_records": []
+}

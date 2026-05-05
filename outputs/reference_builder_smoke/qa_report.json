@@ -1,0 +1,27 @@
+{
+  "generated_at_utc": "2026-05-02T16:15:12.501212+00:00",
+  "total_images": 1,
+  "successful_images": 1,
+  "failed_images": 0,
+  "dataset_category_counts": {
+    "experimental": 1
+  },
+  "hsv_method_counts": {
+    "rembg": 1
+  },
+  "warnings": [
+    "No verified fresh records found for beef/beef_shank.",
+    "No verified fresh records found for beef/beef_sirloin.",
+    "No verified fresh records found for chicken/chicken_breast.",
+    "No verified fresh records found for chicken/chicken_drumstick.",
+    "No verified fresh records found for pork/pork_belly.",
+    "No verified fresh records found for pork/pork_chop.",
+    "Generated reference data is missing beef/beef_shank.",
+    "Generated reference data is missing beef/beef_sirloin.",
+    "Generated reference data is missing chicken/chicken_breast.",
+    "Generated reference data is missing chicken/chicken_drumstick.",
+    "Generated reference data is missing pork/pork_belly.",
+    "Generated reference data is missing pork/pork_chop."
+  ],
+  "failed_records": []
+}
