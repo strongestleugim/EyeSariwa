@@ -64,6 +64,12 @@ var TRANSLATIONS = {
     btn_upload_gallery: 'Pumili sa Gallery',
     btn_check_meat:     'Tingnan ang Karne',
     btn_retake:         'Ulitin ang Scan',
+    btn_torch_on:       'Buksan ang Flash',
+    btn_torch_off:      'Patayin ang Flash',
+    torch_ready:        'Flash available sa live camera.',
+    torch_active:       'Flash naka-on para mas maliwanag ang kuha.',
+    torch_unavailable:  'Hindi available ang flash sa browser na ito. Gumamit ng maliwanag na lugar o manual flash.',
+    torch_error:        'Hindi mabuksan ang flash sa device na ito.',
 
     // Analyzing
     analyzing_title: 'Tinitingnan…',
@@ -174,6 +180,12 @@ var TRANSLATIONS = {
     btn_upload_gallery: 'Upload from Gallery',
     btn_check_meat:     'Check Meat',
     btn_retake:         'Retake',
+    btn_torch_on:       'Turn Flash On',
+    btn_torch_off:      'Turn Flash Off',
+    torch_ready:        'Flash is available for the live camera.',
+    torch_active:       'Flash is on for a brighter photo.',
+    torch_unavailable:  'Flash is not available in this browser. Use a bright area or manual flash.',
+    torch_error:        'Flash could not be turned on for this device.',
 
     // Analyzing
     analyzing_title: 'Analyzing image…',
@@ -273,6 +285,9 @@ var selectedImageBlob = null;
 var selectedImageName = null;
 var previewURL        = null;
 var cameraStream      = null;
+var torchTrack        = null;
+var torchSupported    = false;
+var torchOn           = false;
 var lastClassifyBlob  = null;
 var lastClassifyName  = null;
 var lastResultData    = null;
@@ -293,6 +308,7 @@ function applyLanguage() {
   document.documentElement.lang = currentLang === 'fil' ? 'fil' : 'en';
   updateLangToggleUI();
   updateContextStrip();
+  updateTorchUI();
   refreshDynamicLanguageContent();
 }
 
@@ -491,9 +507,11 @@ function clearCapture() {
 function startCamera() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     updateScanState('empty');
+    resetTorchState();
     return;
   }
 
+  resetTorchState();
   navigator.mediaDevices.getUserMedia({
     video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
     audio: false
@@ -503,10 +521,12 @@ function startCamera() {
     var video = document.getElementById('camera-video');
     if (video) video.srcObject = stream;
     updateScanState('live');
+    configureTorch(stream);
   })
   .catch(function (err) {
     console.warn('Camera unavailable:', err.name);
     updateScanState('empty');
+    resetTorchState();
     if (err.name === 'NotAllowedError') {
       showScanError(
         currentLang === 'fil'
@@ -518,12 +538,90 @@ function startCamera() {
 }
 
 function stopCamera() {
+  if (torchTrack && torchSupported && torchOn && torchTrack.readyState === 'live') {
+    try { torchTrack.applyConstraints({ advanced: [{ torch: false }] }); } catch (e) { /* ignore */ }
+  }
   if (cameraStream) {
     cameraStream.getTracks().forEach(function (t) { t.stop(); });
     cameraStream = null;
   }
+  resetTorchState();
   var video = document.getElementById('camera-video');
   if (video) { video.srcObject = null; video.classList.add('hidden'); }
+}
+
+function configureTorch(stream) {
+  torchTrack = stream && stream.getVideoTracks ? stream.getVideoTracks()[0] : null;
+  torchSupported = false;
+  torchOn = false;
+
+  if (torchTrack && typeof torchTrack.getCapabilities === 'function') {
+    try {
+      var caps = torchTrack.getCapabilities();
+      torchSupported = !!(caps && caps.torch);
+    } catch (e) {
+      torchSupported = false;
+    }
+  }
+
+  updateTorchUI();
+}
+
+function resetTorchState() {
+  torchTrack = null;
+  torchSupported = false;
+  torchOn = false;
+  updateTorchUI();
+}
+
+function updateTorchUI() {
+  var wrap = document.getElementById('torch-controls');
+  var btn = document.getElementById('btn-toggle-torch');
+  var status = document.getElementById('torch-status');
+  if (!wrap || !btn || !status) return;
+
+  if (!cameraStream) {
+    wrap.classList.add('hidden');
+    btn.classList.add('hidden');
+    status.classList.add('hidden');
+    return;
+  }
+
+  wrap.classList.remove('hidden');
+  status.classList.remove('hidden');
+  status.classList.toggle('is-warning', !torchSupported);
+
+  if (torchSupported) {
+    btn.classList.remove('hidden');
+    btn.classList.toggle('is-on', torchOn);
+    btn.textContent = torchOn ? t('btn_torch_off') : t('btn_torch_on');
+    btn.setAttribute('aria-pressed', String(torchOn));
+    status.textContent = torchOn ? t('torch_active') : t('torch_ready');
+  } else {
+    btn.classList.add('hidden');
+    btn.classList.remove('is-on');
+    btn.setAttribute('aria-pressed', 'false');
+    status.textContent = t('torch_unavailable');
+  }
+}
+
+function setTorch(enabled) {
+  if (!torchSupported || !torchTrack || typeof torchTrack.applyConstraints !== 'function') {
+    updateTorchUI();
+    return Promise.reject(new Error('Torch is not supported.'));
+  }
+
+  return torchTrack.applyConstraints({ advanced: [{ torch: enabled }] })
+    .then(function () {
+      torchOn = enabled;
+      updateTorchUI();
+    })
+    .catch(function (err) {
+      console.warn('Torch unavailable:', err);
+      torchOn = false;
+      updateTorchUI();
+      showScanError(t('torch_error'));
+    });
 }
 
 function captureFrameFromVideo(callback) {
@@ -543,6 +641,7 @@ function initScanScreen() {
   var galleryBtn   = document.getElementById('btn-upload-gallery');
   var analyzeBtn   = document.getElementById('btn-analyze');
   var retakeBtn    = document.getElementById('btn-retake');
+  var torchBtn     = document.getElementById('btn-toggle-torch');
   var cameraInput  = document.getElementById('camera-input');
   var galleryInput = document.getElementById('gallery-input');
 
@@ -556,6 +655,12 @@ function initScanScreen() {
   });
 
   galleryBtn.addEventListener('click', function () { galleryInput.click(); });
+
+  if (torchBtn) {
+    torchBtn.addEventListener('click', function () {
+      setTorch(!torchOn);
+    });
+  }
 
   cameraInput.addEventListener('change', function () {
     var file = cameraInput.files[0];

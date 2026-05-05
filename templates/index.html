@@ -420,6 +420,15 @@
 
         <!-- Default actions: Take Photo + Gallery -->
         <div id="scan-actions-default">
+          <div class="torch-controls hidden" id="torch-controls">
+            <button class="torch-toggle hidden"
+                    id="btn-toggle-torch"
+                    type="button"
+                    aria-pressed="false">Buksan ang Flash</button>
+            <p class="torch-status hidden"
+               id="torch-status"
+               aria-live="polite"></p>
+          </div>
           <p class="scan-hint" data-i18n="scan_empty_hint">Pindutin ang “Kuhanan ang Karne” para magsimula. Igitna ang karne sa frame.</p>
           <div class="btn-stack" style="margin-top:10px">
             <button class="btn btn-cam-primary"   id="btn-take-photo"     data-i18n="btn_take_photo">Kuhanan ang Karne</button>
