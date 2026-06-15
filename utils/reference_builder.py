@@ -11,9 +11,14 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from utils.background_remover import extract_hsv_with_rembg_fallback
+from utils.background_remover import extract_hsv_with_rembg_fallback, is_rembg_enabled
 from utils.input_validator import validate_and_compress
-from utils.zscore import choose_best_fresh_reference, classify_score
+from utils.zscore import (
+    EXPECTED_BASELINE_SCOPE,
+    REFERENCE_PIPELINE_VERSION,
+    choose_best_fresh_reference,
+    classify_score,
+)
 
 
 CHANNELS = ("H", "S", "V")
@@ -297,8 +302,7 @@ def fresh_baseline_records(
     successful_records: list[dict],
     species: str,
     cut: str,
-    baseline_lightings: set[str],
-) -> tuple[list[dict], str]:
+) -> list[dict]:
     fresh_records = [
         record
         for record in successful_records
@@ -307,16 +311,7 @@ def fresh_baseline_records(
         and record["dataset_category"] == "fresh"
         and record["freshness_label"] == "fresh"
     ]
-
-    preferred_records = [
-        record
-        for record in fresh_records
-        if record["lighting"] in baseline_lightings
-    ]
-    if preferred_records:
-        return preferred_records, "selected_fresh_lighting_groups"
-
-    return fresh_records, "all_fresh_fallback"
+    return fresh_records
 
 
 def fresh_lighting_baselines(
@@ -353,9 +348,10 @@ def build_reference_data(
             "baseline and kept for analysis only. Treat these values as "
             "preliminary until validated."
         ),
-        "_generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "_pipeline_version": REFERENCE_PIPELINE_VERSION,
+        "_rembg_enabled": is_rembg_enabled(),
         "_baseline_rule": {
-            "baseline_scope": "species_cut_lighting",
+            "baseline_scope": EXPECTED_BASELINE_SCOPE,
             "source_dataset_category": "fresh",
             "source_freshness_label": "fresh",
             "excluded_dataset_categories": ["experimental", "labeled"],
@@ -364,9 +360,10 @@ def build_reference_data(
                 "crop and center-crop fallback"
             ),
             "classification_rule": (
-                "Compares uploads against every fresh lighting baseline for the "
-                "selected species/cut and uses the lowest anomaly score."
+                "Compares uploads against the single aggregate fresh baseline "
+                "for the selected species/cut."
             ),
+            "lighting_baselines_usage": "analysis_only_not_used_by_classify",
             "lighting_groups": sorted(baseline_lightings),
         },
     }
@@ -375,18 +372,17 @@ def build_reference_data(
     for species, cuts in sorted(SPECIES_TO_CUTS.items()):
         reference_data[species] = {"cuts": {}}
         for cut in sorted(cuts):
-            selected_records, selection_method = fresh_baseline_records(
+            selected_records = fresh_baseline_records(
                 successful_records,
                 species,
                 cut,
-                baseline_lightings,
             )
             if not selected_records:
                 warnings.append(f"No verified fresh records found for {species}/{cut}.")
                 continue
 
             fresh_stats = summarize_records(selected_records)
-            fresh_stats["selection_method"] = selection_method
+            fresh_stats["selection_method"] = "all_verified_fresh_records"
             fresh_stats["lighting_baselines"] = fresh_lighting_baselines(
                 successful_records,
                 species,
@@ -394,12 +390,6 @@ def build_reference_data(
                 baseline_lightings,
             )
             reference_data[species]["cuts"][cut] = {"fresh": fresh_stats}
-
-            if selection_method == "all_fresh_fallback":
-                warnings.append(
-                    f"No selected fresh lighting records found for {species}/{cut}; "
-                    "used all fresh records."
-                )
 
     return reference_data, warnings
 
@@ -426,12 +416,21 @@ def add_deviation_scores(successful_records: list[dict], reference_data: dict) -
 def build_analysis_report(successful_records: list[dict]) -> dict:
     category_counts = defaultdict(int)
     classification_counts = defaultdict(int)
+    category_classification_counts = defaultdict(lambda: defaultdict(int))
+    category_scores = defaultdict(list)
     experimental_counts = defaultdict(int)
 
     for record in successful_records:
         category_counts[record["dataset_category"]] += 1
         if record["computed_classification"]:
             classification_counts[record["computed_classification"]] += 1
+            category_classification_counts[record["dataset_category"]][
+                record["computed_classification"]
+            ] += 1
+        if record["deviation_score"] is not None:
+            category_scores[record["dataset_category"]].append(
+                float(record["deviation_score"])
+            )
 
         if record["dataset_category"] == "experimental":
             key = (
@@ -448,6 +447,20 @@ def build_analysis_report(successful_records: list[dict]) -> dict:
         "record_count": len(successful_records),
         "dataset_category_counts": dict(sorted(category_counts.items())),
         "computed_classification_counts": dict(sorted(classification_counts.items())),
+        "classification_summary_by_dataset_category": {
+            category: {
+                "n": category_counts[category],
+                "computed_classification_counts": dict(
+                    sorted(category_classification_counts[category].items())
+                ),
+                "median_score": (
+                    round(statistics.median(category_scores[category]), 4)
+                    if category_scores[category]
+                    else None
+                ),
+            }
+            for category in sorted(category_counts)
+        },
         "experimental_condition_counts": [
             {
                 "species": species,
@@ -654,8 +667,8 @@ def parse_args() -> argparse.Namespace:
         "--baseline-lighting",
         default=",".join(FRESH_LIGHTING_GROUPS),
         help=(
-            "Comma-separated fresh lighting folders to include in generated "
-            "lighting-aware baselines."
+            "Comma-separated fresh lighting folders to include in analysis-only "
+            "lighting baselines."
         ),
     )
     parser.add_argument(

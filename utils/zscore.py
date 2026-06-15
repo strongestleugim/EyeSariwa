@@ -6,7 +6,13 @@ from pathlib import Path
 CHANNELS = ("H", "S", "V")
 EPSILON = 1e-6
 OPENCV_HUE_RANGE = 180.0
+REFERENCE_PIPELINE_VERSION = "eyesariwa-hsv-zscore-v2"
+EXPECTED_BASELINE_SCOPE = "species_cut_fresh_aggregate"
 MIN_HUE_STD = 5.0
+# S and V floors are provisional tunables until expert-labeled samples exist.
+MIN_S_STD = 8.0
+MIN_V_STD = 10.0
+CHANNEL_WEIGHTS = {"H": 1.0, "S": 1.0, "V": 0.5}
 FRESH_SCORE_THRESHOLD = 2.0
 SUSPICIOUS_SCORE_THRESHOLD = 4.0
 REFERENCE_DATA_PATH = Path(__file__).resolve().parents[1] / "reference_data.json"
@@ -15,11 +21,38 @@ REFERENCE_DATA_PATH = Path(__file__).resolve().parents[1] / "reference_data.json
 def load_reference_data():
     try:
         with REFERENCE_DATA_PATH.open("r", encoding="utf-8") as file:
-            return json.load(file)
+            reference_data = json.load(file)
     except FileNotFoundError as exc:
         raise ValueError("Reference data file is missing.") from exc
     except json.JSONDecodeError as exc:
         raise ValueError("Reference data file contains invalid JSON.") from exc
+
+    validate_reference_schema(reference_data)
+    return reference_data
+
+
+def validate_reference_schema(reference_data: dict) -> None:
+    if not isinstance(reference_data, dict):
+        raise ValueError("Reference data must be a JSON object.")
+
+    if reference_data.get("_pipeline_version") != REFERENCE_PIPELINE_VERSION:
+        raise ValueError(
+            "Reference data pipeline version is missing or unsupported. "
+            "Regenerate reference_data.json with utils.reference_builder."
+        )
+
+    if not isinstance(reference_data.get("_rembg_enabled"), bool):
+        raise ValueError("Reference data must include a valid _rembg_enabled stamp.")
+
+    baseline_rule = reference_data.get("_baseline_rule")
+    if not isinstance(baseline_rule, dict):
+        raise ValueError("Reference data baseline rule is missing or invalid.")
+
+    if baseline_rule.get("baseline_scope") != EXPECTED_BASELINE_SCOPE:
+        raise ValueError(
+            "Reference data baseline scope is unsupported. "
+            "Regenerate reference_data.json with utils.reference_builder."
+        )
 
 
 def signed_hue_difference(observed_hue: float, reference_hue: float) -> float:
@@ -36,9 +69,14 @@ def channel_difference(channel: str, observed_mean: float, reference_mean: float
 
 
 def effective_reference_std(channel: str, reference_std: float) -> float:
+    std = abs(reference_std)
     if channel == "H":
-        return max(abs(reference_std), MIN_HUE_STD)
-    return abs(reference_std) if reference_std != 0 else EPSILON
+        return max(std, MIN_HUE_STD)
+    if channel == "S":
+        return max(std, MIN_S_STD)
+    if channel == "V":
+        return max(std, MIN_V_STD)
+    return std if std != 0 else EPSILON
 
 
 def classify_score(score: float) -> str:
@@ -76,7 +114,10 @@ def calculate_z_scores(hsv_means: dict, fresh_reference: dict) -> dict:
 
 
 def calculate_score(z_scores: dict) -> float:
-    return math.sqrt(sum(z_score**2 for z_score in z_scores.values()))
+    # The V weight is provisional and must be validated against expert-labeled samples.
+    return math.sqrt(
+        sum(CHANNEL_WEIGHTS[channel] * z_scores[channel] ** 2 for channel in CHANNELS)
+    )
 
 
 def score_against_reference(hsv_means: dict, fresh_reference: dict) -> dict:
@@ -88,38 +129,13 @@ def score_against_reference(hsv_means: dict, fresh_reference: dict) -> dict:
     }
 
 
-def candidate_fresh_references(fresh_reference: dict) -> list[dict]:
-    lighting_baselines = fresh_reference.get("lighting_baselines")
-    if isinstance(lighting_baselines, dict) and lighting_baselines:
-        return [
-            {
-                "name": lighting,
-                "reference": reference,
-            }
-            for lighting, reference in sorted(lighting_baselines.items())
-            if isinstance(reference, dict)
-        ]
-
-    return [
-        {
-            "name": fresh_reference.get("selection_method", "fresh"),
-            "reference": fresh_reference,
-        }
-    ]
-
-
 def choose_best_fresh_reference(hsv_means: dict, fresh_reference: dict) -> dict:
-    candidates = candidate_fresh_references(fresh_reference)
-    if not candidates:
-        raise ValueError("Fresh lighting reference data is missing for selected meat cut.")
+    if not isinstance(fresh_reference, dict):
+        raise ValueError("Fresh reference data is missing for selected meat cut.")
 
-    scored_candidates = []
-    for candidate in candidates:
-        scored = score_against_reference(hsv_means, candidate["reference"])
-        scored["reference_name"] = candidate["name"]
-        scored_candidates.append(scored)
-
-    return min(scored_candidates, key=lambda candidate: candidate["score"])
+    scored = score_against_reference(hsv_means, fresh_reference)
+    scored["reference_name"] = fresh_reference.get("selection_method", "fresh")
+    return scored
 
 
 def classify_hsv(hsv_means: dict, species: str, cut: str) -> dict:

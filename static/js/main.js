@@ -50,7 +50,7 @@ var TRANSLATIONS = {
     // Step 3 — Before You Scan
     step3_title:       'Bago Mag-scan',
     step3_sub:         'Sundin ang mga ito para mas malinaw ang kuha.',
-    tip_lighting:      'Siguraduhing maliwanag ang kuha. Gumamit ng flash kung kailangan.',
+    tip_lighting:      'Gamitin ang flash o maliwanag na puting ilaw sa karne. Iwasan ang dilaw o pulang ilaw ng tindahan.',
     tip_focus:         'Igitna ang karne sa loob ng frame.',
     tip_blur:          'Iwasang malabo ang kuha — huwag igalaw ang telepono.',
     tip_confirm:       'Siguraduhing tama ang napiling hiwa bago mag-scan.',
@@ -58,7 +58,7 @@ var TRANSLATIONS = {
 
     // Step 4 — Scan
     step4_title:        'I-scan ang Karne',
-    scan_empty_hint:    'Pindutin ang “Kuhanan ang Karne” para magsimula. Igitna ang karne sa frame.',
+    scan_empty_hint:    'Pindutin ang “Kuhanan ang Karne” para magsimula. Gumamit ng flash o puting ilaw at igitna ang karne sa frame.',
     scan_captured_hint: 'Mukhang okay? Pindutin ang Tingnan ang Karne.',
     btn_take_photo:     'Kuhanan ang Karne',
     btn_upload_gallery: 'Pumili sa Gallery',
@@ -166,7 +166,7 @@ var TRANSLATIONS = {
     // Step 3
     step3_title:       'Before You Scan',
     step3_sub:         'Follow these tips for a clearer photo.',
-    tip_lighting:      'Make sure the photo is bright. Use flash if needed.',
+    tip_lighting:      'Light the meat with your phone flash or a bright white light. Avoid the warm or red stall lights.',
     tip_focus:         'Place the meat in the center of the frame.',
     tip_blur:          'Avoid blurry photos — keep your phone steady.',
     tip_confirm:       'Make sure the selected cut is correct before scanning.',
@@ -174,7 +174,7 @@ var TRANSLATIONS = {
 
     // Step 4
     step4_title:        'Scan Meat Surface',
-    scan_empty_hint:    'Tap “Take Photo” to start. Center the meat surface inside the frame.',
+    scan_empty_hint:    'Tap “Take Photo” to start. Use your flash or a bright white light and center the meat in the frame.',
     scan_captured_hint: 'Looks good? Tap Check Meat.',
     btn_take_photo:     'Take Photo',
     btn_upload_gallery: 'Upload from Gallery',

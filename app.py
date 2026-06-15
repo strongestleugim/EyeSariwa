@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
 
-from utils.background_remover import extract_hsv_with_rembg_fallback
+from utils.background_remover import extract_hsv_with_rembg_fallback, is_rembg_enabled
 from utils.input_validator import validate_and_compress
 from utils.zscore import classify_hsv
 
@@ -72,7 +72,29 @@ def classify():
     image_bytes = image.read()
     try:
         compressed_image_bytes = validate_and_compress(image_bytes)
-        hsv_means, _hsv_method = extract_hsv_with_rembg_fallback(compressed_image_bytes)
+        hsv_means, hsv_method = extract_hsv_with_rembg_fallback(compressed_image_bytes)
+        if not is_rembg_enabled():
+            app.logger.warning(
+                "HSV extraction method=%s for species=%s cut=%s; "
+                "EYESARIWA_ENABLE_REMBG=false while the active baseline assumes rembg.",
+                hsv_method,
+                species,
+                cut,
+            )
+        elif hsv_method != "rembg":
+            app.logger.warning(
+                "HSV extraction fallback used method=%s for species=%s cut=%s.",
+                hsv_method,
+                species,
+                cut,
+            )
+        else:
+            app.logger.info(
+                "HSV extraction method=%s for species=%s cut=%s.",
+                hsv_method,
+                species,
+                cut,
+            )
         result = classify_hsv(hsv_means, species, cut)
     except ValueError as error:
         return jsonify({"error": str(error)}), 400

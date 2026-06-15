@@ -67,12 +67,12 @@ The current backend pipeline is:
 7. Crop to the foreground bounding box with padding so off-center meat is analyzed around the detected object.
 8. Extract HSV mean values from the foreground meat region.
 9. Fall back to center-crop HSV extraction if background removal fails or if `rembg` is disabled.
-10. Compute calibrated Z-scores against every fresh lighting baseline for the selected cut and use the lowest anomaly score.
+10. Compute calibrated Z-scores against the single aggregate fresh baseline for the selected species/cut.
 11. Return Fresh, Suspicious, or Stale.
 
-The current reference values are cut-specific and lighting-aware fresh baselines generated from the collected dataset. They should still be treated as preliminary until validated.
+The current reference values are cut-specific aggregate fresh baselines generated from the collected dataset. Lighting-group baselines remain in `reference_data.json` for analysis only and are not used by `/classify`. The values should still be treated as preliminary until validated.
 
-The current calibration compares each uploaded image against `just_flash`, `warm_lighting`, `cool_lighting`, and `red_lighting` fresh baselines for the selected species/cut. It uses circular Hue distance for OpenCV HSV values, applies a minimum Hue standard deviation to reduce sensitivity to very small Hue variance in the baseline, and uses score thresholds of `<= 2.0` for Fresh, `> 2.0` and `<= 4.0` for Suspicious, and `> 4.0` for Stale.
+The current calibration compares each uploaded image against the selected species/cut aggregate Fresh reference distribution. It uses circular Hue distance for OpenCV HSV values, applies minimum standard-deviation floors for H, S, and V, and uses a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `<= 2.0` for Fresh, `> 2.0` and `<= 4.0` for Suspicious, and `> 4.0` for Stale.
 
 For deployment reliability, the image passed into `rembg` is downsized using `EYESARIWA_REMBG_MAX_DIMENSION` with a default of `768`. If Render still cannot return results reliably, set `EYESARIWA_ENABLE_REMBG=false` as an emergency fallback. That fallback is faster, but it should be paired with a matching center-crop generated baseline before final study use.
 
@@ -93,11 +93,11 @@ The backend utility `utils/reference_builder.py` can generate:
 - per-image HSV method labels showing `rembg` or `center_crop_fallback`
 - per-image Z-scores, deviation scores, and computed classifications against the generated fresh baseline
 - grouped HSV statistics by species, cut, dataset category, lighting, and experimental condition
-- a cut-specific and lighting-aware `reference_data.generated.json` baseline candidate
+- a cut-specific aggregate `reference_data.generated.json` baseline candidate
 - a copy-ready `reference_data.json` baseline candidate in the output folder
 - a QA report for failed images, missing groups, and low sample counts
 
-Only verified `fresh` records are used to generate each species/cut backend baseline. Fresh records are grouped by lighting so `/classify` can choose the closest fresh lighting baseline at runtime. `experimental` folders are treated as study metadata and are not treated as validated Suspicious or Stale labels.
+Only verified `fresh` records are used to generate each species/cut backend baseline. Fresh records are also grouped by lighting for analysis, but `/classify` uses the aggregate species/cut Fresh baseline only. `experimental` folders are treated as study metadata and are not treated as validated Suspicious or Stale labels.
 
 The generated reference data should be reviewed before replacing the root `reference_data.json`.
 

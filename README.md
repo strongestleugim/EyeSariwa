@@ -161,7 +161,7 @@ Expected error response:
 }
 ```
 
-The current backend validates the request, validates and compresses the image, extracts HSV values, and classifies against cut-specific fresh lighting baselines in `reference_data.json`.
+The current backend validates the request, validates and compresses the image, extracts HSV values, and classifies against the cut-specific aggregate Fresh baseline in `reference_data.json`.
 
 By default, `/classify` uses `rembg` foreground extraction because the current `reference_data.json` baseline was generated from the same pipeline. To reduce server work, the image passed into `rembg` is resized to a maximum edge of 768px by default.
 
@@ -183,7 +183,7 @@ python app.py
 
 That fallback is faster, but it should be paired with a matching center-crop generated baseline before final study use.
 
-Classification compares the uploaded HSV values against `just_flash`, `warm_lighting`, `cool_lighting`, and `red_lighting` fresh baselines for the selected species/cut, then uses the lowest anomaly score. It uses circular Hue distance for OpenCV HSV values and a minimum Hue standard deviation so small Hue changes do not dominate the result. Current score thresholds are `FRESH <= 2.0`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
+Classification compares the uploaded HSV values against the single aggregate Fresh baseline for the selected species/cut. Lighting baselines are retained in `reference_data.json` for analysis only and do not affect `/classify`. The score uses circular Hue distance, minimum standard-deviation floors for H, S, and V, and a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `FRESH <= 2.0`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
 
 ## Postman Test
 
@@ -264,7 +264,7 @@ Run the builder:
 python -m utils.reference_builder --dataset-dir dataset --output-dir outputs/reference_builder
 ```
 
-By default, the generated fresh baseline uses only verified `fresh` records and groups them by species, cut, and lighting. The generated `reference_data.json` includes separate fresh lighting baselines for `just_flash`, `warm_lighting`, `cool_lighting`, and `red_lighting`. `experimental` records are excluded from the baseline and kept for per-image analysis only.
+By default, the generated fresh baseline uses all verified `fresh` records for each species/cut. The generated `reference_data.json` also includes separate fresh lighting baselines for `just_flash`, `warm_lighting`, `cool_lighting`, and `red_lighting`, but these are analysis-only and are not used by `/classify`. `experimental` records are excluded from the baseline and kept for per-image analysis only.
 
 Outputs:
 
@@ -272,8 +272,8 @@ Outputs:
 - `per_image_hsv.json`: per-image HSV values, metadata, Z-scores, deviation scores, and computed classifications for JSON analysis
 - `hsv_method`: included per image as `rembg` or `center_crop_fallback`
 - `grouped_statistics.json`: grouped means and standard deviations by species, cut, dataset category, lighting, and experimental condition
-- `analysis_report.json`: dataset-category counts, computed-classification counts, and experimental condition counts
-- `reference_data.generated.json`: generated lighting-aware baseline candidate for the backend
+- `analysis_report.json`: dataset-category counts, computed-classification counts, median score by dataset category, and experimental condition counts
+- `reference_data.generated.json`: generated aggregate baseline candidate for the backend
 - `reference_data.json`: copy-ready generated baseline candidate in the output folder
 - `qa_report.json`: failed images, missing groups, and low-sample warnings
 

@@ -1,14 +1,34 @@
 {
-  "generated_at_utc": "2026-05-02T11:41:04.597010+00:00",
+  "generated_at_utc": "2026-06-14T12:44:44.259449+00:00",
   "record_count": 324,
   "dataset_category_counts": {
     "experimental": 84,
     "fresh": 240
   },
   "computed_classification_counts": {
-    "FRESH": 40,
-    "STALE": 238,
-    "SUSPICIOUS": 46
+    "FRESH": 272,
+    "STALE": 17,
+    "SUSPICIOUS": 35
+  },
+  "classification_summary_by_dataset_category": {
+    "experimental": {
+      "n": 84,
+      "computed_classification_counts": {
+        "FRESH": 50,
+        "STALE": 14,
+        "SUSPICIOUS": 20
+      },
+      "median_score": 1.5227
+    },
+    "fresh": {
+      "n": 240,
+      "computed_classification_counts": {
+        "FRESH": 222,
+        "STALE": 3,
+        "SUSPICIOUS": 15
+      },
+      "median_score": 1.1189
+    }
   },
   "experimental_condition_counts": [
     {

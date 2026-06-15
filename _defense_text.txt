@@ -1,0 +1,3181 @@
+
+===== PAGE 1 =====
+ 
+ 
+ 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+EYESARIWA: A WEB-BASED VISUAL MEAT QUALITY ASSESSMENT 
+SYSTEM FOR BEEF, CHICKEN, AND PORK USING HSV  
+COLORIMETRY AND STATISTICAL 
+ANOMALY DETECTION 
+ 
+ 
+ 
+ 
+ 
+A SIA Project Presented to the  
+Faculty of Information Technology Department  
+College of Information System and Technology Management 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+ 
+ 
+In Partial Fulfillment of the Requirements for the Degree 
+Bachelor of Science in Information Technology 
+__________________________________ 
+ 
+ 
+ 
+ 
+By 
+MAURICE ANDREI F. CARPIO 
+RAYA JHAILE A. LUNAR 
+ALEXANDRA JASMINE S. VITUG 
+ 
+ 
+Prof. Marilou B. Mangrobang, MPA, MIT 
+SIA 1 Adviser 
+ 
+ 
+May 2026
+
+===== PAGE 2 =====
+ 
+ 
+i 
+ 
+Pamantasan ng Lungsod ng Maynila 
+TABLE OF CONTENTS  
+TABLE OF CONTENTS ......................................................................................... i 
+LIST OF FIGURES ............................................................................................... iii 
+INTRODUCTION ...................................................................................................1 
+1.1 Background of the Study ......................................................................1 
+1.2 Statement of the Problem ......................................................................3 
+1.3 Objective of the Study ..........................................................................3 
+1.3.1 General Objective .....................................................................4 
+1.3.2 Specific Objectives ...................................................................4 
+1.4 Significance of the Study ......................................................................5 
+1.5 Scope and Limitations ..........................................................................5 
+ 1.5.1    Scope .........................................................................................5 
+ 1.5.2    Limitations ................................................................................6 
+1.6 Definitions of Terms .............................................................................7 
+REVIEW OF RELATED LITERATURE .............................................................10 
+2.1 Related Literatures ..............................................................................10 
+ 2.1.1    Foreign Literatures ..................................................................10 
+ 2.1.2    Local Literatures .....................................................................19 
+2.2 Related Studies ...................................................................................28 
+ 2.2.1    Foreign Studies .......................................................................28 
+ 2.2.2    Local Studies ..........................................................................35 
+2.3 Conceptual Framework .......................................................................41 
+ 3.3.1    Input Phase ..............................................................................42 
+ 3.3.2    Process Phase ..........................................................................43 
+ 3.3.3    Output Phase ...........................................................................44 
+METHODOLOGY ..............................................................................................466 
+3.1 Research Design ...............................................................................466 
+3.2 System Architecture ..........................................................................477 
+3.3 System Requirements .........................................................................50 
+ 3.3.1    Hardware Requirements .........................................................50 
+ 3.3.2    Software Requirements ...........................................................51 
+ 3.3.3    Network and Deployment Requirements ................................52 
+3.4 Methods and Tools .............................................................................53 
+ 3.4.1    Specific Objective 1 – Establishing Species-Specific HSV  
+             Reference Ranges ...................................................................53 
+ 3.4.2    Specific Objective 2 – System Development .........................60 
+ 3.4.3    Specific Objective 3 – System Evaluation ..............................66 
+3.5 Use Case Diagram ..............................................................................69 
+3.6 Wireframe ...........................................................................................71 
+LIST OF REFERENCES .......................................................................................75 
+
+===== PAGE 3 =====
+ 
+ 
+ii 
+ 
+Pamantasan ng Lungsod ng Maynila 
+APPENDIX A: SURVEY QUESTIONNAIRES ..................................................90 
+APPENDIX B: LETTER TO THE MEAT QUALITY EXPERT .......................112 
+APPENDIX C: BIONOTES ................................................................................113 
+ 
+  
+
+===== PAGE 4 =====
+ 
+ 
+iii 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+LIST OF FIGURES 
+ 
+Figure No. Figure Title Page 
+Figure 1 IPO Diagram for EyeSariwa…………………………....................... 41 
+Figure 2 Layered Software Architecture for EyeSariwa…………………….... 48 
+Figure 3 SO1 Process Flowchart for the Reference Range Construction 
+Workflow…………………………………………………………… 
+ 
+54 
+Figure 4 Level 0 Context Data Flow Diagram for the SO1 Reference Range 
+Construction Process……………………………………………….. 
+ 
+58 
+Figure 5 Level 1 Data Flow Diagram Showing the Internal Sub-Processes and 
+Data Stores of the SO1 Reference Range Construction Process…….. 
+ 
+59 
+Figure 6 SO2 Process Flowchart for the System Development 
+Workflow…………………………………………………………… 
+ 
+61 
+Figure 7 Level 0 Context Data Flow Diagram for the SO2 System 
+Development Process……………………………………………….. 
+ 
+63 
+Figure 8 Level 1 Data Flow Diagram for the SO2 System Showing Internal 
+Sub-Processes and Data Stores……………………………………... 
+ 
+65 
+Figure 9.1 Accuracy Evaluation Flowchart for SO3-A………………………… 67 
+Figure 9.2 Usability Evaluation Flowchart for SO3-B………………………… 68 
+Figure 10 Use Case Diagram of the EyeSariwa Meat Freshness Assessment 
+System……………………………………………………………… 
+ 
+69 
+   
+ 
+ 
+ 
+ 
+
+===== PAGE 5 =====
+ 
+ 
+1 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+Chapter One 
+INTRODUCTION 
+ 
+1.1  Background of the Study 
+Food safety remains a critical global public health concern. Globally, the World 
+Health Organization (WHO) estimates that unsafe food causes 600 million illnesses and 
+420,000 deaths annually, disproportionately affecting low -income regions and children 
+(Pires et al., 2021; Keddy et al., 2025). In the Philippines, this risk is concentrated in wet 
+markets (palengkes), which remain the primary source of affordable protein. While vital 
+for food security, these open markets frequently lack proper temperature con trol. Studies 
+confirm high rates of meat spoilage and bacterial contamination in local open markets 
+driven directly by poor personal hygiene, contaminated processing tools, and prolonged 
+environmental exposure (Kenaw Z., Ejeso A., Deresse D., & Olkeba BK., 2024). 
+A specific contributor to this risk is the direct contact with raw meat during 
+consumer inspection, which poses a significant health risk due to the potential for cross -
+contamination. Pathogenic microorganisms can be transmitted through direct physical 
+contact and contaminated environments, facilitating the spread of zoonotic and foodborne 
+diseases (Tumelty et al., 2023). Compounding this is the absence of accessible, cost -
+friendly, and objective tools for freshness evaluation at the point of purchase. The 
+monitoring of meat freshness traditionally relies on sensory evaluation: the observation of 
+color, elasticity, odor, and viscosity, which is subjective, non -quantitative, and unreliable 
+(Fan et al., 2024). Consumers in wet market settings therefore have no  safe, standardized 
+means of assessing freshness beyond informal touching, smelling, and visual inspection. 
+The main alternatives used to assess meat freshness each carry disqualifying drawbacks. 
+Laboratory-based microbiological methods, while precise, req uire 24 to 48 hours to yield 
+
+===== PAGE 6 =====
+ 
+ 
+2 
+ 
+Pamantasan ng Lungsod ng Maynila 
+results and involve complicated, destructive processes (Fan et al., 2024), rendering them 
+wholly inaccessible at the point of sale. Existing portable detection technologies similarly 
+remain costly and technically demanding (Iqbal, M., Yousaf, J., Khan, A., & Muhammad, 
+2025), and sensory evaluation—though convenient—remains fundamentally unreliable, as 
+human judgment is influenced by numerous variables that countering subjectivity is crucial 
+to address (Rodrigues, S. S. Q., Dias, L. G., & Teixeira, A., 2024).  
+Despite these limitations, color remains the most scientifically grounded freshness 
+indicator available to consumers. Meat color is determined by the relative amounts of 
+deoxymyoglobin, oxymyoglobin, and metmyoglobin, pigments detectable through their 
+reflectance characteristics. The dynamic equilibrium among these pigments under varying 
+oxygen and temperature conditions makes accurate freshness assessment impossible 
+through unaided visual inspection alone, underscoring the need for objective, instrument -
+based color measurement (Ruedt, C., Gibis, M., & Weiss, J., 2023). Research confirms that 
+the HSV color space is more robust than RGB for organic surface color analysis under 
+variable lighting, as it isolates chromatic information from illumination artifacts (Sánchez, 
+C., Orvañanos -Guerrero, M., Domínguez -Soberanes, J., & Alvarez -Cisneros, Y., 2023; 
+Basak, J., Madhavi, B., Paudel, B., Kim, N., & Kim, H., 2022), and prior computer vision 
+studies on meat freshness classification report benchmark accuracies of 8 5 to 99% under 
+controlled imaging conditions (Arsalane, A., Klilou, A., & Barbri, N., 2024; Song, S., Guo, 
+Q., Duan, X., Shi, X., & Liu, Z., 2024). A documented limitation of these systems is their 
+reduced performance in real -world market environments due to inconsistent lighting 
+conditions (Altim, M., Basalamah, A., & Kasman, K., 2025), a challenge that flash -based 
+illumination standardization at the moment of capture is specifically designed to address. 
+This study proposes a mobile-based, contact-free meat freshness assessment system 
+integrating flash -controlled image capture with HSV color analysis and Z -score 
+classification. By mitigating the need to physically handle raw meat, the system reduces 
+cross-contamination risk at the point of purchase. By replacing subjective sensory 
+
+===== PAGE 7 =====
+ 
+ 
+3 
+ 
+Pamantasan ng Lungsod ng Maynila 
+judgment with objective, instrument -based color classification, it provides accessible 
+decision support that is grounded in established meat biochemistry. Designed for use on a 
+consumer-grade smartphone, the system, EyeSariwa, is directly applicable to the  wet 
+market settings where food safety risks and the lack of practical assessment tools converge. 
+1.2  Statement of the Problem 
+Meat safety at the point of retail purchase in Philippine wet markets remains 
+inadequately monitored despite existing national regulatory frameworks. The Meat 
+Inspection Certificate issued under Republic Act No. 10536 certifies meat only at the 
+moment of slaughter and does not extend to the conditions under which it is subsequently 
+displayed and sold. Once meat enters the retail phase, no continuous mechanism exists to 
+monitor the progressive surface color and quality changes driven by oxidative deterioration 
+and prolonged exposure to the uncontrolled ambient temperatures. No validated, 
+consumer-accessible tool currently exists to provide an objective, contactless, and near 
+real-time surface freshness signal for unpackaged pork, beef, and chicken at the poin t of 
+purchase. Specifically, this study aims to answer the following questions: 
+1. How can species-specific thresholds for assessing the surface freshness of beef, 
+chicken, and pork be established and validated? 
+2. How can a progressive web-based system be developed to provide contactless 
+statistical anomaly detection and classification based on the surface freshness 
+of beef, chicken, and pork for consumers at the point of purchase? 
+3. How effective is the system in classifying the surface freshness of beef, chicken, 
+and pork using established color thresholds? 
+1.3  Objective of the Study 
+This study aims to address the absence of an accessible and objective freshness 
+verification tool for consumers purchasing unpackaged meat in Philippine wet markets. 
+The study seeks to deliver a standardized contactless alternative to subjective sensory 
+evaluation that is grounded in species -specific colorimetric reference data, requires no 
+
+===== PAGE 8 =====
+ 
+ 
+4 
+ 
+Pamantasan ng Lungsod ng Maynila 
+specialized hardware, and is accessible at the point of purchase within the resource -
+constrained conditions of informal retail settings. 
+1.3.1  General Objective 
+The general objective of this study is to develop and evaluate EyeSariwa, a web -
+based visual meat quality assessment system that classifies the surface freshness of beef, 
+chicken, and pork as Fresh, Suspicious, or Stale through HSV colorimetry and Z -score 
+statistical anomaly detection, providing Filipino wet market consumers with an objective 
+and contactless freshness signal at the point of purchase. 
+1.3.2  Specific Objectives 
+To accomplish the general objective of this study, the proponents of this study aim 
+to accomplish the following specific objectives: 
+1. To establish species -specific HSV colorimetric thresholds for the surface 
+freshness states (Fresh, Suspicious, and Stale) of beef, chicken, and pork 
+through structured sampling validated against the assessment of a qualified 
+meat quality professional. 
+2. To develop a web-based system that captures standardized smartphone images 
+of meat surfaces under forced LED flash illumination and applies Z -score 
+anomaly detection to extracted HSV values to produce a three -state freshness 
+classification (Fresh, Suspicio us, and Stale) output without requiring device 
+installation. 
+3. To evaluate the classification accuracy of the system's HSV -based Z -score 
+anomaly detection against expert meat quality assessment across beef, chicken, 
+and pork samples, and to assess its usability among wet market consumers in 
+terms of ease of use and interpretability of output at the point of purchase. 
+  
+
+===== PAGE 9 =====
+ 
+ 
+5 
+ 
+Pamantasan ng Lungsod ng Maynila 
+1.4  Significance of the Study 
+The findings of this study will provide benefit to the following sectors and 
+individuals: 
+For Consumers. This study will benefit consumers by providing a more objective 
+and accessible way to assess the freshness and quality of meat, enabling them to make 
+informed purchasing decisions and reduce the risk of spoiled meat consumption.  
+For Meat Vendors and Retailers . This study will benefit meat vendors and 
+retailers by providing a more accurate and objective tool for monitoring meat quality, 
+supported by validated professional-grade threshold values. This can help ensure product 
+freshness, enhance customer trust, and reduce losses associated with spoilage.  
+For the Meat Industry. This study will benefit the meat industry by proposing an 
+innovative solution for assessing meat quality that is accessible, contactless, and image 
+based. EyeSariwa will also improve the consistency of meat freshness evaluation, and will 
+encourage the ad option of practical, consumer -friendly technological solutions for 
+ensuring product quality and safety. 
+For Future Researchers. This study will serve as a reference for future researchers 
+by contributing to the growing body of knowledge on image -based and non -invasive 
+methods for meat quality assessment. It may also provide a foundation for further studies 
+exploring computer vision, colorimetry, and automated food safety evaluation systems. 
+1.5  Scope and Limitations 
+1.5.1  Scope 
+The study focuses on the development and validation of EyeSariwa, a web -based 
+system designed for the visual freshness assessment of raw beef, chicken, and pork. The 
+technical framework centers on a Progressive Web Application (PWA) that utilizes the 
+smartphone’s rear-facing camera and integrated LED flash. This setup follows an Active 
+
+===== PAGE 10 =====
+ 
+ 
+6 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Illumination protocol to standardize lighting and mitigate environmental interference from 
+ambient market settings. On the backend, a Python -based Flask server processes these 
+images using HSV colorimetry and Directional Z-score statistical anomaly detection. The 
+system’s primary function is to classify meat surface color into three distinct categories of 
+Fresh, Suspicious, or Stale. 
+The research follows a Developmental Research Design. Data collection involves 
+surveys with meat consumers, food security students, and food security graduates to 
+evaluate system usability and perceived effectiveness. Statistical treatments for these 
+surveys include the Percentage Weighted Mean and the Z-Test Score. Furthermore, official 
+validation is conducted through interviews and sample labeling with a meat quality 
+professional. The expert provides the ground truth for the calibration images used to verify 
+the system's accuracy for beef, chicken, and pork. 
+For the establishment of the datasets for freshness thresholds, with resources and 
+time constraints in mind, the proponents sampled 60 total raw meat parts. The 2 most sold 
+and bought species -specific cuts were chosen by the proponents. More specifically, the 
+meat used for sampling were 10 beef shanks, 10 beef sirloins, 10 chicken drumsticks, 10 
+chicken breasts, 10 pork belly, and 10 pork chops. Each sample was captured with an active 
+flash in 4 different lighting conditions—outdoors, cool tone LED, warm tone LED, and red 
+tone LED. Additionally, 2 samples from each meat cut were subjected to 3 different 
+environmental conditions in varying time ranges. Samples were dipped in blood, left 
+exposed to air, and left exposed to sunlight. To ensure the quality and f reshness of the 
+samples, the meats were slaughtered on the same day the meats were photographed for data 
+collection.  
+1.5.2  Limitations 
+The assessment evaluates surface -level visual discoloration of meats exclusively, 
+excluding innards or visceral organs, and does not detect microbiological contamination, 
+
+===== PAGE 11 =====
+ 
+ 
+7 
+ 
+Pamantasan ng Lungsod ng Maynila 
+internal tissue pathology, or chemical adulterants. Meat that has undergone early microbial 
+spoilage without visible surface color change may not be flagged by the system. The 
+application requires an active network connection to reach the processing server  during 
+assessments. Extreme ambient sunlight or aggressive default camera color correction 
+applied by certain smartphone models may affect the consistency of color extraction. The 
+baseline statistical model is calibrated using verified fresh beef, chicken, and pork samples 
+bought from a supplier in Santolan, Pasig and may require recalibration if extended to 
+different meat cuts. Additionally, browser -based flash control is not supported on all 
+devices, which may require users on those devices to manually ensure flash activation prior 
+to capture.  
+1.6  Definition of Terms 
+The following terms are defined conceptually and technically as they relate to the 
+context of this study: 
+Active Illumination . A computer vision protocol involving the mandatory 
+activation of a smartphone’s built -in LED flash during image capture to impose a 
+standardized, daylight -approximating illuminant on the meat surface. This technique is 
+designed to override deceptive ambi ent market lighting and ensure consistent color 
+extraction. 
+Directional Z -Score. A statistical anomaly detection method where a sample's 
+deviation from a verified fresh baseline is measured along specific axes of the HSV color 
+space. This approach distinguishes between natural oxidative spoilage, characterized by 
+shifts toward brown or yellow hues, and suspected adulteration, indicated by hyper -
+saturated red levels. 
+EyeSariwa. The specific title of the proposed web -based visual meat quality 
+assessment system is designed to classify beef, chicken, and pork into three distinct 
+
+===== PAGE 12 =====
+ 
+ 
+8 
+ 
+Pamantasan ng Lungsod ng Maynila 
+freshness categories (Fresh, Suspicious, or Stale) using smartphone-based colorimetry and 
+statistical analysis. 
+Freshness Threshold. A calibrated numerical limit derived from expert-validated 
+baseline data of fresh meat samples. This value serves as the statistical benchmark for the 
+Z-score logic, determining a sample’s classification based on its level of deviation from 
+established chromatic norms. 
+HSV Color Space . A cylindrical -coordinate representation of points in an RGB 
+color model, consisting of Hue (chromatic identity), Saturation (color purity), and Value 
+(brightness). This model is utilized to isolate the intrinsic "redness" signal of meat tissue 
+from external illumination artifacts and luminance variations. 
+Image Segmentation. The algorithmic process of partitioning a digital image to 
+isolate the meat surface, or Region of Interest (ROI), from background elements such as 
+chopping boards, retail surfaces, or packaging. This ensures that feature extraction and 
+colorimetric analysis are performed exclusively on the meat tissue. 
+Meat Inspection Certificate (MIC) . A regulatory document issued by the 
+National Meat Inspection Service (NMIS) certifying that meat was safe and wholesome at 
+the time of slaughter. This study identifies the limitations of this certificate as a point -in-
+time assessment that does not account for post-slaughter degradation. 
+Myoglobin. The iron-rich heme protein responsible for the pigmentation of muscle 
+tissue. The system tracks the biochemical transition of myoglobin through three natural 
+states—Oxymyoglobin (bright red), Deoxymyoglobin (purplish -red), and Metmyoglobin 
+(brown)—to serve as primary visual indicators for freshness assessment. 
+Point-of-Purchase (PoP) . The specific time and location of where a retail 
+transaction is completed. This study focuses on the PoP as the critical moment for 
+intervention, allowing consumers to make informed safety decisions before the final 
+transfer of goods. 
+
+===== PAGE 13 =====
+ 
+ 
+9 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Progressive Web Application (PWA) . A software delivery model built with 
+standard web technologies (HTML, CSS, JavaScript) that provides app-like functionality, 
+such as camera access and offline capabilities, through a mobile browser without requiring 
+a native installation. 
+Republic Act No. 9296 (Meat Inspection Code). The primary national legislation 
+in the Philippines that mandates the quality and safety standards for the production and 
+distribution of meat products. It serves as the regulatory anchor for the system’s assessment 
+criteria and identifies the specific food safety gaps in the retail environment. 
+Retail Window. The critical period between the initial slaughter of the animal and 
+the final purchase by the consumer. This study identifies this window as a high-risk gap in 
+the food supply chain where meat is exposed to ambient temperatures and formal 
+regulatory monitoring is often periodic or absent. 
+Sensory Analysis. The traditional method of evaluating meat freshness is based on 
+human observation of physical attributes such as color, elasticity, odor, and viscosity. In 
+this study, it is identified as a subjective, non -quantitative, and fundamentally unreliable 
+approach that the EyeSariwa system seeks to replace with objective, instrument -based 
+color measurement. 
+ 
+ 
+ 
+ 
+  
+
+===== PAGE 14 =====
+ 
+ 
+10 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+Chapter Two 
+REVIEW OF RELATED LITERATURE 
+ 
+2.1  Related Literature 
+2.1.1  Foreign Literature 
+Meat Freshness, Microbial Growth, and Food Safety 
+Meat, including beef, chicken, and pork, is a highly perishable commodity whose 
+quality and safety decline rapidly due to microbial activity and biochemical changes. Its 
+high moisture content, abundant nutrients, and near -neutral pH provide an optimal 
+environment for microbial growth and lipid oxidation, both of which significantly reduce 
+shelf life and compromise meat quality (Uhlig , E., Bucher, M., Strenger, M., Kloß, S., & 
+Schmid, M., 2024). Microbial activity is a key driver of meat spoilage, wherein sp oilage 
+and pathogenic microorganisms such as Pseudomonas, Listeria monocytogenes , and 
+Salmonella spp. multiply during storage and handling, resulting in quality deterioration 
+characterized by off -odors, discoloration, and surface slime (Liu et al., 2023; Zhu et al., 
+2022). Evidence shows that these microorganisms can grow under both refrigerated and 
+temperature-abused conditions, with similar final microbial loads observed across different 
+meat types despite variations in initial contamination levels, indic ating strong microbial 
+adaptability across food matrices (Liu et al., 2023). Meat spoilage is therefore understood 
+as a microbial ecological process driven by interacting microbial communities and 
+environmental conditions, with bacterial activity playing a  more dominant role than 
+endogenous enzymatic degradation (Zhu et al., 2022). 
+Advances in molecular techniques, such as 16S rRNA sequencing, further 
+demonstrate that microbial community composition changes in predictable succession 
+patterns as meat transitions from fresh to spoiled. This reinforces the concept that spoilage 
+
+===== PAGE 15 =====
+ 
+ 
+11 
+ 
+Pamantasan ng Lungsod ng Maynila 
+is not random but follows structured microbial dynamics, meaning meat quality can be 
+proactively detected based on observations (Dorn -In, S., Mang , S., Cosentino , R., & 
+Schwaiger, K., 2024; González-Fandos, E., Laorden, A., Usón, S., & Andrés, M., 2025). 
+This is why ensuring meat freshness is essential, as it directly affects consumer health and 
+safety, as well as key sensory attributes such as texture, flavor, and nutritional value (Wang, 
+H., Chen , Q., & Kong , B., 2023). Contaminated meat, possibly harbori ng harmful 
+biological and chemical agents which contributes to more than 200 diseases worldwide, 
+ranging from diarrhea to cancer (WHO, 2024).  
+A critical yet frequently underappreciated dimension of microbial risk in meat 
+handling is the role of food handlers as vectors of cross-contamination. Handling raw meat 
+with bare hands facilitates the transfer of pathogens to other surfaces, equipment, 
+packaging materials, and even the handler’s own face —particularly the eyes, nose, and 
+mouth. Studies have identified bacterial contamination on both the hands and nasal 
+passages of food handlers during routine tasks, highlighting the persistent risk of pathogen 
+transmission (Sharma , A., Gangopadhyay , S., Agarwal , J., & Kumar , A., 2021). 
+Furthermore, individuals carrying toxin -producing bacteria may act as reservoirs for 
+contamination, posing a direct risk of staphylococcal foodborne illness (Bencardino , D., 
+Amagliani, G., & Brandi, G., 2021). In retail meat environments, improper practices such 
+as bare-hand contact with raw meat remain a recurring hygiene issue with documented 
+cross-contamination consequences (Oliveria, I., Almeida, M., Gomes, J., & Henriques, A., 
+2024). 
+These combined risks highlight the broader challenge of maintaining food safety 
+while minimizing direct contact with raw meat. Consequently, there is a growing need for 
+reliable, objective, and contactless methods for assessing meat freshness and quality. A 
+Hue-Saturation-Value (HSV) colorimetry-based approach addresses this need by enabling 
+rapid, non-destructive freshness evaluation through image capture. This reduces the need 
+for physical handling, minimizes the risk of pathogen transmission, and contrib utes to 
+
+===== PAGE 16 =====
+ 
+ 
+12 
+ 
+Pamantasan ng Lungsod ng Maynila 
+improved food safety practices while preserving sensory quality and reducing economic 
+losses associated with spoilage and food waste. 
+Physicochemical and Color Changes in Meat During Deterioration 
+ When meat deteriorates, it undergoes a series of physicochemical changes that 
+affect its composition, texture, water-holding capacity, and color. Central to these changes 
+is myoglobin, which exists in three redox states: deoxymyoglobin (purplish -red), 
+oxymyoglobin (bright cherry -red associated with freshness), and metmyoglobin (brown 
+discoloration associated with spoilage) (Soladoye et al., 2015; Mancini & Hunt, 2005, as 
+cited in Pujol , A., Ospina-E, J., Alvarez, H., & Muñoz , D., 2023). Lipid oxidation and  
+myoglobin oxidation are closely interconnected processes, as secondary lipid oxidation 
+products accelerate the formation of metmyoglobin, resulting in a mutually reinforcing 
+process that drives visible discoloration in stored meat (Wang et al., 2021). Imp ortantly, 
+the extent and pattern of these oxidative changes vary across meat species due to 
+differences in myoglobin content and lipid composition (Han et al., 2024; Geng L., Liu K., 
+& Zhang H., 2023). 
+These biochemical differences result in distinct color degradation pathways among 
+meat types. In beef, oxymyoglobin gives the characteristic bright red appearance, which 
+gradually shifts to brown as metmyoglobin accumulates during oxidation (Krell et al., 
+2024). Pork, with lower myoglobin content, typically transitions from pink to grey-brown 
+as both pigment and lipid oxidation progress (Gagaoua , M., Suman, S., Purslow , P., & 
+Lebret, B., 2023). In contrast, chicken contains minimal myoglobin, making lipid oxidation 
+the dominant factor in visual deterioration, often resulting in yellowing and surface 
+dullness rather than a red-to-brown transition (Hearn et al., 2021). 
+In addition to species differences, color variation is also influenced by anatomical 
+cut, as different muscle types vary in fiber composition, metabolic activity, and myoglobin 
+concentration (Barkley , K., Boler , D., & Harsh , B., 2023; Zhang et al., 2026). These 
+
+===== PAGE 17 =====
+ 
+ 
+13 
+ 
+Pamantasan ng Lungsod ng Maynila 
+species-specific color profiles highlight the need for meat-type-sensitive approaches, as the 
+visual indicators of deterioration are biochemically and chromatically distinct across beef, 
+pork, and chicken —a distinction that Eye-Sariwa must account for in order to deliver 
+accurate and reliable freshness evaluations across all three meat types.  
+Limitations of Sensory-Based Meat Freshness Evaluation 
+ Human sensory evaluation has long served as the primary method by which 
+consumers assess the freshness of meat at the point of purchase, yet a growing body of 
+literature reveals that this approach is structurally unreliable. Ruiz -Capillas, C., Herrero, 
+A., Pintado, T., and Delgado -Pando, G. (2021) documented that sensory analysis is 
+inherently subjective, shaped by cultural background, education, habits, and individual 
+differences in sensory capacity, all of which produce inconsistent judgments across 
+evaluators. This variability is not limited to untrained consumers, as significant 
+inconsistency has been observed even among trained panels when selection criteria, 
+training protocols, and testing conditions are not tightly controlled (Anagnostou, G., 
+Ferragina, A., Crofton, E., Celayeta, J., & Hamill, R., 2025). Beyond individual 
+differences, purchase decisions are frequently influenced by non -sensory extrinsic factors 
+such as price, product origin, and packaging logos that can override actual freshness cues 
+entirely (Cardona, M., Izquierdo, D., Barat, J., & Fernández-Segovia, I., 2023). Freshness 
+discrimination from appearance has also been shown to improve with buying experience, 
+meaning inexperienced shoppers are systematically less accurate in their assessments (Liu 
+et al., 2024). While in low - and middle-income informal market settings, consumers and 
+vendors tend to rely on environmental heuristics such as buyer volume, the presence of 
+flies, and surface warmth as proxies for freshness rather than on any m icrobiological 
+understanding of spoilage (Kuboka et al., 2024). 
+The safety consequences of sensory evaluation's unreliability are well-documented 
+and directly relevant to the Philippine wet market context. Viana et al. (2022) found that 
+fish consumers continued to rate products as acceptable for purchase at approximately 4.1 
+
+===== PAGE 18 =====
+ 
+ 
+14 
+ 
+Pamantasan ng Lungsod ng Maynila 
+days of storage, a point at which samples were already microbiologically unsuitable for 
+consumption, demonstrating that visual and olfactory cues frequently lag behind the actual 
+spoilage threshold. Divergent neurological responses to the same odor stimuli  between 
+individuals, mediated by emotional states, cultural familiarity, and prior experience, further 
+reduce the consistency of sensory-based spoilage detection (Ciobanu et al., 2023). On the 
+practical side, conventional sensory panels have been establis hed as too time -consuming 
+and costly for routine point -of-sale monitoring, with human ratings consistently showing 
+considerable variation against instrumental measures of physicochemical status 
+(Anagnostou et al., 2025). A comprehensive review of non -destructive evaluation 
+techniques similarly concluded that objective methods outperform human inspection in 
+precision, standardizability, and sensitivity to spoilage markers invisible to unaided 
+observation (Wu, X., Liang, X., Wang, Y., Wu, B., & Sun, J., 2022) . For an application 
+context like Philippine wet markets, where neither laboratory instrumentation nor trained 
+evaluation panels are feasible at the point of sale, a smartphone -based system that applies 
+statistical analysis to captured surface color data represents a practical bridge between the 
+inadequacy of pure sensory evaluation and the impracticality of laboratory-grade methods. 
+Environmental and Human-Made Factors Affecting Meat Appearance   
+The physical environment in which meat is displayed exerts a strong and 
+measurable influence on its surface color, which is the primary cue consumers use to assess 
+freshness. Meat color is governed by myoglobin chemistry, specifically the conversion of 
+red oxymyoglobin to brown metmyoglobin through oxidation driven by exposure to 
+oxygen, light, and elevated temperature (Tushar, Z., Rahman, M., & Hashem, M., 2023). 
+Higher ambient temperatures intensify this oxidative process, decreasing redness and 
+increasing lightness and yellowness in a pattern corresponding to visible discoloration, 
+with chicken being especially susceptible due to its lower myoglobin content and higher 
+proportion of unsaturated fat (Lesiów, T., & Xiong, Y., 2024). A meta-analysis on poultry 
+confirmed that rising ambient temperatures consistently produce lighter, less red, and more 
+
+===== PAGE 19 =====
+ 
+ 
+15 
+ 
+Pamantasan ng Lungsod ng Maynila 
+yellow meat, following the same oxidative pathway across production conditions 
+(Leishman et al., 2021). Open -air aerobic conditions compound these effects, as 
+unrestricted oxygen exposure has been shown to accelerate pigment re-oxidation and drive 
+rapid, m easurable loss of redness even at refrigerated temperatures (Zdunczyk, W., 
+Modzelewska-Kapituła, M., & Tkacz, K., 2024), and aerobically displayed ground pork 
+has been found to exhibit significant color deterioration across storage time compared with 
+oxygen-restricted samples (Ham, Y., Song, D., & Kim, H., 2022). Elevated temperature 
+combined with open-air exposure also strongly accelerates the growth of spoilage bacteria 
+including Pseudomonas and Acinetobacter, driving discoloration through microbial 
+metabolite accumulation alongside the oxidative pathway (Zhu et al., 2022). These 
+processes operate without interruption in an unrefrigerated Philippine wet market stall, 
+creating the surface color change profile that serves as the physiological basis for 
+EyeSariwa’s HSV anomaly detection approach. 
+Beyond environmental conditions, certain human -mediated factors can also 
+influence the visual appearance of meat, particularly its redness, which is closely associated 
+with perceived freshness. Meat color is largely determined by heme pigments such as 
+myoglobin, and studies have shown that blood-derived compounds can significantly affect 
+these color properties. For instance, hemin, an iron -containing compound derived from 
+pork blood, has been demonstrated to enhance and stabilize the red color of meat durin g 
+storage, thereby improving its visual acceptability even as underlying quality changes 
+occur (Zhou et al., 2021). This influence of heme -related compounds on meat coloration 
+highlights the importance of objective color measurement in freshness assessment . Since 
+visual perception can be affected by external factors, color spaces such as HSV (Hue, 
+Saturation, Value) provide a more standardized and quantifiable approach to analyzing 
+surface color characteristics. HSV is particularly advantageous because it s eparates 
+chromatic information (hue and saturation) from brightness (value), allowing for more 
+consistent detection of color variations under different lighting conditions. Previous studies 
+have shown that colorimetric analysis can serve as a rapid and non -invasive indicator of 
+
+===== PAGE 20 =====
+ 
+ 
+16 
+ 
+Pamantasan ng Lungsod ng Maynila 
+meat quality, enabling the detection of subtle changes in redness and discoloration that may 
+not be reliably identified through unaided visual inspection. By utilizing HSV -based 
+analysis, variations in meat color can be quantitatively evaluated, reducing subjectivity and 
+improving the consistency of freshness assessment.  
+Artificial retail lighting introduces an additional confound that further reinforces 
+the case for standardized colorimetric measurement over unaided visual inspection. Liu et 
+al. (2024) showed that pork display lamps specifically designed to enhance meat 
+appearance caused consumers to assign significantly higher freshness ratings than the 
+actual condition warranted, while simultaneously impairing their ability to discriminate 
+genuine freshness differences, an effect observed equally in experienced and inexperienced 
+observers. Lighting color has also been found to modulate perceived doneness and 
+willingness to eat independently of true product condition, creating a pathway through 
+which display lighting can actively mislead consumer safety judgments (Shu, Y., Gao, H., 
+Wang, Y., & Wei, Y., 2025). Colorimetric changes during storage have been confirmed to 
+progress in ways detectable through objective measurement before they become apparent 
+to observers under variable ambient lighting (Orkusz, A., Rampanti, G., M ichalczuk, M., 
+Orkusz, M., & Foligni, R., 2024), underscoring the precision advantage of instrument -
+based over visual assessment. By requiring LED flash -forced illumination at the moment 
+of image capture, EyeSariwa standardizes the light source and reduces  the influence of 
+inconsistent ambient retail lighting as a confounding factor, directly addressing a distortion 
+that the literature identifies as a consistent failure point of unaided visual assessment in 
+commercial meat display environments. 
+Economic Impact and Food Transparency in Meat Consumption  
+The study by Arrigoni, Marveggio, Allievi, Dotelli, and Scaccabarozzi (2023) 
+explores the intersection of sustainability and consumer choice in meat production. 
+Highlighting that while consumers express a desire for more sustainable and safe products, 
+they are often overwhelmed by complex or contradictory information. The research 
+
+===== PAGE 21 =====
+ 
+ 
+17 
+ 
+Pamantasan ng Lungsod ng Maynila 
+concludes that for food transparency to be effective, information must be delivered in a 
+simplified, actionable format that directly influences the point of purchase. This supports 
+EyeSariwa by validating its frugal innovation approach, instead of providin g complex 
+biochemical data. By reducing the cognitive load on the consumer, the system ensures that 
+the objective assessment of meat quality becomes a practical part of the economic 
+transaction in a fast-paced wet market environment.  
+Funke et al. (2022) investigate the gap in meat consumption, specifically how a 
+lack of objective data leads to the meat paradox where consumers worry about food safety 
+but lack the tools to verify it. Their results suggest that providing real -time, object ive 
+information about product quality can significantly reduce consumer anxiety and improve 
+ethical and safe purchasing behavior. This finding is a cornerstone for EyeSariwa, as it 
+reinforces the system’s goal of democratizing inspection. By bridging the g ap between 
+what a municipal inspector knows and what a consumer can see. The tool provides the 
+transparency necessary to overcome the information asymmetry typically found in 
+informal markets, where vendors hold more knowledge about product history than th e 
+buyers.  
+The research conducted by Font -i-Furnols (2023) confirms that intrinsic cues, 
+particularly color, are the single most influential factor in consumer meat quality perception 
+and purchase intent. The study highlights that because consumers equate bright red with 
+freshness, they are highly susceptible to visual deception if that cue is manipulated. Since 
+color is the primary trigger, the project’s focus on HSV colorimetry and Active 
+Illumination is scientifically supported. It targets the exact sensory channel that consumers 
+already use but replaces their subjective visual judgment with a standardized statistical Z -
+score measurement. 
+Suhandoko, Chen, and Yang (2021) provide a comprehensive review of non -
+destructive meat quality assessment technologies, such as Hyperspectral Imaging (HSI) 
+and Near-Infrared Spectroscopy (NIR). While these methods achieve high accuracy (often 
+
+===== PAGE 22 =====
+ 
+ 
+18 
+ 
+Pamantasan ng Lungsod ng Maynila 
+exceeding 95%), the study concludes that their high cost and hardware requirements make 
+them entirely inaccessible for consumer -level or on -site retail use. This conclusion 
+provides the technical mandate for EyeSariwa to opt for a Progressive Web App (PWA)  
+architecture and smartphone-based HSV analysis. The project addresses the accessibility 
+gap identified by Suhandoko et al. It takes the principles of high-end laboratory colorimetry 
+and adapts them into a zero-acquisition cost tool that fits the economic reality of Philippine 
+wet market consumers.  
+The work of Kuboka et al. (2024) focuses on food safety within informal markets 
+in developing regions, identifying that low -income consumers often face a safety -price 
+trade-off. Their findings indicate that in the absence of affordable verification tools, these 
+consumers are forced to prioritize low cost over verifiable safety, which contributes 
+significantly to the burden of foodborne illnesses. This supports EyeSariwa by positioning 
+it as a tool for health equity. The system allows price -constrained consumers to shop in 
+affordable wet markets while still having access to a tool for objective freshness 
+verification. It directly addresses the economic reality where switching to expensive, 
+temperature-controlled supermarkets is not a viable option for a large  portion of the 
+population.  
+Finally, Madjdian (2024) discusses the role of digital transformation in food 
+systems, specifically how digital tools can foster trust between buyers and sellers by 
+providing a neutral third -party verification of quality. The study concludes that digital 
+transparency reduces the incentive for vendors to engage in deceptive practices, such as 
+the "Red Bulb Trick" or blood -dipping, because the risk of detection by the consumer 
+increases. This supports EyeSariwa as a regulatory complement. By empowering 
+consumers with a directional Z-score tool that can flag Suspected Adulteration, the system 
+creates a digital deterrent at the stall level. Ultimately, encouraging honest vendors to 
+differentiate themselves and promoting a fairer, more transparent economic enviro nment 
+within the wet market. 
+
+===== PAGE 23 =====
+ 
+ 
+19 
+ 
+Pamantasan ng Lungsod ng Maynila 
+The reviewed literature establishes a clear logical chain that meat freshness is a 
+critical public health issue, color is the primary consumer cue for quality, and there is a 
+significant technological and economic gap between laboratory-grade verification and the 
+point-of-purchase reality in informal markets. These studies collectively confirm that while 
+consumers value transparency, they are currently limited by subjective assessment and a 
+lack of accessible real-time tools. EyeSariwa emerges as the necess ary conclusion to this 
+problem. By utilizing HSV colorimetry and a directional Z -score logic delivered via a 
+PWA, the system provides a scientifically grounded yet simplified solution to the 
+information asymmetry in Philippine wet markets. 
+2.1.2  Local Literature 
+Meat Safety and Public Health in the Philippine Context   
+ Meat consumption in the Filipino diet plays a vital role in meeting protein and 
+micronutrient requirements, supporting growth, and muscle maintenance, while also 
+reinforcing cultural food practices. Despite these benefits, meat safety remains a significant 
+public health concern in the Philippines. National data highlight the magnitude of this 
+issue: the Department of Science and Technology (DOST-PCAARD, 2025) estimates that 
+the country experiences approximately 8 to 9 million cases of foodborne illness ann ually, 
+resulting in 3,000 to 4,000 deaths, and economic losses equating to $1.5 billion. These 
+figures emphasize persistent challenges in ensuring food safety across the supply chain. 
+Surveillance data further indicate a rise in salmonellosis cases, reaching approximately 
+13,000 in 2023, associated with the consumption of contaminated or improperly handled 
+meat and eggs (Philippine News Agency, 2024).  
+ These trends reflect broader concerns regarding hygiene practices, storage 
+conditions, and temperature control, particularly in wet markets and informal food 
+environments where regulatory oversight is limited. While Republic Act No. 10611 
+established a national framework for food safety governance, its implementation remains 
+inconsistent due to fragmented responsibilities across multiple regulatory agencies and 
+
+===== PAGE 24 =====
+ 
+ 
+20 
+ 
+Pamantasan ng Lungsod ng Maynila 
+limitations in resources such as manpower, infrastructure, and monitoring capacity (Rustia 
+et al., 2021). Additionally, local studies have identified meat -based dishes as frequent 
+vehicles of foodborne infection, often associated with pathogens such as Salmonella spp. 
+and Staphylococcus aureus, highlighting vulnerabilities in food handling and preparation 
+practices (Labana, R., Dolar, M., Ferrer, E., & Rabago, J., 2024).  
+ Empirical evidence from retail settings further reinforces these concerns. A recent 
+genomic study detected multidrug -resistant Salmonella enterica in chicken meat from 
+public wet markets in Metro Manila, emphasizing the risks posed by inadequate sanitation 
+and handling practices in supply chains (Nagpala , M., Mora, J., Pavon, R., & Rivera, W., 
+2025). Collectively, these findings indicate that while meat remains nutritionally 
+important, its safety is compromised by systemic, environmental, and behavioral fac tors. 
+At the consumer level, meat quality assessment largely relies on subjective sensory 
+evaluation, such as color, odor, and texture, often requiring direct handling of the product. 
+This approach is inconsistent and may contribute to cross -contamination and increased 
+exposure to pathogens. In this context, the development of a non -contact, technology -
+driven system for meat freshness assessment presents a practical and timely solution. By 
+utilizing objective indicators such as color analysis through computer vision, such a system 
+can provide consistent evaluation of meat quality, reduce reliance on manual inspection, 
+and minimize unnecessary handling.  
+Consumer’s Risk Perception in Local Meat Procurement   
+The existence of systemic gaps within the Philippine meat regulatory framework is 
+established by the fragmented nature of retail -level oversight and institutional priorities. 
+Research by Bardosh et al. (2023) indicates that local governance frequently prio ritizes 
+market revenue and stall -fee collection over the rigorous enforcement of biosecurity 
+protocols, leading to inconsistent safety standards. This institutional neglect is further 
+identified by Pavon, Mendoza, Flores, Calayag, and Rivera (2022) as a si gnificant 
+monitoring blind spot at the retail level, where pathogens such as Salmonella often remain 
+
+===== PAGE 25 =====
+ 
+ 
+21 
+ 
+Pamantasan ng Lungsod ng Maynila 
+unmonitored despite initial slaughterhouse -level certifications. These structural 
+vulnerabilities underscore the requirement for EyeSariwa, as the system provides a 
+decentralized mechanism for objective surveillance in environments where formal 
+governmental monitoring is periodic or absent. 
+Heightened biological risks, particularly from zoonotic diseases and animal health 
+crises, significantly impact the safety profile of retail meat and shape consumer suspicion. 
+Fernandez-Colorado, Kim, Flores, and Min (2024) document that the persistent circulation 
+of African Swine Fever (ASF) in public markets creates an environment where 
+contaminated raw pork remains a primary transmission risk, often driven by illicit sales to 
+mitigate producer financial losses. It is important to note that while ASF does  not pose a 
+risk to human health, a large -scale ASF outbreak could lead to dramatic price hikes and 
+shortages affecting the nutrition and stability of vulnerable populations. This hazard is 
+extended by the research of Bruno et al. (2022), which discusses t he broader threat of 
+emerging zoonoses and the necessity for robust diagnostic frameworks to identify 
+compromised products within informal market settings. EyeSariwa addresses these 
+interconnected biological hazards by offering a preventative measure again st the 
+consumption of compromised tissue that has bypassed formal inspection. 
+The effectiveness of safety interventions is also governed by consumer reliance on 
+subjective heuristics and the perceived accessibility of the diagnostic technology. Mitchell 
+et al. (2022) observe that consumers frequently utilize unreliable proxies, such  as vendor 
+trust or stall cleanliness, to judge meat safety due to a lack of accessible objective tools. 
+The study emphasizes that for a technological solution to be successful, it must achieve 
+high community engagement by aligning with local social contex ts and existing 
+procurement habits. By delivering its assessment via a Progressive Web Application 
+(PWA) that requires no installation, EyeSariwa fulfills these requirements for user 
+acceptability, replacing fallible visual estimates with a standardized statistical interface that 
+integrates seamlessly into the daily routines of wet market shoppers. 
+
+===== PAGE 26 =====
+ 
+ 
+22 
+ 
+Pamantasan ng Lungsod ng Maynila 
+The reviewed literature reveals that the Philippine food safety landscape is 
+characterized by a critical monitoring gap between slaughterhouses and retail stalls, 
+exacerbated by institutional focus on revenue and the ongoing threat of diseases like 
+African Swine Fever. Because formal oversight is often periodic, consumers are forced to 
+rely on subjective heuristics that are insufficient for detecting rapid microbial growth or 
+deceptive retail practices. EyeSariwa serves as a strategic public health interven tion by 
+transforming the consumer into an active participant in the surveillance process. By 
+utilizing Directional Z-scores and a low-friction PWA architecture, the system provides a 
+scientifically grounded freshness signal that mitigates the risks of temp erature-induced 
+spoilage and diseased meat, effectively closing the regulatory window that currently leaves 
+the public vulnerable. 
+Meat Handling and Retail Practices in Wet Markets   
+The study by Serdeña et al. (2024) provides a look at the retail circulation of the 
+African Swine Fever Virus (ASFV) within Philippine wet markets. The study revealed that 
+ASFV DNA was detected in approximately 10% to 11% of raw and processed pork 
+samples. The research identifies critical risk factors at the retail level, such as the co -
+location of multiple meat species in single stalls, extended holding times for pork batches, 
+and inadequate cleaning between trading periods. These findings directly support  
+EyeSariwa by confirming that unsafe products in retail circulation are an empirical reality 
+rather than just a theoretical risk. It highlights the system’s rationale of operating as a 
+consumer-side tool that provides a freshness signal independent of whet her vendor-side 
+regulatory compliance or upstream supply chain integrity has been maintained. 
+Bardosh et al. (2023) conducted an ethnographic observation of Manila wet 
+markets. Documenting structural conditions that facilitate contamination, such as stalls 
+served by as few as three functioning faucets and workers handling money and meat 
+simultaneously with bare hands. The study also highlights a significant governance gap, 
+where Local Government Unit (LGU) wet market management often prioritizes stall 
+
+===== PAGE 27 =====
+ 
+ 
+23 
+ 
+Pamantasan ng Lungsod ng Maynila 
+revenue collection over the strict enforcement of food safety protocols. This supports 
+EyeSariwa by defining the "retail gaps" that formal inspection fails to cover. By positioning 
+the system as a democratized inspection tool, it empowers consumers to perf orm the 
+objective verification that municipal inspectors, who prioritize revenue and conduct only 
+periodic sweeps, cannot execute continuously throughout a twelve-hour selling window. 
+In the genomic analysis of foodborne pathogens, Mora et al. (2024) emphasize that 
+Salmonella enterica  remains a leading vehicle for foodborne disease outbreaks in the 
+Philippines. The research links the high prevalence of these pathogens in wet markets 
+directly to temperature abuse, particularly when meat is exposed to ambient tropical 
+temperatures ranging from 25°C to 28°C. This study is vital for EyeSariwa as it provides 
+the epidemiological precision needed for its diagnostic claims. By identifying these Stale 
+signals through directional Z -scores, the system addresses the exact biochemical risks 
+identified in Mora's genomic surveillance. 
+Nagpala, Mora, Pavon, and Rivera (2025) characterized antimicrobial -resistant 
+(AMR) Salmonella in chicken meat from Metro Manila. Finding that 73.7% of isolates 
+were resistant to at least one antibiotic class, with a significant 45.3% classified as 
+multidrug-resistant. Crucially, the study notes that this contamination profile was found 
+even in products that had supposedly passed through official, inspected supply chains. This 
+supports the EyeSariwa framing of the post -slaughter retail window, the gap where  the 
+Meat Inspection Certificate (MIC) ends and the consumer's risk begins. Since the MIC only 
+certifies the moment of slaughter, Nagpala’s findings justify the need for a tool that can 
+flag Suspected Adulteration or staleness during the hours of selling in ambient heat where 
+initially safe meat can rapidly degrade or be tampered with. 
+Finally, Dimaapi et al. (2025) investigated local retail handling practices, noting 
+that microbial counts on broiler chicken sold in public markets increase significantly over 
+a single selling day, reaching spoilage thresholds within just twelve hours of a mbient 
+storage. The research establishes temperature as a positive predictor for E. coli and 
+
+===== PAGE 28 =====
+ 
+ 
+24 
+ 
+Pamantasan ng Lungsod ng Maynila 
+coliform counts, confirming that visual freshness deterioration is a measurable proxy for 
+microbial growth in warm market conditions. This supports the EyeSariwa design 
+philosophy that the tool must be used in real-time at the point of purchase. By delivering a 
+near-real-time freshness classification, the system addresses the rapid spoilage window 
+identified by Dimaapi, allowing buyers to detect oxidative shifts before the decision to 
+purchase is finalized. 
+The reviewed local literature establishes a clear and dangerous retail window in 
+Philippine wet markets where structural hygiene failures, temperature abuse, and systemic 
+contamination overlap. These studies collectively prove that formal regulatory instruments 
+like the MIC are point -in-time assessments that do not account for the rapid microbial 
+proliferation and oxidative degradation that occur during a twelve-hour selling session. The 
+documented 42% spike in Salmonella infections and the prevalence of ASFV DNA in retail 
+pork underscore a critical public health crisis that existing LGU surveillance —often 
+hampered by revenue priorities—cannot continuously monitor. EyeSariwa is significantly 
+positioned to bridge this gap. By utilizing HSV colorimetry to dete ct directional 
+biochemical shifts toward metmyoglobin, the system democratizes food safety, providing 
+consumers with a scientifically grounded safety net that functions exactly where formal 
+inspection ends. 
+Philippine Meat Inspection Framework and Its Limitations  
+ The Philippine meat inspection system is anchored in Republic Act 10536, the Meat 
+Inspection Code, which mandates the issuance of a Meat Inspection Certificate as the 
+primary regulatory instrument confirming that slaughtered meat is fit for human 
+consumption. Empirical evidence indicates that implementation of this framework at the 
+local retail level is inconsistent and resource constrained. Reyes (2024) conducted a study 
+on RA 10536 implementation in Calamba City and found that local authorities had no fully 
+operational system to guarantee the cleanliness and safety of meat products at the market 
+level, with implementation levels rated only as fair to moderate. A statistically significant 
+
+===== PAGE 29 =====
+ 
+ 
+25 
+ 
+Pamantasan ng Lungsod ng Maynila 
+correlation was found between higher attempted implementation and the severity of 
+difficulties encountered, pointing to structural weaknesses including unclear protocols, 
+weak interagency coordination, and the absence of standardized monitoring mechanisms.  
+These findings suggest that even where regulatory intent exists, the operational capacity to 
+enforce it at the retail stall level remains critically underdeveloped. 
+The National Meat Inspection Service demonstrates relatively strong oversight 
+within accredited slaughterhouses, where regular inspections yield documented 
+compliance with basic hygiene standards and low antibiotic residue levels (Ong, M., 
+Santos, C., & Soriano, A., 2025). Its oversight capacity, however, diminishes sharply once 
+meat enters the distribution and retail phase. A case study from La Union province found 
+that while registered slaughterhouses met basic requirements, downstream handling at 
+markets frequently failed to comply with hygiene protocols, resulting in microbial 
+contamination levels exceeding safe limits (Fernandez, C., Fernandez, H., Fontanilla Jr., 
+P., Austria, R., Biosci, I., 2025). Fortajada, E., Fontanilla, I., and Ungria, M. (2021) 
+identified the absence of a robust traceability system as a key structural gap, noting that 
+documentation from slaughterhouse to market is often incomplete or absent, making it 
+impossible to monitor product movement or respond efficiently to contamination e vents. 
+This post -slaughter monitoring gap defines the retail phase during which EyeSariwa is 
+intended to operate, providing consumers with an objective, contactless surface -level 
+freshness signal at the point of purchase where institutional oversight has been shown to 
+be weakest. 
+Local government units, which hold primary regulatory authority over wet markets 
+under the Local Government Code, face additional structural constraints that limit effective 
+enforcement at the stall level. A needs assessment of a Philippine LGU found that 
+inspection capacity was constrained by limited budgets, insufficient inspector numbers, 
+inadequate tools, weak digital infrastructure, and the absence of internal auditing systems, 
+concluding that genuinely risk-based inspection would require substantial new investment 
+
+===== PAGE 30 =====
+ 
+ 
+26 
+ 
+Pamantasan ng Lungsod ng Maynila 
+and organizational reform (Atif and Macdonald, 2021). Bardosh et al. (2023) provided an 
+ethnographic account of Philippine wet markets documenting that inspectors do not 
+consistently reach peripheral stalls, that routine hygiene violations are practically 
+unenforceable in busy informal settings, and that local political dynamics and livelihood 
+concerns generate active resistance to strict enforcement. National food safety frameworks 
+increasingly emphasize risk-based approaches while local governments contin ue to apply 
+older checklist-style sanitation procedures that are poorly aligned with modern food safety 
+science (Chowdhury et al., 2025). Taken together, these findings confirm that the current 
+regulatory architecture does not produce continuous and reliab le freshness monitoring at 
+the retail stall level. Establishing the practical justification for a consumer-facing tool that 
+enables individuals to conduct a rapid, preliminary surface freshness check without 
+depending on enforcement mechanisms that demonstrably fail to reach the point of sale. 
+Food Waste, Economic Loss, and Transparency in Local Markets   
+The economic consequences of inadequate meat freshness monitoring in informal 
+markets extend beyond individual spoiled purchases, cascading into broader patterns of 
+household financial loss, health expenditure, and structural food waste. Grace (2023) found 
+that foodborne disease in low - and middle -income countries imposes both direct costs 
+including medical bills, transport, and public health spending, and indirect costs such as 
+lost wages and reduced productivity, with the aggregate economic burden exceedi ng 
+US$100 billion annually and much of it attributable to fresh animal -source foods sold 
+through informal channels. Approximately 23% of meat production globally is lost or 
+wasted, with 64% of that loss occurring at the consumer level and driven in significant part 
+by inadequate cold chain infrastructure and the absence of freshness monitoring that allows 
+meat to spoil after purchase (Karwowska, M., Łaba, S., & Szczepański, K., 2021). At the 
+vendor level, a study of informal wet market settings found that the overwhelming majority 
+of meat and milk vendors experienced daily spoilage with substantial financial losses 
+attributed to the lack of adequate refrigeration (Hussein, H., Ali, M., Noah, H., Mohamud, 
+
+===== PAGE 31 =====
+ 
+ 
+27 
+ 
+Pamantasan ng Lungsod ng Maynila 
+A., & Yusuf, W., 2025), while the introduction of food safety certification in urban food 
+markets has been shown to generate consumer willingness -to-pay premiums of 
+approximately five to seven percent for reliably safe meat, indicating that better freshnes s 
+signaling has quantifiable market value that currently goes unrealized in unmonitored 
+informal settings (Ebata, A., Espinoza, M., & Ton, G., 2025). 
+Information asymmetry is a structural driver of this economic harm that consumer-
+facing digital tools are directly positioned to address. Kuboka et al. (2024) documented 
+that consumers in informal markets routinely associate visible freshness with 
+microbiological safety, relying on surface appearance and environmental heuristics as 
+proxies for product quality they cannot directly verify. When credence attributes such as 
+storage history and handling conditions are unobservable at the point of purchase, buyer s 
+tend to pay prices reflecting average quality while frequently receiving substandard 
+products, a dynamic that disproportionately harms low-income consumers with the fewest 
+alternative purchasing options (Schrobback, P., Zhang, A., Loechel, B., Ricketts, K., & 
+Ingham, A., 2023). Digital technologies that reduce information asymmetry in food 
+markets have been shown to generate measurable improvements in consumer purchasing 
+outcomes (Sgroi, 2023), yet barcode-dependent solutions presuppose packaged goods with 
+traceable labels, a condition that does not hold for the unpackaged meat sold in Philippine 
+wet markets. Weak regulation and informal transactions also mean that spoiled or 
+substandard items are rarely refunded, so all financial loss is absorbed by the b uyer 
+(Abdulyekeen and Oyebamiji, 2025). This gap underscores the relevance of EyeSariwa as 
+a packaging-independent, contactless approach to introducing an objective freshness signal 
+into an informal retail environment where none currently exists. 
+  
+
+===== PAGE 32 =====
+ 
+ 
+28 
+ 
+Pamantasan ng Lungsod ng Maynila 
+2.2  Related Studies 
+2.2.1  Foreign Studies 
+Advanced and Laboratory-Based Systems for Meat Quality Assessment 
+As global demand  drives price fluctuations, concerns over meat safety and 
+authenticity have grown increasingly prominent. Saleem et al. (2025), in a  comprehensive 
+review of emerging non -invasive techniques such as fluorescence, near -infrared, mid -
+infrared, and Raman spect roscopy for assessing meat quality and detecting adulteration, 
+highlighted that despite traditional methods offer robust and validated benchmarks, they 
+remain time-consuming and costly, concluding that the future of meat quality assurance 
+will depend heavi ly on advanced sensing systems. In response to this need, researchers 
+have developed various sensor and IoT -based systems to enable more objective and 
+automated meat freshness detection. Febriana , S., Mutiara , G., & Erfianto , B. (2025) 
+developed E-Sniffer, an IoT-based meat freshness detection tool that uses an array of gas 
+sensors—including SGP40, MQ -137, and DHT22 —to identify decay -related volatile 
+compounds such as ammonia, hydrogen sulfide, and trimethylamine across beef, chicken, 
+and fish samples. Processed through a Mamdani Fuzzy Logic algorithm on an ESP32 
+microcontroller, the system achieved an 80% detection success rate with an average 
+response time of just 10 seconds, with results transmitted via Bluetooth to a mobile  
+application for real-time monitoring.  
+Similarly, Pramana, and Asrol (2026) developed an IoT -enabled e-Sense device 
+that collects real -time environmental parameters including temperature, humidity, and 
+RGB color information from tenderloin beef samples, with a Support Vector Regression 
+model achieving R² values of 0.973 for the red channel and 0.992 for both green and blue 
+channels, confirming the effectiveness of integrating multi -sensor IoT data with machine 
+learning for continuous quality prediction. However, not all such systems are equally 
+accessible to ordinary consumers. IoT -based sensor platforms and laboratory -grade 
+instruments, despite their demonstrated effectiveness in industrial and supply chain 
+
+===== PAGE 33 =====
+ 
+ 
+29 
+ 
+Pamantasan ng Lungsod ng Maynila 
+settings, carry price points and operational requirements that place them well beyond the 
+reach of ordinary consumers. Chen et al. (2024) noted that the initial investment required 
+to acquire and integrate such technologies may pose a significant challenge for small food 
+businesses with limited resources, potentially acting as a barrier to market entry. Tailor, R., 
+Parikh, S., Kumar, K., Collins, T., & El -Ocla, H. (2025) further explicitly acknowledge 
+that existing IoT -based food quality monitoring solution s are inappropriate for the 
+consumer market due to their scale and cost, and that meaningful accessibility can only be 
+achieved through sufficient miniaturization via small-scale consumer electronics. 
+This gap is especially pronounced at the consumer level in market settings, where 
+meat freshness is still predominantly assessed through direct physical contact—relying on 
+subjective sensory judgment of color, odor, and texture. Such handling-based evaluation is 
+not only inconsistent and prone to personal bias, but itself constitutes a potential vector for 
+cross-contamination. The absence of a cost -effective, non-contact, and portable tool for 
+objective meat quality assessment at the point of purchase thus represents a critical and 
+unresolved gap —one that the proposed system directly seeks to address by enabling 
+accurate, real-time freshness evaluation without the need for physical contact, specialized 
+equipment, or technical expertise. 
+Computer Vision and HSV Analysis for Meat Quality 
+  Accurately assessing meat quality remains a challenge because traditional sensory 
+evaluation relies on subjective perception of appearance, odor, and texture, which can vary 
+widely among assessors and environmental conditions. Color is a critical attribute used by 
+consumers to judge meat quality, yet visual inspection alone is inconsistent and observer -
+dependent (Gagaoua et al., 2023). Computer vision systems (CVS) have emerged as an 
+objective and non -destructive alternative, allowing automated extraction  of quantitative 
+color features from digital images and minimizing variability associated with human 
+assessment. 
+
+===== PAGE 34 =====
+ 
+ 
+30 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Sánchez, C., Orvañanos -Guerrero, M., Domínguez -Soberanes, J., & Álvarez -
+Cisneros, Y. (2023) applied multivariate analysis of beef color using a white-box machine 
+learning approach with a controlled CVS, extracting features from HSV, RGB, and 
+CIELab* color spaces. Their results showed that combining hue, saturation, and value 
+features enabled accurate characterization of beef color changes and provided interpretable 
+insights into quality prediction. Similarly, Menezes et al. (2024) developed a smartphone-
+based CVS to classify beef and pork steak tenderness and predict intramuscular fat and 
+shear force using deep neural networks. Their models achieved F1-scores up to 81.5% for 
+pork and 76.6% for beef, outperforming human assessments and demonstrating the 
+potential of machine learning integrated with image-based features for reliable meat quality 
+evaluation. 
+HSV color analysis is particularly advantageous because it separates perceptual 
+color information (hue) from brightness (value) and intensity (saturation), making the 
+system less sensitive to lighting variations and better able to capture changes related t o 
+lipid oxidation and myoglobin chemistry, which influence meat freshness and color 
+deterioration (Wang et al., 2021; Suman , S., Ramanathan , R., & Nair , M., 2022). 
+Collectively, these studies illustrate how computer vision, when combined with HSV -
+based col or analysis and multivariate machine learning, provides a robust, objective 
+framework for meat quality assessment. Systems like EyeSariwa build on this foundation 
+by focusing on HSV features, controlled image acquisition, and interpretable predictive 
+models, offering consistent, reproducible, and scalable assessment of meat freshness. 
+Comparative Analysis of Color Spaces and Illumination Standardization in Food 
+Surface Assessment 
+ The selection of an appropriate color space is a foundational decision in image -
+based food quality assessment, as different color representations carry distinct sensitivities 
+to illumination variation and their suitability depends significantly on the ima ging 
+conditions available in the target deployment context. In RGB, brightness and chromatic 
+
+===== PAGE 35 =====
+ 
+ 
+31 
+ 
+Pamantasan ng Lungsod ng Maynila 
+information are strongly interdependent, meaning that changes in ambient illumination 
+simultaneously alter all three channel values and introduce apparent color shifts that do not 
+reflect genuine surface quality changes (Basak et al., 2022). The HSV color space 
+addresses this by separating the Value channel, which encodes brightness, from the Hue 
+and Saturation channels, which carry chromatic information, such that illumination 
+fluctuations primarily affect Value while Hue and Saturation remain more stable as 
+indicators of true surface color (Joh et al., 2025). This structural property has been 
+demonstrated to produce more robust classification results under non-uniform or changing 
+lighting conditions across several food imaging applications, including rice foreign object 
+detection and protein colorimetric assays, where HSV was explicitly preferred over RGB 
+for its ability to isolate chromatic features from illumination artifacts (Setiawan, A., Adi, 
+K., & Widodo, C., 2023). For strawberry quality prediction, Basak et al. (2022) found that 
+HSV outperformed both RGB and HSL across linear and support vector machine models, 
+attributing the advantage to the approximate orthogonality of H, S, and V channels, which 
+reduces the influence of one channel's variation on the others and produces more stable 
+feature-quality relationships across varying lighting conditions. 
+CIELab, the standard color space in food science colorimetry, offers perceptual 
+uniformity by separating lightness from chromatic components in a way designed to align 
+with human visual perception, and studies comparing multiple color spaces for meat 
+freshness classification generally find it yields slightly higher or more consistent accuracy 
+than HSV under controlled conditions (Sánchez et al., 2023). However, the practical 
+deployment of CIELab in consumer -grade imaging contexts is constrained by its 
+dependence on calibrated measurement conditions that are not reproducible through 
+standard smartphone camera hardware without additional equipment (Sánchez et al., 
+2023). A beef freshness classification study using white-box machine learning across RGB, 
+HSV, an d CIELab feature sets found that while CIELab performed best when used in 
+isolation, combining features across all color spaces produced the highest overall accuracy. 
+Suggesting that no single color space is universally superior and that the choice must be  
+
+===== PAGE 36 =====
+ 
+ 
+32 
+ 
+Pamantasan ng Lungsod ng Maynila 
+guided by the practical constraints of the imaging context (Sánchez et al., 2023). For 
+consumer-deployable systems operating on unmodified smartphones without calibration 
+equipment, HSV represents a practical and well -supported choice because it provides 
+meaningful separation of chromatic and luminance information without requiring 
+spectrophotometric calibration, making its color features more consistent and interpretable 
+across the variable lighting conditions characteristic of real -world retail environmen ts 
+(Mulyana, D., Arinal, V., & Akbarulloh, F., 2024; Basak et al., 2022). 
+Statistical Methods for Food Quality Classification   
+Image-based food quality classification has matured into a well-evidenced research 
+domain, with studies across multiple food categories demonstrating that color and texture 
+features extracted from visible -light images provide reliable inputs for statistica l and 
+machine learning models capable of discriminating freshness states. Koyama, K., Tanaka, 
+M., Cho, B., Yoshikawa, Y., and Koseki, S. (2021) extracted CIE Lab and HSV color 
+statistics alongside local keypoint histograms from smartphone images of spinach, training 
+support vector machine and artificial neural network models to predict panel -based 
+freshness scores with reliable classification of deteriorating samples against a visually 
+established fresh reference. For meat specifically, a few-shot convolutional neural network 
+that classifies pork freshness into five grades defined by microbial count thresholds 
+achieved 96% accuracy on RGB surface images, demonstrating that color -based models 
+can be grounded in objective microbiological criteria rather than purely subjective sensory 
+labels (Liu, C., Zhang, J., Chen, K., & Huang, J., 2025). RGB -derived color and texture 
+features fed into a linear discriminant analysis classifier have also yielded accuracies of 99 
+to 100% for distinguishing pure from adulterated minced meat samples (Rady, A., Adedeji, 
+A., & Watson, N., 2021), and deep learning models applied to visible -light meat images 
+have been shown to achieve 80 to 99.6% accuracy for freshness classification across beef 
+and chicken (Wirdiani and Sudana, 2024) . A review of machine learning techniques for 
+food quality analysis confirmed that HSV -space color descriptors are among the most 
+
+===== PAGE 37 =====
+ 
+ 
+33 
+ 
+Pamantasan ng Lungsod ng Maynila 
+informative hand-crafted features for freshness discrimination, establishing that surface 
+color captured under consistent illumination carries sufficient discriminative signal for 
+reliable class separation across species (Saha and Manickavasagan, 2021). 
+Statistical thresholding and anomaly detection approaches are particularly relevant 
+to EyeSariwa’s design, which applies Z -score analysis to HSV color values rather than 
+training a deep neural network requiring large labeled datasets.García, M., Ferez-Rubio, J., 
+and Vilas, C. (2022) reviewed mathematical modeling approaches for food freshness 
+prediction and established that freshness limits are most reliably defined by linking 
+measured quality indicators to sensory acceptability criteria, with discrete class boundaries 
+reflecting statistically defined deviation from a reference distribution. Deviation -based 
+scoring calibrated against a reference distribution of safe product characteristics has been 
+demonstrated as an effective early warning mechanism for quality departure in food safety 
+monitoring contexts (Zuo et al., 2022). Z -score and standard deviation methods function 
+effectively as univariate anomaly detectors when the reference distribution is stable and 
+the quality indicator is well -characterized, wit h results deviating beyond two to three 
+standard deviations reliably flagged as analytically suspect (Grahmann et al., 2022), and 
+sigma-limit monitoring has been similarly endorsed for routine food quality sensor 
+applications where measurement conditions a re controlled (Martelli, F., Giacomozzi, C., 
+Dragone, R., Frazzoli, C., & Grasso, G., 2025). Color feature vectors have also been shown 
+to produce latent spaces in which freshness anomalies appear as outliers relative to a fresh-
+reference cluster, a concep tual parallel to the Z -score-based anomaly logic underlying 
+EyeSariwa (Yuan and Chen, 2023). These precedents collectively situate the system within 
+an established statistical tradition that does not require deep learning infrastructure, making 
+it feasible for deployment in the resource -constrained context of Philippine wet market 
+consumer use. 
+  
+
+===== PAGE 38 =====
+ 
+ 
+34 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Illumination Standardization in Smartphone -Based Food Quality Assessment 
+Systems 
+ The sensitivity of color -based freshness classification to lighting conditions has 
+been demonstrated empirically across multiple recent studies, collectively establishing 
+illumination control as a critical design requirement for mobile food quality systems rather 
+than an optional protocol refinement. Jian, R., Li, G., Jun, X., and Shi, G. (2025) explicitly 
+tested the effect of varying light intensity on a deep learning chicken breast freshness 
+recognition system and found that high and low illumination conditions introduced image 
+noise that produced false positives and false negatives in the baseline model, with 
+performance degrading measurably when the system encountered lighting conditions 
+different from those under which it was trained. This finding directly illustrates that color-
+based freshness models are not lighting -agnostic and that a system trained under one 
+illumination regime cannot be assumed to generalize reliably to captures made under 
+different conditions. Santelices, I., Cano, S., Moreira, F.,  and Fritz, Á. (2025) similarly 
+found in a systematic review of fruit inspection systems that controlled illumination 
+consistently yielded higher and more stable classification accuracy than ambient light, and 
+that systems deployed under ambient lighting required substantially more robust modeling 
+approaches or complementary sensing modalities to compensate for illumination 
+variability. 
+In response to this documented challenge, studies implementing smartphone-based 
+food quality assessment have adopted various illumination standardization strategies to 
+ensure that color features extracted during classification are produced under conditions  
+consistent with those of the reference or training data. Jin, P., Li, Z., and Zhang, X. (2023) 
+standardized smartphone image capture for lamb freshness prediction using a dark 
+enclosure with fixed illuminance, defined color temperature, and locked camera parameters 
+including ISO and shutter speed, achieving prediction accuracy of approximately 99 
+percent and attributing the consistency of results to the elimination of ambient lighting 
+
+===== PAGE 39 =====
+ 
+ 
+35 
+ 
+Pamantasan ng Lungsod ng Maynila 
+variability through controlled capture conditions. Cebrián et al. (2022) developed a three -
+dimensional printed light box paired with standardized LED illumination for smartphone 
+colorimetry, demonstrating that enclosing the capture environment reduced colo r 
+variability between devices to levels comparable with laboratory flatbed scanners. These 
+approaches confirm that the fundamental requirement for reliable smartphone -based 
+colorimetric assessment is not the specific hardware used to control illumination b ut the 
+consistency between the conditions under which reference data is established and the 
+conditions under which live assessments are made. EyeSariwa's Active Illumination 
+protocol, which enforces LED flash activation at every capture event at a fixed distance of 
+15 centimeters from the meat surface, is designed to satisfy this consistency requirement 
+within the constraints of a zero -acquisition-cost consumer deployment, standardizing the 
+dominant light source at the moment of capture without requiring an enclosed light box or 
+additional hardware. 
+2.2.2  Local Studies 
+Technology-Based Food Safety Systems in the Philippines 
+Rustia et al. (2021) conducted a comprehensive review of foodborne disease 
+outbreaks (FBDO) in the Philippines, identifying meat-based dishes as the primary vehicle 
+for illness. The study revealed a critical data gap in the country’s food safety surveillance, 
+noting that most outbreaks are only documented after they have reached a crisis level. Their 
+findings emphasize that the lack of real -time, decentralized monitoring tools makes it 
+difficult for both regulators and consumers to proactively identify cont aminated products 
+before consumption. The results of this study directly support EyeSariwa by providing the 
+epidemiological justification for a point-of-purchase tool. Rustia et al.’s study validates the 
+system's focus on identifying the Stale signals that occur during retail. It moves the project 
+beyond a simple technical exercise and positions it as a necessary intervention for the 
+proactive detection that Rustia et al. identified as a national requirement. The study 
+concludes that for food safety systems to be effective in the Philippine context, they must 
+
+===== PAGE 40 =====
+ 
+ 
+36 
+ 
+Pamantasan ng Lungsod ng Maynila 
+address the specific risk definitions found in local markets. By using expert-validated data 
+to define the Z -score thresholds, the system directly answers the study’s call for 
+scientifically grounded, localized safety metrics. 
+Abrajano, Botangen, Nabua, Apanay, and Pena (2024) explored the adoption of 
+digital transformation and IoT-based monitoring within the Philippine agricultural supply 
+chain. The research found that while large-scale producers are moving toward automation, 
+the last mile —specifically the retail transaction in wet markets —remains largely analog 
+and unmonitored. Their results indicated that high -cost hardware is the primary barrier to 
+technology adoption among small-scale vendors and low-income consumers. This finding 
+provides a strong mandate for the EyeSariwa frugal innovation approach. By choosing a 
+Progressive Web Application (PWA) architecture, the project avoids the high costs and 
+hardware requirements that Abrajano et al. identified as barriers to entry. I t leverages the 
+high smartphone penetration in the Philippines to deliver a zero -acquisition cost tool that 
+fits the existing economic infrastructure of the wet market. Furthermore, the study suggests 
+that for digital tools to gain trust, they must provide immediate, actionable feedback. This 
+supports the system's three-category visual output (Fresh, Suspicious, and Stale), which is 
+designed for minimal interpretation demand. 
+Kim et al. (2022) investigated the effectiveness of mobile applications in enhancing 
+public health surveillance in the Philippines, specifically focusing on user experience in 
+resource-constrained environments. The study found that app fatigue and device s torage 
+limitations often prevent users from downloading native applications. The research 
+concluded that browser -based or web -accessible tools significantly increased user 
+engagement and sustained use over time. By ensuring the tool is mobile-browser accessible 
+without requiring installation, EyeSariwa bypasses the installation friction that Kim et al. 
+identified as a major hurdle. It ensures that a consumer can access the tool instantly, even 
+with limited storage or weak network connectivity. Kim et al.’s research also highlighted 
+that environmental factor, such as variable lighting and high humidity, often degrade the 
+
+===== PAGE 41 =====
+ 
+ 
+37 
+ 
+Pamantasan ng Lungsod ng Maynila 
+performance of mobile-based sensors. By acknowledging these hurdles and using Active 
+Illumination as a mitigating protocol, the project demonstrates a high level of technical 
+honesty that aligns with Kim et al.’s findings on real-world mobile performance. 
+The reviewed local studies establish that while the Philippines faces a severe public 
+health burden from meat-based foodborne illnesses, there is a systemic lack of accessible, 
+real-time technology to protect consumers at the point of sale. Collectively, t hese studies 
+confirm that EyeSariwa is the optimal solution for the Philippine context. It bridges the 
+data gap through its Directional Z -score logic, overcomes economic barriers through its 
+PWA architecture, and addresses technical hurdles like lighting variance through its Active 
+Illumination protocol. This makes the system not just a technical proof of concept, but a 
+targeted response to the documented limitations of the Philippine food safety and 
+technology landscape. 
+Mobile and Web-Based Consumer Decision Support Systems   
+ Digital tools for food safety and purchasing decision support have expanded 
+considerably in recent years, yet the evidence base for consumer -facing applications 
+specifically designed for informal or wet market contexts in the Philippines remains sparse. 
+A systematic review confirmed that web-based tools are effective channels for improving 
+food safety knowledge, attitudes, and practices among consumers, particularly among 
+younger demographics, but these function primarily as information delivery mechanisms  
+rather than active, at -purchase decision aids (Seow et al., 2022). A mobile food safety 
+inquiry platform using image recognition on product packaging achieved high 
+classification accuracy and strong usability ratings in consumer testing (Park, J., Cho, Y. , 
+Park, M., & Kim, Y., 2024), yet that system was developed for packaged goods in formal 
+retail, a context fundamentally different from the unpackaged, informally sold meat of 
+Philippine wet market stalls. Filipino consumers' mobile technology adoption has  been 
+found to be primarily driven by social factors and convenience motivations in payment 
+contexts rather than food safety considerations (Niu, H., Hung, F., Lee, P., Ni, Y., & Chen, 
+
+===== PAGE 42 =====
+ 
+ 
+38 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Y., 2023), confirming that while smartphone penetration in the Philippines is broad, 
+existing mobile tools do not address the specific freshness verification need at the wet 
+market point of purchase. The study thus establishes a clear design gap: no docume nted 
+mobile or web -based tool has been developed or validated to serve as a real -time, 
+consumer-facing freshness assessment aid in Philippine informal meat retail. 
+Evidence from Southeast Asian and comparable low - and middle-income country 
+contexts identifies both the feasibility and the critical design constraints for digital tools 
+intended to operate in these environments. Digital tools in rural South and Southeast  Asia 
+can broaden access to quality and market information, but adoption is substantially 
+constrained by device access, network reliability, digital literacy, and socioeconomic 
+factors, with the poorest and least-educated users participating at the lowest rates (Coggins 
+et al., 2022). In the Philippine health technology context specifically, unreliable internet 
+and low broadband penetration have been identified as necessitating offline or intermittent-
+connectivity-capable design for tools intended to reach users outside urban centers 
+(Sarmiento, R., Overgaard, S., Gai, C., Overgaard, J., & Ohde, J., 2025), and uptake of 
+digital services across the Philippines, Cambodia, and Vietnam has been shown to be 
+strongly contingent on perceived usefulness and digital infrastructure availability (Sen, L., 
+Chou, P., Dacuyan, F., Nyberg, Y., & Wetterlind, J., 2024). At the same time, open-source 
+smartphone applications have demonstrated technical feasibility for quality screening in 
+LMIC settings, running on low -cost devi ces without specialized laboratory equipment 
+(Hauk et al., 2022), and field -deployable quality screening has been confirmed as 
+achievable in Philippine informal market settings (Sargsyan et al., 2024). These precedents 
+validate the EyeSariwa design approac h: a progressive web app architecture requiring no 
+installation, functioning through a lightweight backend, calibrated for unpackaged meat 
+under smartphone camera capture, and designed to deliver meaningful freshness 
+information to consumers at the point of purchase precisely where institutional monitoring 
+and existing digital tools have both been shown to fall short. 
+
+===== PAGE 43 =====
+ 
+ 
+39 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Food Safety Monitoring and Consumer Tools   
+Castro, Pabuayon, Catelo, and Camacho (2021) examined the Knowledge, 
+Attitudes, and Practices (KAP) of Filipino consumers. The study revealed that while there 
+is high awareness of food safety risks, assessment remains almost entirely dependent on 
+subjective sensory cues. The research finds that these informal methods, such as visual 
+inspection and scent, are often insufficient for detecting deliberate color masking by 
+vendors. This creates a significant information asymmetry at the point of purchase where 
+consumers lack the objective tools available to formal inspectors. EyeSariwa addresses this 
+behavioral gap by replacing subjective sensory guesses with a statistically grounded 
+Directional Z-score result based on HSV colorimetry. 
+Dayapera et al. (2024) investigated the prevalence of double -dead meat in urban 
+markets, documenting how vendors utilize deceptive tactics like blood -dipping and red -
+tinted lighting to mask spoilage. The research establishes that most buyers cannot reliably 
+distinguish between natural oxidative decay and artificial color restoration. The study 
+concludes that an effective technological intervention must be capable of flagging both 
+natural bacterial spoilage and chemical tampering. EyeSariwa incorporates thes e findings 
+through its Suspected Adulteration flag, which utilizes directional thresholds to detect 
+hyper-saturated red levels that are inconsistent with natural biological freshness. 
+Valencia, Caballar, Dioneda, Aguaded, and Obanan (2021) analyzed the 
+implementation of the Meat Inspection Code (RA 9296), identifying a structural gap in 
+monitoring once meat enters the retail market. The research confirms that certifications 
+like the MIC are point-in-time assessments that do not account for degradation during the 
+twelve-hour retail window in ambient heat. The study argues for consumer -side 
+surveillance to complement the limited manpower of municipal inspectors. EyeSariwa 
+functions as this  proposed regulatory link, empowering the consumer to identify 
+temperature-induced hazards at the point of sale where formal oversight is often periodic. 
+
+===== PAGE 44 =====
+ 
+ 
+40 
+ 
+Pamantasan ng Lungsod ng Maynila 
+The reviewed literature establishes that the Philippine food safety framework 
+suffers from a documented monitoring gap at the retail level, leaving consumers vulnerable 
+to deceptive practices and rapid microbial spoilage. Subjective sensory methods are proven 
+to be an unreliable defense against temperature -induced hazards and artificial color 
+enhancement. Additionally, there is also a blatant gap on food safety monitoring tools 
+designed for the common meat consumers. EyeSariwa serves as a strategic public h ealth 
+tool by democratizing objective inspection through a PWA architecture. By utilizing 
+directional Z-score logic to detect both natural oxidation and Suspected Adulteration, the 
+system provides the consumer-side surveillance necessary to mitigate the ri sks associated 
+with the documented spike in Salmonella infections in local wet markets. 
+
+===== PAGE 45 =====
+ 
+ 
+41 
+ 
+Pamantasan ng Lungsod ng Maynila 
+2.3  Conceptual Framework 
+Figure 1. IPO Diagram for EyeSariwa 
+The conceptual framework of the study is anchored on the Input -Process-Output 
+(IPO) model, which illustrates the logical progression of the EyeSariwa system 
+development. This model, as shown in Figure 1, maps how technical requirements, 
+
+
+===== PAGE 46 =====
+ 
+ 
+42 
+ 
+Pamantasan ng Lungsod ng Maynila 
+theoretical knowledge, and development tools are transformed through a developmental 
+research design to produce a validated, consumer-accessible meat assessment tool. 
+2.3.1  Input Phase 
+Knowledge Requirements. The study is grounded in HSV Color Space Theory, 
+which provides the biochemical and computational basis for color -driven freshness 
+classification; the Meat Inspection Code (RA 9296), which defines the regulatory context 
+within which the system operates; Progressive Web App (PWA) development standards 
+including service workers and offline fallback implementation; Z -score statistical 
+classification methods; OpenCV image processing principles; and Flask API development. 
+Development Hardware Requirements. The development process requires two 
+categories of hardware. A laptop or desktop computer running Python 3.11 or higher, with 
+VS Code, Git, and GitHub access installed, is used for backend development, 
+documentation, and cloud deployment. An Android test d evice meeting the system’s 
+minimum specifications—Android 8.0 or higher with 3GB of RAM (4GB recommended; 
+6-8GB optimal), rear -facing camera of at least 5 megapixels, LED flash, and Google 
+Chrome—is used for live system testing, camera behavior validation, and flash activation 
+verification.  
+Development Software . The technical stack consists of Python with Flask, 
+OpenCV, Rembg, and NumPy for server -side image processing and classification logic; 
+HTML, CSS, and JavaScript for the PWA frontend interface; VS Code as the primary code 
+editor across all team members; Fig ma for UI/UX wireframing and prototype design; 
+GitHub for version control and automated deployment integration with Render; Postman 
+for independent API endpoint testing prior to frontend integration; Render for cloud 
+hosting of the Fl ask backend; and Python venv for dependency isolation across 
+development environments. 
+
+===== PAGE 47 =====
+ 
+ 
+43 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Data Sets. The system’s HSV reference thresholds are derived from calibration 
+images of verified Beef, Chicken, and Pork samples across three freshness states —Fresh, 
+Suspicious, and Stale. Each sample is independently labeled by a licensed meat quality 
+professional as ground truth prior to image capture. All reference images are preprocessed 
+through the same compression pipeline used on live captures —maximum 1280px longest 
+edge at JPEG quality 85 —before HSV extraction, ensuring distributional consistency 
+between reference and live data. 
+2.3.2  Process Phase 
+Developmental Research Design . The study employs a developmental research 
+design focused on the design, construction, and evaluation of a functional prototype 
+system. This approach is suitable for studies that aim to create a functional technological 
+tool and assess its performance based on defined criteria. 
+Survey Instruments . Data is gathered from two respondent groups: food 
+technology students and graduates, who evaluate the system’s scientific validity and 
+technical acceptability; and meat consumers, who assess usability and practical relevance 
+in wet market settings.  
+Statistical Treatment . Percentage Weighted Mean is used to analyze survey 
+perception data. Z-score classification serves as the core algorithmic method—computing 
+the Euclidean deviation of a sample’s HSV values from a species-specific Fresh reference 
+distribution to produce a freshness verdict. 
+Expert Validation . Structured interviews are conducted with a meat quality 
+professional to validate the system’s classification logic, HSV reference thresholds, and 
+assessment criteria against established professional and regulatory standards. 
+System Development . The system is built following the Rapid Application 
+Development (RAD) Software Development Life Cycle. UI/UX design is prototyped in 
+Figma before implementation. The technical processing pipeline proceeds through six 
+
+===== PAGE 48 =====
+ 
+ 
+44 
+ 
+Pamantasan ng Lungsod ng Maynila 
+sequential steps: input validation and image compression; flash -controlled image capture 
+via the MediaDevices Web API with forced LED torch activation; automatic background 
+removal via Rembg; HSV color extraction via OpenCV; Z -score anomaly detection; and 
+PWA deployment on Android and Chrome including a service worker -based offline 
+fallback page. All development is managed through GitHub with automated deployment 
+to Render, and all API endpoints are verified through Postman before frontend integration. 
+2.3.3 Output Phase 
+EyeSariwa. A web-based visual meat quality assessment system for Beef, Chicken, 
+and Pork, utilizing HSV Colorimetry and Statistical Anomaly Detection to deliver 
+objective, contact-free freshness classification accessible to wet market consumers through 
+any Android browser without installation.  
+Classification Output . The system produces one of three verdicts per scan: 
+Fresh—surface color is within the normal range for the selected species; Suspicious —
+moderate color deviation detected, consumer advised to exercise caution; or Stale —
+significant color deviation detection, consumer advised not to purchase. 
+System Metrics . Evaluated outputs include near -real-time classification 
+performance, accuracy, and performance results benchmarked against expert validator 
+ground truth labels across all three species and freshness states, and a System Usability 
+Scale (SUS) score derived from consumer usability evaluation.  
+Research Deliverables. The study produces validated HSV reference thresholds 
+per meat species, survey findings on system acceptability from Food Technology experts 
+and consumers, expert-validated classification accuracy results for use in Chapters 4 and 
+5. 
+User Benefits. The system provides contactless freshness assessment eliminating 
+raw meat handling, requires no installation from the end user, is accessible to wet market 
+consumers through a zero -friction browser interface, delivers objective color -based 
+
+===== PAGE 49 =====
+ 
+ 
+45 
+ 
+Pamantasan ng Lungsod ng Maynila 
+decision support grounded in meat biochemistry, and reduces cross -contamination risk at 
+the point of purchase. 
+ 
+ 
+  
+
+===== PAGE 50 =====
+ 
+ 
+46 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+Chapter Three 
+METHODOLOGY 
+ 
+3.1 Research Design 
+The classification of this study as developmental research follows from the nature 
+of its primary output and the scope of its research questions. Developmental research in 
+software and system development contexts centers on the design, construction, and 
+evaluation of a functional artifact intended to address a specific problem within a defined 
+local setting, with quality judged through assessments of usability and effectiveness rather 
+than through the production of generalizable theoretical knowledge (Rachma and Muhlas, 
+2022). EyeSariwa satisfies this definition across all three specific objectives, moving from 
+reference data construction and system development through empirical evaluation within 
+the target deployment context. The study was not classified under Design Science Research 
+because that framework requires the articulation of design principles that remain valid and 
+applicable beyond the system built, which are lessons other developers could apply when 
+building entirely different systems in different  contexts (Betz et al., 2024). The present 
+study's scope is bounded by the development and evaluation of EyeSariwa within 
+Philippine wet market conditions and does not extend to producing such transferable design 
+knowledge. 
+This study employed a developmental research design, structured across two 
+sequential phases: a system development phase and a system evaluation phase. 
+Developmental research is appropriate for studies whose primary output is a functional 
+technological art ifact, as it centers the research process on the iterative construction, 
+refinement, and empirical assessment of a system designed to address a documented 
+problem. In the case of EyeSariwa, the documented problem is the absence of an accessible, 
+
+===== PAGE 51 =====
+ 
+ 
+47 
+ 
+Pamantasan ng Lungsod ng Maynila 
+objective contactless freshness verification tool for consumers purchasing unpackaged 
+meat in Philippine wet markets. 
+The development phase encompassed two interconnected activities: the 
+establishment of species -specific HSV colorimetric reference ranges through structured 
+sample collection and expert validation, and the design and implementation of the 
+EyeSariwa web -based system using the established reference ranges as the statistical 
+foundation for classification. The evaluation phase involved assessing the system along 
+two dimensions through classification accuracy, measured by comparing system output 
+against expert meat quality assessment on a separate test sample set, and system usability 
+measured through the System Usability Scale administered to wet market consumer 
+respondents following supervised system use. This two-phase structure directly mirrors the 
+three specific objectives of the study and provides a coherent methodological framework 
+that moves from data grounding through system construction to empirical validation. 
+3.2 System Architecture 
+Figure 2 illustrates the layered system architecture of EyeSariwa, organized into 
+four horizontal tiers to maintain a clear separation of concerns between the mobile interface 
+and the backend processing services. This architecture ensures that the system is modular, 
+allowing for independent updates to the user interface, the analytical logic, and the 
+reference data store. 
+ 
+ 
+ 
+  
+
+===== PAGE 52 =====
+ 
+ 
+48 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 2. Layered Software Architecture for EyeSariwa 
+Presentation Layer (End -User Device).  The top -most layer is the consumer's 
+entry point, implemented as a Progressive Web Application (PWA) using HTML5, CSS3, 
+and Vanilla JavaScript (ES6+). 
+• Interaction: Users perform species and part selection before initiating the 
+camera. 
+
+
+===== PAGE 53 =====
+ 
+ 
+49 
+ 
+Pamantasan ng Lungsod ng Maynila 
+• Protocols: It manages Active Illumination through the MediaDevices Web API 
+(forced flash) and ensures Offline Fallback via a Service Worker and custom 
+Offline Page. 
+• Transmission: It utilizes the Fetch API to send image data and metadata to the 
+backend. 
+Web/API Layer (Backend Gateway). This layer acts as the secure bridge between 
+the client and the cloud processing environment. 
+• API Gateway: A Flask micro -framework manages the /classify endpoint, 
+handling routing and initial request validation. 
+• Serving: Deployment is handled by Gunicorn, a production-grade WSGI server, 
+ensuring the system can handle concurrent requests. 
+• Security: Flask -CORS is implemented to allow secure cross -origin access 
+between the PWA and the hosted backend. 
+Business Logic Layer (Image Analysis & Statistical Engine).  This is the core 
+intelligence of the system, where raw visual data is transformed into a freshness diagnosis 
+through a five-stage pipeline: 
+• Validation & Compression: Uses Pillow (PIL) to enforce a 5MB limit and resize 
+images to 1280px at 85% quality to prevent request timeouts. 
+• Background Removal: Employs rembg (U2-net) to isolate the meat surface and 
+generate an Alpha Mask. 
+• Feature Extraction: OpenCV converts the image to the HSV color space, and 
+the mean values are extracted specifically from the meat pixels identified by the 
+mask. 
+• Statistical Logic: NumPy computes the Directional Z -Score and the Euclidean 
+Anomaly Score (EAS), measuring the statistical distance from fresh baselines. 
+
+===== PAGE 54 =====
+ 
+ 
+50 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Data Access & Persistence Layer (Reference Data Store). The foundation of the 
+system provides the "Ground Truth" for all assessments. 
+• Reference Store: Stays consistent with the reference_data.json file, which 
+contains the professionally validated mean (μ) and standard deviation (σ) 
+constants for each meat species across all HSV channels. 
+3.3 System Requirements 
+ This section outlines the minimum hardware and software requirements necessary 
+for the development, deployment, and operation of EyeSariwa. Requirements are specified 
+separately for end users accessing the system and for the development team responsible for 
+building and maintaining it. 
+3.3.1 Hardware Requirements  
+For End Users (Consumers). EyeSariwa is designed as a browser -based mobile 
+application requiring no installation exclusively for Android devices. End users must have 
+access to an Android smartphone running Android 8.0 (Oreo) or higher, equipped with a 
+rear-facing camera of at least 5 megapixels and an LED flash. The system’s Active 
+Illumination protocol depends on forced LED flash activation through the MediaDevices 
+Web API torch constraint, which is only reliably supported on Google Chrome for Android. 
+A m inimum of 3GB RAM is required to support stable simultaneous operation of the 
+browser, camera stream, and network communication, with 4GB recommended for 
+consistent performance and 6-8GB optimal for demonstration purposes. An active internet 
+connection with a minimum upload speed of 1 Mbps is required to transmit the compressed 
+capture image to the cloud -hosted Flask backend within the server’s request timeout 
+window. A minimum of display brightness of 100 nits is recommended to ensure result 
+legibility in outdoor wet market lighting conditions. 
+
+===== PAGE 55 =====
+ 
+ 
+51 
+ 
+Pamantasan ng Lungsod ng Maynila 
+For Developers and Data Collection. A desktop or laptop computer with a 
+minimum of 8GB RAM is required to run the Flask development server, execute image 
+processing scripts locally, and operate VS Code and a mobile browser simultaneously 
+without performance degradation. During the SO1 reference data collection phase, a single 
+designated Android smartphone meeting the end -user minimum specifications must be 
+used consistently for all sample photography to eliminate inter -device variability in color 
+output. The OPPO Reno14 F 5G, was designated by the proponents for all data collection 
+to eliminate inter -device sensor variability. Sample images are captured with the meat 
+surface filling most of the camera frame, as automatic background removal handles edge 
+pixel contamination. 
+3.3.2 Software Requirements  
+For End Users (Consumers). No software installation is required on the end user’s 
+device. EyeSariwa operates entirely within Google Chrome for Android, which is the 
+required browser as it provides the most reliable and consistent support for the 
+MediaDevices Web API torch constraint  essential for LED flash activation. No account 
+registration or application download is required.  
+ For Backend Software. The server -side component is built on Python 3.11 or 
+higher. The Flask micro -framework (version 3.x) functions as the web server and API 
+handler. Incoming images are first passed through an input validation and compression 
+utility built on Pillow (PIL), wh ich enforces a 5MB file size limit and resizes images to a 
+maximum of 1280 pixels on the longest edge at JPEG quality 85 before any further 
+processing—this step is critical for preventing request timeouts on the free-tier deployment 
+server, as raw images from high -resolution smartphone cameras can otherwise exceed 
+8MB. Background removal is then performed using Rembg, which applies the U2-Net deep 
+learning model to isolate the meat surface from background pixels and prevent foreign 
+object colors from contaminating HSV readings. OpenCV (opencv -python-headless) 
+handles the conversion of the processed image from RGB to HSV color space. NumPy 
+
+===== PAGE 56 =====
+ 
+ 
+52 
+ 
+Pamantasan ng Lungsod ng Maynila 
+performs mean channel extraction and Z -score computation. Flask -CORS permits cross -
+origin requests between frontend and backend. Gunicorn serves as the production -grade 
+WSGI server on the cloud platform. 
+ For Frontend Software. The client-side interface is implemented using HTML5, 
+CSS3, and Vanilla JavaScript (ES6+). Camera access and flash control are handled through 
+the MediaDevices Web API. Communication with the Flask backend is managed through 
+the Fetch API. A service worker (sw.js) is registered on the first load to enable PWA offline 
+fallback behaviour —when the user attempts to access the system without an internet 
+connection, a custom offline page is served in place of the default browser error scre en, 
+displaying a clear message and a Try Again button. These technologies are natively 
+supported in all modern Android browsers and require no installation on the user’s device. 
+ For Development Tools. The development environment consists of Visual Studio 
+Code as the primary code editor, Figma for UI/UX wireframing and interface prototype 
+design prior to implementation, Git for version control, GitHub as the source code 
+repository and automated deploymen t trigger for Render, and Postman for independent 
+testing of the Flask classification endpoint prior to frontend integration. A Python virtual 
+environment (venv) is required on each development machine to maintain consistent 
+library versions and prevent dependency conflicts between local and deployment 
+environments. 
+3.3.3 Network and Deployment Requirements 
+EyeSariwa is deployed on Render, a cloud hosting platform that provides a publicly 
+accessible HTTPS URL for the Flask backend. An HTTPS connection is a technical 
+requirement, as the MediaDevices Web API only operates in secure contexts. A minimum 
+upload speed of 1 Mbps is required on the end user’s device —images are compressed to 
+approximately 200 –400KB before upload, ensuring transmission completes within the 
+server's request timeout window even under degraded network conditions. The Render free 
+
+===== PAGE 57 =====
+ 
+ 
+53 
+ 
+Pamantasan ng Lungsod ng Maynila 
+tier is sufficient for the evaluation phase of this study. It is acknowledged that the server 
+undergoes a cold start delay of approximately 60 to 90 seconds following 15 minutes of 
+inactivity, as both the Flask application and the Rembg U2-Net model must be loaded into 
+memory on the first request after a cold start. This behavior is a known limitation of the 
+free deployment tier and is documented accordingly in the study's technical constraints. 
+The system does not require a dedicated server, local network,  or institutional hosting 
+infrastructure, making it accessible to any end user with a compatible Android device and 
+an internet connection. 
+3.4 Methods and Tools 
+ This section describes the methods and tools employed to address each specific 
+objective of the study. The discussion is organized per specific objective, detailing the 
+processes, instruments, and technologies used to arrive at each objective's intended output.  
+3.4.1 Specific Objective 1 – Establishing Species -Specific HSV Reference 
+Ranges  
+The first specific objective asks how species-specific HSV colorimetric thresholds 
+for the surface freshness of beef, chicken, and pork can be established and validated. To 
+address this objective, the study employed a structured data collection and statist ical 
+aggregation process grounded in established scientific literature on the surface color 
+characteristics of fresh meat, standardized image capture under the Active Illumination 
+protocol, and computational extraction of HSV color statistics. The complete workflow for 
+this objective is illustrated in Figure 3, which presents the process flowchart for SO1. The 
+external data flows entering and leaving the SO1 process are shown in Figure 4, the Level 
+0 Context Data Flow Diagram. The internal sub-processes and data movement within SO1 
+are further detailed in Figure 5, the Level 1 Data Flow Diagram. 
+  
+
+===== PAGE 58 =====
+ 
+ 
+54 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 3. SO1 Process Flowchart for the Reference Range Construction Workflow 
+Figure 3 presents the complete SO1 workflow across two sequential branches. The 
+left branch begins with sample procurement and proceeds through the researcher -based 
+
+
+===== PAGE 59 =====
+ 
+ 
+55 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Fresh assessment, where each sample is evaluated against literature -defined color criteria 
+before being approved for photography. Samples that do not meet the Fresh criteria are 
+rejected and documented, and the cycle continues until the target count per sp ecies-cut 
+combination is reached. Approved samples then pass through the Active Illumination 
+image capture sub-process and are stored in the labeled image folder. Once the target count 
+is met, the process advances to the right branch, where stored labeled images are processed 
+through HSV extraction and aggregation to produce the reference_data.json output, which 
+is subsequently used by the EyeSariwa system in SO2 and SO3. 
+The foundation of the SO1 reference data is an evidence -based definition of what 
+fresh beef, chicken, and pork look like in terms of surface color properties in the HSV color 
+space. Rather than relying on real -time labeling by an institutional expert durin g data 
+collection, the researchers established a researcher -validated Fresh classification standard 
+derived from the peer -reviewed literature on myoglobin -driven color characteristics of 
+fresh meat. As documented in the established literature, fresh beef i s characterized by the 
+dominance of oxymyoglobin, producing a bright cherry -red surface hue; fresh pork 
+displays a lighter pink tone corresponding to its lower myoglobin content; and fresh 
+chicken presents a pale, slightly yellowish -pink surface associated  with its minimal 
+myoglobin and high proportion of unsaturated lipids (Krell et al., 2024; Gagaoua et al., 
+2023; Hearn et al., 2021). These species -specific color descriptions, supported by the 
+broader literature on myoglobin biochemistry reviewed in Chapt er 2, serve as the 
+operational criteria against which each collected sample is assessed by the researchers prior 
+to photography. Only samples whose surface color falls clearly within the literature -
+defined characteristics of the Fresh state for their respective species are photographed and 
+included in the reference dataset. Samples exhibiting any visible signs of discoloration, 
+surface browning, or yellowing are excluded, as inclusion of ambiguous samples would 
+inflate the variance of the Fresh reference di stribution and degrade the discriminative 
+power of the Z -score thresholds derived from it. The engagement of the meat quality 
+professional is reserved entirely for the SO3 validation phase, where the expert will assess 
+
+===== PAGE 60 =====
+ 
+ 
+56 
+ 
+Pamantasan ng Lungsod ng Maynila 
+an independent test sample set to provide the ground truth labels against which the system's 
+classification output is benchmarked. 
+Sample collection targeted 60 meat samples in total, sourced from a registered meat 
+dealer on April 25, 2026 from a supplier who provides fresh meat directly to wet markets 
+in Santolan, Pasig. By sourcing samples through this supply channel, the study intercepted 
+the distribution chain at a point closer to slaughter, ensuring that samples had undergone 
+minimal post-slaughter handling and storage time prior to capture. The sample collection 
+strategy differs across species. For chicken, the researchers collec ted 10 Fresh samples 
+each from two anatomical cuts — breast and drumstick — yielding 20 Fresh chicken 
+samples in total. For pork, 10 Fresh samples each were collected from two cuts — pork 
+chop and pork belly — yielding 20 Fresh pork samples. For beef, 10 F resh samples each 
+were collected from two cuts — sirloin (tapa slice) and beef shank (bulalo) — yielding 20 
+Fresh beef samples. This cut -level stratification is necessary because distinct muscle 
+groups carry different proportions of muscle fiber types and myoglobin content, resulting 
+in measurable differences in the surface color profile of the Fresh state across cuts (Barkley 
+et al., 2023). Separate HSV reference distributions are therefore computed for each species-
+cut combination rather than pooling all cuts within a species into a single distribution. As 
+seen in the feedback loop of Figure 3, the sample collection cycle repeats for each cut until 
+the target count is met before the process advances to the computation phase. 
+All samples are sourced and photographed on the same session day to prevent post-
+purchase deterioration from influencing the captured color values before photography. For 
+bone-in cuts such as chicken drumstick and beef shank, the full cut is captured as presented 
+in the frame. The center -crop extraction performed during HSV processing ensures that 
+only exposed muscle surface color is analyzed, excluding peripheral areas that may contain 
+bone, fat cap, connective tissue, or background elements. 
+The researcher evaluates each sample visually against the RRL -defined Fresh criteria for 
+its species and cuts prior to any photography. The freshness assessment and the associated 
+
+===== PAGE 61 =====
+ 
+ 
+57 
+ 
+Pamantasan ng Lungsod ng Maynila 
+species, cut, and sample identifier are recorded alongside the image filename. Only after 
+the researcher has confirmed a sample as Fresh under the established criteria is it 
+photographed. This sequencing is deliberate: it ensures that the image capture pro cess 
+cannot be influenced by photographer bias arising from the camera preview, and that the 
+reference dataset contains only samples that meet a clearly defined, literature -grounded 
+color standard. 
+Each qualifying sample is then photographed under a controlled capture protocol. 
+A single designated smartphone, the OPPO Reno14 F 5G, is used for all data collection to 
+eliminate inter-device sensor variability. The device features a 50 -megapixel wide-angle 
+rear camera with an f/1.8 aperture, 79 -degree field of view, 5 -element lens, autofocus 
+capability, and 2-axis optical image stabilization. The camera is positioned directly above 
+the meat surface, perpendicular to the surface at a 90 -degree angle with n o tilt, ensuring 
+consistent viewing geometry across all captures. To account for the variable lighting 
+conditions, each of the 10 Fresh samples per species -cut combination is photographed 
+under four distinct lighting scenarios: outdoor natural light, cool -tone LED illumination, 
+warm-tone LED illumination, and red LED illumination. This multi -lighting capture 
+strategy produces 40 Fresh reference images per species-cut combination (10 samples × 4 
+lighting conditions), providing a more robust characterization of Fresh meat surface color 
+across the range of illumination contexts consumers encounter at the point of purchase. By 
+aggregating HSV statistics across these varied lighting conditions rather than restricting 
+data collection to a single controlled illumin ation source, the resulting reference 
+distributions inherently account for the colorimetric shifts introduced by different light 
+spectra, reducing the likelihood of false rejections when the live system is deployed under 
+lighting conditions that differ fro m those used during reference data construction. Meat 
+samples are placed on a white or neutral-grey surface during capture to prevent background 
+color contamination of the extracted HSV values prior to background removal. 
+
+===== PAGE 62 =====
+ 
+ 
+58 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+Figure 4. Level 0 Context Data Flow Diagram for the SO1 Reference Range Construction Process  
+ Figure 4 shows the external entities that interact with the SO1 process and the data 
+that flows between them. The Wet Market supplier is the physical source of meat samples, 
+providing the raw material that enters the SO1 process. The research team applies the RRL-
+defined Fresh color criteria as the internal standard governing which samples are accepted 
+and which are rejected during assessment. The SO1 process receives meat samples and 
+researcher assessments as its inputs, processes them through the sub -processes detailed in 
+Figure 5, and produces reference_data.json as its output, which flows downstream to the 
+EyeSariwa system for use in SO2 and SO3. 
+
+
+===== PAGE 63 =====
+ 
+ 
+59 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 5. Level 1 Data Flow Diagram Showing the Internal Sub-Processes and Data Stores of the SO1 
+Reference Range Construction Process 
+Figure 5 breaks the SO1 process into three internal sub -processes and two data 
+stores. Sub -process 1.0 covers sample procurement and researcher -based Fresh 
+assessment: the research team receives meat samples from the Wet Market supplier, 
+evaluates each aga inst the RRL -defined Fresh criteria, and produces labeled sample 
+metadata that is passed to sub -process 2.0. Sub -process 2.0 executes the Active 
+Illumination image capture protocol and writes the captured JPEG images together with 
+
+
+===== PAGE 64 =====
+ 
+ 
+60 
+ 
+Pamantasan ng Lungsod ng Maynila 
+their associated metadata to data store D1, the labeled image folder organized by species, 
+cut, and freshness state. Sub-process 3.0 reads all stored labeled images from D1, extracts 
+mean Hue, Saturation, and Value values from each image using OpenCV and NumPy, and 
+computes the arithmetic mean and standard deviation per channel across all samples within 
+each species -cut combination. These aggregated statistics are written to data store D2, 
+reference_data.json, which is subsequently loaded by the EyeSariwa F lask backend at 
+application startup for use in the live classification pipeline. 
+The computation in sub -process 3.0 is executed by a Python script, 
+reference_builder.py. The script uses OpenCV's cvtColor function with the 
+COLOR_BGR2HSV flag to convert each image from RGB to HSV color space. A center 
+crop of the image, around the middle 50 percent of both dimensions, is extracted to exclude 
+peripheral pixels that may contain background surfaces, packaging edges, or lens blur 
+artifacts. NumPy's mean function is applied to the cropped pixel array to extract per -
+channel mean values for each  image, and the arithmetic mean and standard deviation are 
+computed across the sample set for each species-cut combination. The output is a structured 
+JSON file containing mean and standard deviation for H, S, and V channels across all Fresh 
+samples for al l species and cuts, serving as the complete reference dataset for the 
+EyeSariwa classification system.  
+3.4.2 Specific Objective 2 – System Development  
+The second specific objective asks how a web -based system utilizing HSV 
+colorimetry and statistical anomaly detection can be developed to deliver near real -time, 
+contactless surface freshness classification of pork, beef, and chicken for consumers at the 
+point of purchase. To address this objective, the study employed an iterative developmental 
+approach structured around the Rapid Application Development (RAD) Software 
+Development Lifecycle (SDLC), organized across two interdependent components: a 
+server-side Flask API and a client-side Progressive Web Application (PWA) interface. The 
+complete development workflow is illustrated in Figure 6, the SO2 Process Flowchart. The 
+
+===== PAGE 65 =====
+ 
+ 
+61 
+ 
+Pamantasan ng Lungsod ng Maynila 
+external entities and data flows are shown in Figure 7, the Level 0 Context Data Flow 
+Diagram. The internal sub -processes and data stores are detailed in Figure 8, the Level 1 
+Data Flow Diagram.  
+Figure 6. SO2 Process Flowchart for the System Development Workflow 
+
+
+===== PAGE 66 =====
+ 
+ 
+62 
+ 
+Pamantasan ng Lungsod ng Maynila 
+The development process began with the construction of the backend server using 
+Python 3.11 and the Flask micro-framework. The backend is organized into five functional 
+modules: input_validator.py handles incoming image validation and compression —
+enforcing a 5MB file size limit and resizing images to a maximum of 1280 pixels on the 
+longest edge at JPEG quality 85 using Pillow before any further processing. This step is 
+architecturally necessary to prevent request timeouts on the free -tier cloud deployment 
+server, as raw images from high -resolution smartphone cameras can otherwise exceed 
+8MB and exceed the server’s response window. Background_remover.py applies the 
+Rembg library’s U2-Net model to isolate the meat surface from background pixels in the 
+uploaded image, producing a foreground mask that prevents non-meat surface colors from 
+contaminating the HSV channel means extracted downstream. hsv_extractor.py receives 
+the background-removed RGBA image, uses the alpha channel as the foreground mask, 
+converts RGB pixels to HSV, and extracts mean H, S, and V values from foreground pixels 
+only. zscore.py computes Z-scores for each of the three HSV channels against the species-
+specific Fresh reference distribution loaded from  reference_data.json, derives the 
+combined Euclidean anomaly score, and applies classification thresholds to produce a 
+verdict of Fresh, Suspicious, or Stale.app.py instantiates the Flask application, exposes the 
+/classify endpoint via HTTP POST, orchestrates the give -step processing pipeline, an d 
+returns the classification result as a JSON response. Flask -CORS was included to permit 
+cross-origin requests during both local development and cloud deployment. Gunicorn was 
+configured as the production-grade WSGI server for Render deployment.  
+As shown in Figure 7, the SO2 process receives multiple inputs: the captured meat 
+image, the selected meat species, and the meat cut type provided by the consumer through 
+their mobile browser, along with the reference_data.json output generated from the SO 1 
+process. The system processes these inputs to generate a freshness classification result for 
+the consumer. Additionally, the finalized application code is pushed to the GitHub 
+repository, triggering automatic redeployment on the Render cloud hosting plat form 
+through the configured build and start commands. 
+
+===== PAGE 67 =====
+ 
+ 
+63 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 7. Level 0 Context Data Flow Diagram for the SO2 System Development Process 
+Figure 8 details the six internal sub -processes of the EyeSariwa system. Sub -
+process 1.0, Image Capture, is executed on the consumer's mobile browser through the 
+MediaDevices Web API. The rear camera is activated with forced LED flash illumination 
+using th e torch constraint, ensuring that each image is captured under the same Active 
+Illumination conditions as the SO1 reference data. The captured image frame is written to 
+a temporary canvas element and converted to a JPEG blob. Before transmission, client -
+side input validation checks the file size against the 5MB limit and returns an immediate 
+error message to the user if the limit is exceeded, preventing unnecessary network requests. 
+The validated image blob is then sent to the Flask backend via the Fetch AP I as 
+multipart/form-data. Sub-process 2.0, Input Validation and Compression, is the first server-
+
+
+===== PAGE 68 =====
+ 
+ 
+64 
+ 
+Pamantasan ng Lungsod ng Maynila 
+side step. The received image bytes are passed through input_validator.py, which resizes 
+and recompresses the image to a standardized format before any color analysis is 
+performed, ensuring that live capture images and SO1 reference images are processed 
+under identical conditions. Sub-process 3.0, Background Removal, passes the compressed 
+image bytes through background_remover.py, which applies the rembg U2 -Net model to 
+isolate the meat surface from background pixels. The resulting foreground mask ensures 
+that only meat surface pixels contribute to the subsequent HSV analysis, eliminating 
+interference from trays, vendor surfaces, or other objects within the frame. Sub -process 
+4.0, HSV Extraction, reads the background-removed image array and its foreground mask 
+from the previous step, converts the pixel data from RGB to HSV using OpenCV, and 
+extracts mean Hue, Saturation, and Value values exclusively from the masked foreground 
+region. Sub-process 5.0, Z-Score Classification, reads the species-specific Fresh reference 
+statistics from data store D3 (reference_data.json), computes per-channel Z-scores, derives 
+the combined Euclidean anomaly score, and applies the classification thresholds to produce 
+a label of Fresh, Suspicious, or Stale. Sub -process 6.0, Result D isplay, receives the 
+classification label, anomaly score, and HSV channel means from sub -process 5.0 and 
+renders the result on the consumer's browser interface using a color -coded badge and a 
+plain-language consumer guidance statement. 
+
+===== PAGE 69 =====
+ 
+ 
+65 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 8. Level 1 Data Flow Diagram for the SO2 System Showing Internal Sub-Processes and Data Stores 
+The frontend interface was implemented as a single HTML file with linked CSS 
+and Vanilla JavaScript, requiring no framework dependencies. The interface guides the 
+consumer through three sequential steps: meat type selection, camera capture, and result 
+viewing. The interface was designed and prototyped in Figma prior to implementation to 
+ensure the layout was optimized for single -handed mobile use in an outdoor wet market 
+environment. The service worker (sw.js) was registered on first load to implement PWA 
+offline fallback behavior —when the system is accessed without an active internet 
+connection, a custom offline page is served displaying a plain-language message and a Try 
+Again button, replacing the default browser error screen in compliance with PWA 
+standards. The Fetch API was used to transmit the captured image as multipart/form -data 
+to the Flask /classify endpoint and to receive and parse the JSON classification response.  
+
+
+===== PAGE 70 =====
+ 
+ 
+66 
+ 
+Pamantasan ng Lungsod ng Maynila 
+The complete pipeline, from image capture to result display, was tested end-to-end 
+using Postman for backend validation and through direct mobile browser testing on Google 
+Chrome for Android across all three meat types. Upon successful integration testing,  the 
+application was deployed to Render by connecting the GitHub repository and configuring 
+the build and start commands. The deployed system was assigned a public HTTPS URL, 
+satisfying the secure context requirement of the MediaDevices Web API and making the 
+system accessible from any compatible Android device without installation. 
+3.4.3 Specific Objective 3 – System Evaluation 
+The third specific objective asks how accurately and effectively EyeSariwa 
+classifies meat surface freshness across beef, chicken, and pork relative to professional 
+meat quality assessment, and how suitable it is for consumer use in wet market settings. To 
+address this objective, the study employed two evaluation tracks: a classification accuracy 
+evaluation using an independent test sample set assessed against expert ground truth labels, 
+and a usability evaluation using the System Usability Scale administer ed to wet market 
+consumer respondents. The accuracy evaluation workflow is illustrated in Figure 9.1, and 
+the usability evaluation workflow is illustrated in Figure 9.2. 
+
+===== PAGE 71 =====
+ 
+ 
+67 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 9.1. Accuracy Evaluation Flowchart for SO3-A 
+The accuracy evaluation begins with the preparation of a separate test sample set 
+of 36 meat samples —2 samples per freshness state (Fresh, Suspicious, Stale) per species 
+(beef, chicken, pork) —sourced independently from those used in SO1 reference range 
+construction. Each test sample is independently labeled by the licensed meat quality expert 
+validator prior to any system interaction, preserving the integrity of the ground truth label. 
+The deployed EyeSariwa system then scans each sample independently, without the system 
+output being visible to the expert and without the expert label being available to the system 
+at the time of classification. The system output and expert label for each sample are 
+recorded in a results table for analysis. 
+
+
+===== PAGE 72 =====
+ 
+ 
+68 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 9.2. Usability Evaluation Flowchart for SO3-B 
+The accuracy metrics computed from this dataset include overall classification 
+accuracy expressed as the proportion of correct classifications over the total sample count, 
+per-class accuracy for each of the three freshness states individually, per-species accuracy 
+for each of the three meat types, and a 3×3 confusion matrix showing the distribution of 
+true versus predicted freshness labels across all species. These metrics collectively address 
+the first dimension of SO3: whether the system's HSV -based Z-score classification logic 
+produces outputs that are consistent with professional expert assessment across the full 
+range of species and freshness states. 
+The usability evaluation selects at least 100 wet market consumer respondents who 
+have not previously used EyeSariwa. Each respondent is given a supervised demonstration 
+of the system and then uses it independently to scan at least one meat sample at the p oint 
+
+
+===== PAGE 73 =====
+ 
+ 
+69 
+ 
+Pamantasan ng Lungsod ng Maynila 
+of purchase. Following use, each respondent completes the System Usability Scale, which 
+consists of ten alternating positively and negatively worded statements focused on 
+Functionality, Usability, Reliability, Performance, and Supportability (FURPS) and is  
+rated on a four-point Likert scale. The standard SUS scoring formula is applied: for odd -
+numbered items, one is subtracted from the raw response; for even -numbered items, the 
+raw response is subtracted from five; the adjusted scores are summed and multiplied by 2.5 
+to yield a total score on a scale from 0 to 100. A mean SUS score of 68 or above indicates 
+above-average usability relative to the established benchmark. The study reports the mean 
+SUS score, the score range, and the distribution of scores across all 100 respondents. These 
+results address the second dimension of SO3: whether the system is judged to be usable 
+and interpretable by its intended end-user population at the point of purchase in wet market 
+conditions. 
+3.5 Use Case Diagram 
+Figure 10. Use Case Diagram of the EyeSariwa Meat Freshness Assessment System 
+
+
+===== PAGE 74 =====
+ 
+ 
+70 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Figure 10 presents the Use Case Diagram of EyeSariwa, a Progressive Web 
+Application (PWA) developed to provide contactless meat freshness assessment for wet 
+market consumers. The diagram identifies a single actor —the Wet Market Consumer —
+who represents the primary end-user of the system. This actor interacts with two main entry 
+points: initiating a meat scan through the Start Scanning function and reviewing previous 
+assessment records through the View Scan History function. When no prior scan data 
+exists, th e View Scan History function redirects the consumer back into the scanning 
+workflow. The scanning process follows a guided sequence wherein the consumer selects 
+the meat type and cut type before capturing the meat surface image, either by taking a photo 
+or uploading one from their device’s gallery. Once the image is submitted, the system 
+analyzes it and presents a scan result indicating the freshness status of the meat. The 
+diagram also captures the system's behavior under connectivity issues through the Ha ndle 
+PWA Error use case, which is triggered conditionally when the application encounters 
+network or server-related failures during the assessment process. Together, these use cases 
+define the full scope of interaction between the Wet Market Consumer and the EyeSariwa 
+system. 
+  
+
+===== PAGE 75 =====
+ 
+ 
+71 
+ 
+Pamantasan ng Lungsod ng Maynila 
+3.6 Wireframe 
+
+
+===== PAGE 76 =====
+ 
+ 
+72 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+  
+
+
+===== PAGE 77 =====
+ 
+ 
+73 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 78 =====
+ 
+ 
+74 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 79 =====
+ 
+ 
+75 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+LIST OF REFERENCES 
+Abdulyekeen, Q., & Oyebamiji, O. (2025). Food fraud, food loss, and waste in informal 
+markets: Unexplored drivers and policy implications in Nigeria. 9th International 
+Students Science Congress Proceedings Book. 
+https://doi.org/10.52460/issc.2025.002. 
+Abrajano, J., Botangen, K., Nabua, J., Apanay, J., & Pena, C. (2024). IoT-Based Water 
+Quality Monitoring System in Philippine Off-Grid Communities. 2024 9th 
+International Conference on Business and Industrial Research (ICBIR), 0973-
+0978. https://doi.org/10.1109/icbir61386.2024.10875694.  
+Altim, M., Basalamah, A., & Kasman, K. (2025). Implementation Of Convolutional 
+Neural Network (Cnn) Based On Mobile Application For Rice Quality 
+Determination. Protek: Jurnal Ilmiah Teknik Elektro. 
+https://doi.org/10.33387/protk.v12i1.9396. 
+Anagnostou, G., Ferragina, A., Crofton, E., Celayeta, J., & Hamill, R. (2025). The 
+development of optical sensing techniques as digital tools to predict the sensory 
+quality of red meat: A review. Applied Sciences. 
+https://doi.org/10.3390/app15041719. 
+Arrigoni, A., Marveggio, D., Allievi, F., Dotelli, G., & Scaccabarozzi, G. (2023). 
+Environmental and health-related external costs of meat consumption in Italy: 
+Estimations and recommendations through life cycle assessment. The Science of 
+the total environment, 161773. https://doi.org/10.1016/j.scitotenv.2023.161773.  
+Arsalane, A., Klilou, A., & Barbri, N. (2024). Performance evaluation of machine 
+learning algorithms for meat freshness assessment. International Journal of 
+Electrical and Computer Engineering (IJECE). 
+https://doi.org/10.11591/ijece.v14i5.pp5858-5865. 
+Atif, W., & Macdonald, C. (2021). Food service inspection capacity: Needs assessment in 
+a Philippine local government unit. J, 4(3). https://doi.org/10.3390/j4030039. 
+Bardosh, K., Guinto, R., Bukachi, S., Hang, T., Bongcac, M., De Los Santos, M., Mburu, 
+C., Abela, J., Kelly, D., & Maller, C. (2023). Wet market biosecurity reform: 
+Three social narratives influence stakeholder responses in Vietnam, Kenya, and 
+
+===== PAGE 80 =====
+ 
+ 
+76 
+ 
+Pamantasan ng Lungsod ng Maynila 
+the Philippines. PLOS Global Public Health, 3. 
+https://doi.org/10.1371/journal.pgph.0001704.  
+Barkley, K. E., Boler, D. D., & Harsh, B. N. (2023). Color stability during retail display 
+differs among muscles in pork. Meat and Muscle Biology, 7(1), 15718. 
+https://doi.org/10.22175/mmb.15718. 
+Basak, J., Madhavi, B., Paudel, B., Kim, N., & Kim, H. (2022). Prediction of total soluble 
+solids and pH of strawberry fruits using RGB, HSV and HSL colour spaces and 
+machine learning models. Foods, 11. https://doi.org/10.3390/foods11142086. 
+Bencardino, D., Amagliani, G., & Brandi, G. (2021). Carriage of Staphylococcus aureus 
+among food handlers: An ongoing challenge in public health. Food Control, 130, 
+108362. https://doi.org/10.1016/j.foodcont.2021.108362. 
+Betz, S., Penzenstadler, B., Duboc, L., Chitchyan, R., Koçak, S., Brooks, I., Oyedeji, S., 
+Porras, J., Seyff, N., & Venters, C. (2024). Lessons Learned from Developing a 
+Sustainability Awareness Framework for Software Engineering Using Design 
+Science. ACM Transactions on Software Engineering and Methodology, 33, 1 - 
+39. https://doi.org/10.1145/3649597. 
+Bruno, L., Nappo, M., Ferrari, L., Di Lecce, R., Guarnieri, C., Cantoni, A., & Corradi, A. 
+(2022). Nipah Virus Disease: Epidemiological, Clinical, Diagnostic and 
+Legislative Aspects of This Unpredictable Emerging Zoonosis. Animals: an Open 
+Access Journal from MDPI, 13. https://doi.org/10.3390/ani13010159.  
+Cardona, M., Izquierdo, D., Barat, J., & Fernández-Segovia, I. (2023). Intrinsic and 
+extrinsic attributes that influence choice of meat and meat products: Techniques 
+used in their identification. European Food Research and Technology, 249, 2485–
+2514. https://doi.org/10.1007/s00217-023-04301-1. 
+Castro, M., Pabuayon, I., Catelo, S., & Camacho, J. (2021). Analyzing Consumer 
+Preferences for Credence Attributes of Fish and Fishery Products in Davao City, 
+Philippines. Asian journal of agriculture and development, 18, 84-103. 
+https://doi.org/10.37801/ajad2021.18.1.6.  
+Cebrián, P., Pérez-Sienes, L., Sanz-Vicente, I., López-Molinero, Á., De Marcos, S., & 
+Galbán, J. (2022). Solving Color Reproducibility between Digital Devices: A 
+Robust Approach of Smartphones Color Management for Chemical (Bio)Sensors. 
+Biosensors, 12. https://doi.org/10.3390/bios12050341. 
+
+===== PAGE 81 =====
+ 
+ 
+77 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Chen, Y., Wang, Y., Zhang, Y., Wang, X., Zhang, C., & Cheng, N. (2024). Intelligent 
+biosensors promise smarter solutions in Food Safety 4.0. Foods, 13(2), 235. 
+https://doi.org/10.3390/foods13020235. 
+Chowdhury, S., Das, T., Chisty, N., Biswas, S., Rahman, M., Ling, J., Naguib, M., & 
+Lindahl, J. (2025). Regulations, biosecurity measures, and impact of COVID-19: 
+A comprehensive mixed method study in traditional wet and live animal markets 
+in Bangladesh. One Health, 20. https://doi.org/10.1016/j.onehlt.2025.101014. 
+Ciobanu, M., Manoliu, D., Ciobotaru, M., Anchidin, B., Matei, M., Munteanu, M., 
+Frunză, G., Murariu, O., Flocea, E., & Boisteanu, P. (2023). The influence of 
+sensory characteristics of game meat on consumer neuroperception: A narrative 
+review. Foods, 12. https://doi.org/10.3390/foods12061341. 
+Coggins, S., McCampbell, M., Sharma, A., Sharma, R., Haefele, S., Karki, E., 
+Hetherington, J., Smith, J., & Brown, B. (2022). How have smallholder farmers 
+used digital extension tools? Developer and user voices from Sub-Saharan Africa, 
+South Asia and Southeast Asia. Global Food Security, 32. 
+https://doi.org/10.1016/j.gfs.2021.100577. 
+Dayapera, L., Sy, J., Valenzuela, S., Eala, S., Del Rosario, C., Buensuceso, K., Dy, A., 
+Morales, D., Gibson, A., & Apostol, G. (2024). One health in the Philippines: A 
+review and situational analysis. One Health, 18. 
+https://doi.org/10.1016/j.onehlt.2024.100758.  
+Department of Science and Technology – Philippine Council for Agriculture, Aquatic 
+and Natural Resources Research and Development (DOST–PCAARRD). (2025). 
+Food safety situation in the Philippines. https://ispweb.pcaarrd.dost.gov.ph/food-
+safety-situation-in-the-philippines/. 
+Dimaapi, L., Cruz, A., Francisco, R., Noble, R., Sabangan, H., Gavino-Lacuna, A., & 
+Lota, M. (2025). Antimicrobial Resistance Profile of Escherichia coli Isolated 
+from Raw Chicken Meat in a Selected Wet Market in Manila City, Philippines. 
+Acta Medica Philippina, 59, 107 - 122. https://doi.org/10.47895/amp.vi0.8383.  
+Dorn-In, S., Mang, S., Cosentino, R. O., & Schwaiger, K. (2024). Changes in the 
+microbiota from fresh to spoiled meat, determined by culture and 16S rRNA 
+analysis. Journal of Food Protection, 87(2), 100212. 
+https://doi.org/10.1016/j.jfp.2023.100212. 
+
+===== PAGE 82 =====
+ 
+ 
+78 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Ebata, A., Espinoza, M., & Ton, G. (2025). Food safety certification in urban food 
+markets: The willingness to pay for safer meat in Peru. Food Security, 17, 461–
+476. https://doi.org/10.1007/s12571-024-01512-6. 
+Fan, L., Chen, Y., Zeng, Y., Yu, Z., Dong, Y., Li, D., Zhang, C., & Ye, C. (2024). 
+Application of visual intelligent labels in the assessment of meat freshness. Food 
+Chemistry, 460, 140562. https://doi.org/10.1016/j.foodchem.2024.140562. 
+Febriana, S. D., Mutiara, G. A., & Erfianto, B. (2025). E-Sniffer: Raw meat freshness 
+detection tool based on odor classification and fuzzy logic utilizing gas fusion 
+sensor. Instrumentation Mesure Métrologie, 24(2), 97–109. 
+https://doi.org/10.18280/i2m.240201.  
+Fernandez, C., Fernandez, H., Fontanilla Jr., P., Austria, R., Biosci, I. (2025). Public 
+health implications of microbial contamination in registered slaughterhouses: A 
+case study from La Union, Philippines. (2025). International Journal of 
+Biosciences, 27(1), 272–290. https://doi.org/10.12692/ijb/27.1.272-290. 
+Fernandez-Colorado, C., Kim, W., Flores, R., & Min, W. (2024). African Swine Fever in 
+the Philippines: A Review on Surveillance, Prevention, and Control Strategies. 
+Animals: an Open Access Journal from MDPI, 14. 
+https://doi.org/10.3390/ani14121816.  
+Font-I-Furnols, M. (2023). Meat Consumption, Sustainability and Alternatives: An 
+Overview of Motives and Barriers. Foods, 12. 
+https://doi.org/10.3390/foods12112144.  
+Fortajada, E., Fontanilla, I., & Ungria, M. (2021). Incorporating animal forensics in 
+routine meat inspection in the Philippines. Food Safety and Health, 1, 100020. 
+https://doi.org/10.1016/j.fsiae.2021.100020.  
+Funke, F., Mattauch, L., Bijgaart, I., Godfray, H., Hepburn, C., Klenert, D., Springmann, 
+M., & Treich, N. (2022). Toward Optimal Meat Pricing: Is It Time to Tax Meat 
+Consumption?. Review of Environmental Economics and Policy, 16, 219 - 240. 
+https://doi.org/10.1086/721078.  
+Gagaoua, M., Suman, S. P., Purslow, P. P., & Lebret, B. (2023). The color of fresh pork: 
+Consumers expectations, underlying farm-to-fork factors, myoglobin chemistry 
+and contribution of proteomics to decipher the biochemical mechanisms. Meat 
+Science, 206, Article 109340. https://doi.org/10.1016/j.meatsci.2023.109340.  
+
+===== PAGE 83 =====
+ 
+ 
+79 
+ 
+Pamantasan ng Lungsod ng Maynila 
+García, M., Ferez-Rubio, J., & Vilas, C. (2022). Assessment and prediction of fish 
+freshness using mathematical modelling: A review. Foods, 11. 
+https://doi.org/10.3390/foods11152312.  
+Geng, L., Liu, K., & Zhang, H. (2023). Lipid oxidation in foods and its implications on 
+proteins. Frontiers in Nutrition, 10, Article 1192199. 
+https://doi.org/10.3389/fnut.2023.1192199.  
+González-Fandos, E., Martínez Laorden, A., Condón Usón, S., & Serrano Andrés, M. J. 
+(2025). Growth and Diversity of Spoiling and Foodborne Bacteria in Poultry 
+Hamburgers in Modified Atmosphere and with Sulfites During Shelf Life. 
+Microorganisms, 13(4), 754. https://doi.org/10.3390/microorganisms13040754.  
+Grace, D. (2023). Burden of foodborne disease in low-income and middle-income 
+countries and opportunities for scaling food safety interventions. Food Security, 
+15, 1475–1488. https://doi.org/10.1007/s12571-023-01391-3.  
+Grahmann, K., Terra, J., Ellerbrock, R., Rubio, V., Barro, R., Caamaño, A., & Quincke, 
+A. (2022). Data accuracy and method validation of chemical soil properties in 
+long-term experiments: Standard operating procedures for a non-certified soil 
+laboratory in Latin America. Geoderma Regional. 
+https://doi.org/10.1016/j.geodrs.2022.e00487. 
+Ham, Y., Song, D., & Kim, H. (2022). Effects of toxic heavy metal salts on oxidative 
+quality deterioration in ground pork model during aerobic display storage. 
+Antioxidants, 11. https://doi.org/10.3390/antiox11071310.  
+Han, J., Wang, Y., Wang, Y., Hao, S., & Zhang, K. (2024). Effect of changes in the 
+structure of myoglobin on the color of meat products. Food Materials Research, 
+4, e011. https://doi.org/10.48130/fmr-0024-0003.  
+Hauk, C., Boss, M., Gabel, J., Schäfermann, S., Lensch, H., & Heide, L. (2022). An 
+open-source smartphone app for the quantitative evaluation of thin-layer 
+chromatographic analyses in medicine quality screening. Scientific Reports, 12. 
+https://doi.org/10.1038/s41598-022-17527-y.  
+Hearn, K., Denzer, M., Mitacek, R., Maheswarappa, N. B., McDaniel, C., Jadeja, R., 
+Mafi, G., Beker, A., Pezeshki, A., & Ramanathan, R. (2021). Effects of modified 
+atmospheric packaging on ground chicken color and lipid oxidation. Meat and 
+Muscle Biology, 5(1), 36. https://doi.org/10.22175/mmb.12599.  
+
+===== PAGE 84 =====
+ 
+ 
+80 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Hussein, H., Ali, M., Noah, H., Mohamud, A., & Yusuf, W. (2025). Refrigeration deficits 
+and mitigation strategies in fresh milk and meat vendors: A case study of Qardho 
+Central Market, Puntland, Somalia. East African Journal of Arts and Social 
+Sciences. https://doi.org/10.37284/eajass.8.2.3057.  
+Iqbal, M., Yousaf, J., Khan, A., & Muhammad, T. (2025). IoT-Enabled Food Freshness 
+Detection Using Multi-Sensor Data Fusion and Mobile Sensing Interface. ICCK 
+Transactions on Sensing, Communication, and Control, 2(2), 122–131. 
+https://doi.org/10.62762/TSCC.2025.401245. 
+Jian, R., Li, G., Jun, X., & Shi, G. (2025). Nondestructive freshness recognition of 
+chicken breast meat based on deep learning. Scientific Reports, 15. 
+https://doi.org/10.1038/s41598-025-13576-1.  
+Jin, P., Li, Z., & Zhang, X. (2023). Freshness prediction of modified atmosphere 
+packaging lamb meat based on digital images from mobile portable devices. 
+Journal of Food Process Engineering. https://doi.org/10.1111/jfpe.14444. 
+Joh, M., Kumaran, S., Shin, Y., Cha, H., Oh, E., Lee, K., & Choi, H. (2025). An 
+ensemble model of machine learning regression techniques and color spaces 
+integrated with a color sensor: application to color-changing biochemical assays. 
+RSC Advances, 15, 1754 - 1765. https://doi.org/10.1039/d4ra07510b.  
+Karwowska, M., Łaba, S., & Szczepański, K. (2021). Food loss and waste in meat 
+sector—Why the consumption stage generates the most losses? Sustainability. 
+https://doi.org/10.3390/su13116227.  
+Keddy, K., Hoffmann, S., Founou, L., Estrada-Garcia, T., Gobena, T., Havelaar, A., 
+Jakobsen, L., Kubota, K., Law, C., Lake, R., Minato, Y., Al-Natour, F., Pires, S., 
+Rachmawati, T., Sripa, B., Torgerson, P., & Walter, E. (2025). Quantifying 
+national burdens of foodborne disease—Four imperatives for global impact. 
+PLOS Global Public Health, 5. https://doi.org/10.1371/journal.pgph.0004309.  
+Kenaw Z., Ejeso A., Deresse D., & Olkeba BK. (2024) Microbial Contamination and 
+Meat Handling Practices in Hawassa City Butcher Shops, Ethiopia. 
+Environmental Health Insights, 18. https://doi.org/10.1177/11786302241293289.  
+Kim, T., Baldrias, L., Papageorgiou, S., Aguilar, E., Tee, M., Kelly, T., Hill, J., & 
+Wilkes, M. (2022). A community-based survey to assess risk for one health 
+
+===== PAGE 85 =====
+ 
+ 
+81 
+ 
+Pamantasan ng Lungsod ng Maynila 
+challenges in rural Philippines using a mobile application. One Health Outlook, 4. 
+https://doi.org/10.1186/s42522-022-00063-0.  
+Koyama, K., Tanaka, M., Cho, B., Yoshikawa, Y., & Koseki, S. (2021). Predicting 
+sensory evaluation of spinach freshness using machine learning model and digital 
+images. PLoS ONE, 16. https://doi.org/10.1371/journal.pone.0248769.  
+Krell, J., Poveda-Arteaga, A., Weiss, J., Witte, F., Terjung, N., & Gibis, M. (2024). 
+Influence of different storage atmospheres in packaging on color stability of beef. 
+Journal of Food Science, 89(9), 5774–5787. https://doi.org/10.1111/1750-
+3841.17286. 
+Kuboka, M., Grace, D., Artursson, K., Lindahl, J., Carlsson, G., & Mutua, F. (2024). 
+Food safety in informal public markets in Kenya: Perceptions of stakeholders in 
+the food chain. Frontiers in Sustainable Food Systems. 
+https://doi.org/10.3389/fsufs.2024.1411318.  
+Labana, R. V., Dolar, M. V., Jr., Ferrer, E. J. J., & Rabago, J. R. C. (2024). Food safety 
+and street food consumption in the Philippines. Journal of Public Health and 
+Emergency. https://doi.org/10.21037/jphe-23-182.  
+Leishman, E., Ellis, J., Van Staaveren, N., Barbut, S., Vanderhout, R., Osborne, V., 
+Wood, B., Harlander-Matauschek, A., & Baes, C. (2021). Meta-analysis to predict 
+the effects of temperature stress on meat quality of poultry. Poultry Science, 100. 
+https://doi.org/10.1016/j.psj.2021.101471.  
+Lesiów, T., & Xiong, Y. (2024). Heat/cold stress and methods to mitigate its detrimental 
+impact on pork and poultry meat: A review. Foods, 13. 
+https://doi.org/10.3390/foods13091333.  
+Liu, C., Zhang, J., Chen, K., & Huang, J. (2025). BBSNet: An intelligent grading method 
+for pork freshness based on few-shot learning. Foods, 14. 
+https://doi.org/10.3390/foods14142480.  
+Liu, Y., Chen, W., Wu, X., Pointer, M., Chen, Z., Liu, X., Liu, Q., & Xie, X. (2024). The 
+impact of the fresh pork display lamps on the sensory response of consumers to 
+fresh pork. Foods, 13. https://doi.org/10.3390/foods13121827.  
+Liu, Z., Shaposhnikov, M., Zhuang, S., Tu, T., Wang, H., & Wang, L. (2023). Growth 
+and survival of common spoilage and pathogenic bacteria in ground beef and 
+
+===== PAGE 86 =====
+ 
+ 
+82 
+ 
+Pamantasan ng Lungsod ng Maynila 
+plant-based meat analogues. Food Research International, 164, 112408. 
+https://doi.org/10.1016/j.foodres.2022.112408.  
+Madjdian, D., Van Asseldonk, M., Ilboudo, G., Dione, M., Ouédraogo, A., Roesel, K., 
+Grace, D., Talsma, E., Knight-Jones, T., & De Vet, E. (2024). Training and tool 
+supply to enhance food safety behaviors among ready-to-eat chicken vendors in 
+informal markets in Ouagadougou, Burkina Faso: a randomized-controlled trial. 
+Food Control. https://doi.org/10.1016/j.foodcont.2024.110510.  
+Martelli, F., Giacomozzi, C., Dragone, R., Frazzoli, C., & Grasso, G. (2025). Data 
+analysis in newly developed milk sensor platforms: Good practices, common 
+pitfalls, and hard-earned lessons from field application. Foods, 14. 
+https://doi.org/10.3390/foods14101724. 
+Menezes, G. L., Valente Junior, D. T., Ferreira, R. E. P., Oliveira, D. A. B., Araujo, J. A., 
+Duarte, M., & Dórea, J. R. R. (2024). Empowering informed choices: How 
+computer vision can assist consumers in making decisions about meat quality. 
+Meat Science, 219, 109675. https://doi.org/10.1016/j.meatsci.2024.109675.  
+Mitchell, E., Kelly‐Hanku, A., Krentel, A., Romani, L., Robinson, L., Nery, S., Kaldor, 
+J., Steer, A., & Bell, S. (2022). Community perceptions and acceptability of mass 
+drug administration for the control of neglected tropical diseases in Asia-Pacific 
+countries: A systematic scoping review of qualitative research. PLoS Neglected 
+Tropical Diseases, 16. https://doi.org/10.1371/journal.pntd.0010215.  
+Mora, J., Meclat, V., Calayag, A., Campino, S., Hafalla, J., Hibberd, M., Phelan, J., 
+Clark, T., & Rivera, W. (2024). Genomic analysis of Salmonella enterica from 
+Metropolitan Manila abattoirs and markets reveals insights into circulating 
+virulence and antimicrobial resistance genotypes. Frontiers in Microbiology, 14. 
+https://doi.org/10.3389/fmicb.2023.1304283.  
+Mulyana, D., Arinal, V., & Akbarulloh, F. (2024). Efektivitas Penggunaan Ruang Warna 
+HSV untuk Klasifikasi Daging Sapi Segar dan Busuk dalam Industri Pangan. 
+Jurnal JTIK (Jurnal Teknologi Informasi dan Komunikasi). 
+https://doi.org/10.35870/jtik.v9i1.3129.  
+Nagpala, M. J. M., Mora, J. F. B., Pavon, R. D. N., & Rivera, W. L. (2025). Genomic 
+characterization of antimicrobial‑resistant Salmonella enterica in chicken meat 
+
+===== PAGE 87 =====
+ 
+ 
+83 
+ 
+Pamantasan ng Lungsod ng Maynila 
+from wet markets in Metro Manila, Philippines. Frontiers in Microbiology. 
+https://doi.org/10.3389/fmicb.2025.1496685.  
+Niu, H., Hung, F., Lee, P., Ni, Y., & Chen, Y. (2023). Eco-friendly transactions: 
+Exploring mobile payment adoption as a sustainable consumer choice in Taiwan 
+and the Philippines. Sustainability. https://doi.org/10.3390/su152416739.  
+Oliveira, I., Almeida, M., Gomes, J. J. F., & Henriques, A. R. (2024). Specific Personal 
+Hygiene Procedures and Practices in Food Handlers—A Cross-Sectional Study in 
+Butcher and Fishmonger Shops in Almada. Hygiene, 4(2), 207-220. 
+https://doi.org/10.3390/hygiene4020017.  
+Ong, M., Santos, C., & Soriano, A. (2025). Detection of antibiotic residues in leg quarter 
+of chickens slaughtered in accredited poultry dressing plants in Nueva Ecija, 
+Philippines. ARSHI Veterinary Letters. https://doi.org/10.29244/avl.9.2.31-32.  
+Orkusz, A., Rampanti, G., Michalczuk, M., Orkusz, M., & Foligni, R. (2024). Impact of 
+refrigerated storage on microbial growth, color stability, and pH of turkey thigh 
+muscles. Microorganisms, 12. https://doi.org/10.3390/microorganisms12061114.  
+Park, J., Cho, Y., Park, M., & Kim, Y. (2024). Consumer usability test of mobile food 
+safety inquiry platform based on image recognition. Sustainability. 
+https://doi.org/10.3390/su16219538.  
+Pavon, R., Mendoza, P., Flores, C., Calayag, A., & Rivera, W. (2022). Genotypic 
+virulence profiles and associations in Salmonella isolated from meat samples in 
+wet markets and abattoirs of Metro Manila, Philippines. BMC Microbiology, 22. 
+https://doi.org/10.1186/s12866-022-02697-6.  
+Philippine News Agency. (2024). Salmonella cases in PH up by 42% — DOST. 
+https://www.pna.gov.ph/articles/1220063.  
+Pires, S., Desta, B., Mughini-Gras, L., Mmbaga, B., Fayemi, O., Salvador, E., Gobena, 
+T., Majowicz, S., Hald, T., Hoejskov, P., Minato, Y., & Devleesschauwer, B. 
+(2021). Burden of foodborne diseases: think global, act local. Current Opinion in 
+Food Science, 39, 152 - 159. https://doi.org/10.1016/j.cofs.2021.01.006.  
+Pramana Putra, A., & Asrol, M. (2026). A Real-Time IoT-Enabled Machine Learning for 
+Quality Prediction of Perishable Beef Product. HighTech and Innovation Journal, 
+7(1), 229–249. https://doi.org/10.28991/HIJ-2026-07-01-015.  
+
+===== PAGE 88 =====
+ 
+ 
+84 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Pujol, A., Ospina-E., J. C., Álvarez, H., & Muñoz, D. A. (2023). Myoglobin content and 
+oxidative status to understand meat products’ color. Journal of Food Engineering, 
+348, 111439. https://doi.org/10.1016/j.jfoodeng.2023.111439.  
+Rachma, N., & Muhlas, I. (2022). Comparison Of Waterfall And Prototyping Models In 
+Research And Development (R&D) Methods For Android-Based Learning 
+Application Design. Jurnal Inovatif: Inovasi Teknologi Informasi dan 
+Informatika. https://doi.org/10.32832/inova-tif.v5i1.7927.  
+Rady, A., Adedeji, A., & Watson, N. (2021). Feasibility of utilizing color imaging and 
+machine learning for adulteration detection in minced meat. Journal of 
+Agriculture and Food Research. https://doi.org/10.1016/j.jafr.2021.100251.  
+Reyes, M. (2024). Implementation of Meat Inspection Code (Republic Act No. 10536) 
+and challenges encountered by butchers and meat inspectors in Calamba City. 
+Journal of Public Administration Research. 
+https://doi.org/10.32996/jpar.2024.1.1.3.  
+Rodrigues, S. S. Q., Dias, L. G., & Teixeira, A. (2024). Emerging methods for the 
+evaluation of sensory quality of food: Technology at service. Current Food 
+Science and Technology Reports, 2, 77–90. https://doi.org/10.1007/s43555-024-
+00019-7.  
+Ruedt, C., Gibis, M., & Weiss, J. (2023). Meat color and iridescence: Origin, analysis, 
+and approaches to modulation. Comprehensive Reviews in Food Science and 
+Food Safety, 22(5), 3841–3882. https://doi.org/10.1111/1541-4337.13191.  
+Ruiz-Capillas, C., Herrero, A., Pintado, T., & Delgado-Pando, G. (2021). Sensory 
+analysis and consumer research in new meat products development. Foods, 10. 
+https://doi.org/10.3390/foods10020429. 
+Rustia, A., Tan, M., Guiriba, D., Magtibay, F., Bondoc, I., Mariano, C., Caincol, D., 
+Bautista, K., Bulagao, B., De Guzman, V., Musni, A., Salem, A., & Villanueva, J. 
+(2021). Defining Risk in Food Safety in the Philippines. Current Research in 
+Nutrition and Food Science Journal, 9, 233-257. 
+https://doi.org/10.12944/crnfsj.9.1.23.  
+Saha, D., & Manickavasagan, A. (2021). Machine learning techniques for analysis of 
+hyperspectral images to determine quality of food products: A review. Current 
+Research in Food Science, 4, 28–44. https://doi.org/10.1016/j.crfs.2021.01.002.  
+
+===== PAGE 89 =====
+ 
+ 
+85 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Saleem, A., Imtiaz, A., Yaqoob, S., Awais, M., Awan, K. A., Naveed, H., Khalifa, I., 
+Ercisli, S., Mugabi, R., Alotaibi, S. S., Nayik, G. A., Qian, J.-Y., & Shen, Q. 
+(2025). Integration of non-invasive and conventional systems for quality 
+assessment and authentication of meat stuffs: A review with bibliometric analysis. 
+Food Chemistry: X, 29, 102778. https://doi.org/10.1016/j.fochx.2025.102778.  
+Sánchez, C., Orvañanos-Guerrero, M., Domínguez-Soberanes, J., & Alvarez-Cisneros, Y. 
+(2023). Analysis of beef quality according to color changes using computer vision 
+and white-box machine learning techniques. Heliyon, 9. 
+https://doi.org/10.1016/j.heliyon.2023.e17976.  
+Santelices, I., Cano, S., Moreira, F., & Fritz, Á. (2025). Artificial Vision Systems for 
+Fruit Inspection and Classification: Systematic Literature Review. Sensors (Basel, 
+Switzerland), 25. https://doi.org/10.3390/s25051524.  
+Sarmiento, R., Overgaard, S., Gai, C., Overgaard, J., & Ohde, J. (2025). Guiding 
+responsible AI in healthcare in the Philippines. NPJ Digital Medicine, 8. 
+https://doi.org/10.1038/s41746-025-01755-3. 
+Sargsyan, A., Nash, E., Binkhorst, G., Forsyth, J., Jones, B., Ibarra, G., Berg, S., 
+McCartor, A., Fuller, R., & Bose-O'Reilly, S. (2024). Rapid market screening to 
+assess lead concentrations in consumer products across 25 low- and middle-
+income countries. Scientific Reports, 14. https://doi.org/10.1038/s41598-024-
+59519-0. 
+Schrobback, P., Zhang, A., Loechel, B., Ricketts, K., & Ingham, A. (2023). Food 
+credence attributes: A conceptual framework of supply chain stakeholders, their 
+motives, and mechanisms to address information asymmetry. Foods, 12. 
+https://doi.org/10.3390/foods12030538.  
+Sen, L., Chou, P., Dacuyan, F., Nyberg, Y., & Wetterlind, J. (2024). Barriers and 
+enablers of digital extension services' adoption among smallholder farmers: The 
+case of Cambodia, the Philippines and Vietnam. International Journal of 
+Agricultural Sustainability, 22. https://doi.org/10.1080/14735903.2024.2368351.  
+Seow, W., Ariffin, U., Lim, S., Mohamed, N., Lee, K., Devaraj, N., & Amin-Nordin, S. 
+(2022). A systematic review on the usability of web-based applications in 
+advocating consumers on food safety. Foods, 11. 
+https://doi.org/10.3390/foods11010115.  
+
+===== PAGE 90 =====
+ 
+ 
+86 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Serdeña, A., Bernardo, J., Pangga, G., Salamat, S., Agulto, T., Desamero, M., Atienza, 
+C., Calumpang, G., Canlas, R., Castillo, M., Danao, A., Espino, R., Jacinto, A., 
+Morales, L., Rico, J., & Fernandez-Colorado, C. (2024). Molecular detection of 
+African swine fever virus in pork and pork products and associated risk factors in 
+the Philippines. The Journal of Veterinary Medical Science, 87, 13 - 27. 
+https://doi.org/10.1292/jvms.24-0193.  
+Setiawan, A., Adi, K., & Widodo, C. (2023). Rice Foreign Object Classification Based on 
+Integrated Color and Textural Feature Using Machine Learning. Mathematical 
+Modelling of Engineering Problems. https://doi.org/10.18280/mmep.100226.  
+Sgroi, F. (2023). Digital technologies to remove the information asymmetry in the food 
+market. Smart Agricultural Technology. 
+https://doi.org/10.1016/j.atech.2023.100326.  
+Sharma, A., Gangopadhyay, S., Agarwal, J. K., Kumar, A., & Ingole, K. V. (2021). Hand 
+contamination among food handlers: A study on the assessment of food handlers 
+in canteen of various hospitals in Solapur City, Maharashtra. Journal of Pure and 
+Applied Microbiology, 15(3), 1536–1546. https://doi.org/10.22207/JPAM.15.3.48.  
+Shu, Y., Gao, H., Wang, Y., & Wei, Y. (2025). Food emotional perception and eating 
+willingness under different lighting colors: A preliminary study based on 
+consumer facial expression analysis. Foods, 14. 
+https://doi.org/10.3390/foods14193440.  
+Song, S., Guo, Q., Duan, X., Shi, X., & Liu, Z. (2024). Research on Pork Cut and 
+Freshness Determination Method Based on Computer Vision. Foods, 13. 
+https://doi.org/10.3390/foods13243986.  
+Suhandoko, A., Chen, D., & Yang, S. (2021). Meat Traceability: Traditional Market 
+Shoppers’ Preferences and Willingness-to-Pay for Additional Information in 
+Taiwan. Foods, 10. https://doi.org/10.3390/foods10081819.  
+Suman, S. P., Ramanathan, R., & Nair, M. N. (2022). Advances in fresh meat color 
+stability. In P. P. Purslow (Ed.), New aspects of meat quality (pp. 139–161). 
+Woodhead Publishing. https://doi.org/10.1016/B978-0-323-85879-3.00030-1.  
+Sun, G., Yang, J., Holman, B. W. B., Tassou, C. C., Papadopoulou, O. S., Luo, X., Zhu, 
+L., Mao, Y., & Zhang, Y. (2024). Exploration of the shelf-life difference between 
+
+===== PAGE 91 =====
+ 
+ 
+87 
+ 
+Pamantasan ng Lungsod ng Maynila 
+chilled beef and pork with similar initial levels of bacterial contamination. Meat 
+Science, 213, 109480. https://doi.org/10.1016/j.meatsci.2024.109480.  
+Tailor, R., Parikh, S., Kumar, K., Collins, T., & El-Ocla, H. (2025). IoT-based food 
+quality monitoring system. IET Wireless Sensor Systems, 15, e70008. 
+https://doi.org/10.1049/wss2.70008.  
+Tumelty, L., Fa, J. E., Coad, L., Friant, S., Mbane, J., Kamogne, C. T., Tata, C. Y., & 
+Ickowitz, A. (2023). A systematic mapping review of links between handling wild 
+meat and zoonotic diseases. One Health, 17, 100637. 
+https://doi.org/10.1016/j.onehlt.2023.100637.  
+Tushar, Z., Rahman, M., & Hashem, M. (2023). Metmyoglobin reducing activity and 
+meat color: A review. Meat Research. https://doi.org/10.55002/mr.3.5.67.  
+Uhlig, E., Bucher, M., Strenger, M., Kloß, S., & Schmid, M. (2024). Towards Reducing 
+Food Wastage: Analysis of Degradation Products Formed during Meat Spoilage 
+under Different Conditions. Foods, 13(17), 2751. 
+https://doi.org/10.3390/foods13172751.  
+Valencia, H., Caballar, E., Dioneda, S., Aguaded, I., & Obanan, S. (2021). Heavy metal 
+accumulation and risk assessment of lead and cadmium in cultured oysters 
+(Crassostrea iredalei) of Cañacao Bay, Philippines. Sustinere: Journal of 
+Environment and Sustainability. https://doi.org/10.22515/sustinere.jes.v5i2.159.  
+Viana, F., Monteiro, M., Ferrari, R., Mutz, Y., Martins, I., Salim, A., De Alcantara, M., 
+Deliza, R., Mano, S., & Conte-Junior, C. (2022). Multivariate nature of fish 
+freshness evaluation by consumers. Foods, 11. 
+https://doi.org/10.3390/foods11142144.  
+Wang, H., Chen, Q., & Kong, B. (2023). Insight into the Quality Development and 
+Microbial Dynamics of Meat and Meat Products. Foods, 12(9), 1782. 
+https://doi.org/10.3390/foods12091782.  
+Wang, X., Wang, Z., Zhuang, H., Nasiru, M. M., Yuan, Y., Zhang, J., & Yan, W. (2021). 
+Changes in color, myoglobin, and lipid oxidation in beef patties treated by 
+dielectric barrier discharge cold plasma during storage. Meat Science, 176, 
+108456. https://doi.org/10.1016/j.meatsci.2021.108456.  
+
+===== PAGE 92 =====
+ 
+ 
+88 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Wirdiani, A., & Sudana, A. (2024). Classification of meat freshness using deep learning. 
+Jurnal Ilmiah Merpati (Menara Penelitian Akademika Teknologi Informasi). 
+https://doi.org/10.24843/jim.2024.v12.i01.p01.  
+World Health Organization. (2024, October 4). Food safety. World Health Organization. 
+https://www.who.int/news-room/fact-sheets/detail/food-safety.  
+Wu, X., Liang, X., Wang, Y., Wu, B., & Sun, J. (2022). Non-destructive techniques for 
+the analysis and evaluation of meat quality and safety: A review. Foods, 11. 
+https://doi.org/10.3390/foods11223713. 
+Yuan, Y., & Chen, X. (2023). Vegetable and fruit freshness detection based on deep 
+features and principal component analysis. Current Research in Food Science, 8. 
+https://doi.org/10.1016/j.crfs.2023.100656.  
+Zafar, M. Z., Joossens, M., Heyvaert, L., & Houf, K. (2025). Comparative evaluation of 
+microbiological quality and pathogen prevalence in fresh beef, pork, and chicken 
+meat at retail from butcheries and supermarkets. Journal of Applied Microbiology, 
+136(11), lxaf278. https://doi.org/10.1093/jambio/lxaf278.  
+Zdunczyk, W., Modzelewska-Kapituła, M., & Tkacz, K. (2024). Influence of oxygen and 
+carbon dioxide content in modified atmosphere packaging on the colour and 
+water-holding capacity of pork loin. Applied Sciences. 
+https://doi.org/10.3390/app14083420.  
+Zhang, L., Cai, Z., He, Q. et al. (2026). Metabolomic, lipidomic and transcriptomic 
+profiles provide insights into meat quality differences among four pork cuts. BMC 
+Genomics 27, 36. https://doi.org/10.1186/s12864-025-12387-y.  
+Zhou, K., Zhang, J., Xie, Y., Wang, Z., Wu, X., Li, C., Wang, W., Zhou, H., & Xu, B. 
+(2021). Hemin from porcine blood effectively stabilized color appearance and 
+odor of prepared pork chops upon repeated freeze–thaw cycles. Meat Science, 
+175, 108432. https://doi.org/10.1016/j.meatsci.2021.108432.  
+Zhu, Y., Wang, W., Li, M., Zhang, J., Ji, L., Zhao, Z., Zhang, R., Cai, D., & Chen, L. 
+(2022). Microbial diversity of meat products under spoilage and its controlling 
+approaches. Frontiers in Nutrition, 9, 1078201. 
+https://doi.org/10.3389/fnut.2022.1078201.  
+
+===== PAGE 93 =====
+ 
+ 
+89 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Zuo, E., Du, X., Aysa, A., Lv, X., Muhammat, M., Zhao, Y., & Ubul, K. (2022). 
+Anomaly score-based risk early warning system for rapidly controlling food 
+safety risk. Foods, 11. https://doi.org/10.3390/foods11142076. 
+  
+
+===== PAGE 94 =====
+ 
+ 
+90 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+APPENDIX A: SURVEY QUESTIONNAIRES 
+ 
+Meat Freshness Assessment Practices and Acceptance of a Web-Based Meat Quality 
+System for Meat Consumers 
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 95 =====
+ 
+ 
+91 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 96 =====
+ 
+ 
+92 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 97 =====
+ 
+ 
+93 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 98 =====
+ 
+ 
+94 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+
+
+===== PAGE 99 =====
+ 
+ 
+95 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 100 =====
+ 
+ 
+96 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+ 
+
+
+===== PAGE 101 =====
+ 
+ 
+97 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+
+
+===== PAGE 102 =====
+ 
+ 
+98 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+
+
+===== PAGE 103 =====
+ 
+ 
+99 
+ 
+Pamantasan ng Lungsod ng Maynila 
+Survey On Meat Freshness Assessment Practices and the Acceptability of 
+a Web -Based H SV Colorimetry System for Meat Quality Evaluation 
+Among Food Technology Students and Graduates 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 104 =====
+ 
+ 
+100 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 105 =====
+ 
+ 
+101 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 106 =====
+ 
+ 
+102 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 107 =====
+ 
+ 
+103 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 108 =====
+ 
+ 
+104 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+
+
+===== PAGE 109 =====
+ 
+ 
+105 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+  
+
+
+===== PAGE 110 =====
+ 
+ 
+106 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+  
+
+
+===== PAGE 111 =====
+ 
+ 
+107 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+  
+
+
+===== PAGE 112 =====
+ 
+ 
+108 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+ 
+
+
+===== PAGE 113 =====
+ 
+ 
+109 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+
+
+===== PAGE 114 =====
+ 
+ 
+110 
+ 
+Pamantasan ng Lungsod ng Maynila 
+  
+
+
+===== PAGE 115 =====
+ 
+ 
+111 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+  
+
+
+===== PAGE 116 =====
+ 
+ 
+112 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+APPENDIX B: LETTER TO THE MEAT QUALITY EXPERT 
+ 
+ 
+
+
+===== PAGE 117 =====
+ 
+ 
+113 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+APPENDIX C: BIONOTES 
+ 
+MAURICE ANDREI F. CARPIO  
+is a diligent and hard -working college student who 
+graduated from Senior Highschool at the Philippine 
+Christian University – Dasmarinas under the strand 
+Technical Vocational Livelihood – Information and 
+Communications Technology in 2023. He graduated with 
+Highest Honor and was awarded Best in Research and 
+Innovation, Best in Social Science, Best in Communication Arts, and Best in Work 
+Immersion. 
+ Currently, he is a 3rd year student pursuing a degree in Bachelor of Science 
+in Information Technology at the Pamantasan ng Lungsod ng Maynila. He is consistently 
+a Dean’s Lister with a current overall general weighted average of 1.38. He is a member of 
+AWS Cloud Club, a junior officer under the PRO Committee in PLM Society of 
+Information Technology Enthusiasts, and a junior officer under Internals Committee in 
+PLM College of Information Systems and Technology Management - Student Council. 
+Additionally, he  has been leading multiple group projects including programming 
+projects—developed using HTML, CSS, JavaScript, C++, Java, Python, and SQL. Most 
+recently he passed the ISC2 Certified in Cybersecurity (CC) exam showing his dedication 
+in pursuing a professional career in the field.  
+ Moving forward, Maurice aims to graduate with honors, further bridge the 
+gap between technical innovation and secure system design, and contribute meaningfully 
+to the Philippine IT landscape. 
+ 
+ 
+
+
+===== PAGE 118 =====
+ 
+ 
+114 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ 
+RAYA JHAILE A. LUNAR 
+finished in the Science, Technology, Engineering, and 
+Mathematics strand from Quezon City Science High 
+School and currently in his 3rd year under the Bachelor of 
+Science in Information Technology degree at Pamantasan 
+ng Lungsod ng Maynila. He maintains a s trong 
+commitment and effort for staying on the dean's lister, 
+averaging at a 1.35 GWA throughout all his semesters so far. 
+Beyond the classroom, Jhaile boasts highly seeked out qualities such as being 
+detail-oriented, meticulous, and particular. He has also demonstrated professional -level 
+proficiency by earning the ISC2 Certificate Certified in Cybersecurity credential.  
+In addition to his technical pursuits, Jhaile has an active hobby in studying, 
+learning, and engaging with world languages and written scripts, balancing academic rigor 
+with creative and historical discipline. He is also an active junior officer of their c ollege 
+student council as an Internals Committee member, overseeing student-centered activities 
+and initiatives within the college while ensuring students' academic and non -academic 
+needs be met. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 119 =====
+ 
+ 
+115 
+ 
+Pamantasan ng Lungsod ng Maynila 
+ALEXANDRA JASMINE S. VITUG  
+is a dedicated and high -performing Information 
+Technology student currently completing her Bachelor of 
+Science in Information Technology at Pamantasan ng 
+Lungsod ng Maynila, maintaining an impressive 1.55 
+General Weighted Average (GWA). She previously 
+completed the Science, Technology, Engineering, and 
+Mathematics (STEM) strand with Honors at University of the East - Manila. Driven by 
+excellence and a strong sense of responsibility, Alexandra has consistently demonstrated 
+leadership, communication, and organizational skills through active involvement in 
+academic organizations and student leadership roles. She has served as a Junior Officer 
+and Year Representative in the Society of Information Technology Enthusiasts and 
+currently holds a leadership role in their college block, where she helps coordinate 
+activities, support students, and strengthen communication between peers and faculty.  
+Beyond academics, Alexandra has practical experience in social media marketing, 
+client engagement, and freelance creative work such as drawing and video editing. Her role 
+as a Social Media Marketing Lead enhanced her ability to manage online communities, 
+create engaging content, and meet deadlines efficiently. As a freelancer, she developed 
+strong time management skills, professionalism, and the ability to understand and deliver 
+client requirements with quality outputs. Alexandra also actively pursues profe ssional 
+development in the field of cybersecurity and networking. She has earned the Certified in 
+Cybersecurity (CC) from ISC2 and multiple certifications from Cisco. She is currently 
+preparing for the CCNA and Security+ certifications to further strengthen her expertise in 
+networking and information security. 
+Recognized as a Dean’s Lister and known for her adaptability, teamwork, and 
+attention to detail, Alexandra aims to apply her technical knowledge, creativity, and people 
+skills in environments where she can contribute meaningfully while continuing to grow 
+professionally. 
