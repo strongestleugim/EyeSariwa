@@ -16,7 +16,7 @@ from utils.input_validator import validate_and_compress
 from utils.zscore import (
     EXPECTED_BASELINE_SCOPE,
     REFERENCE_PIPELINE_VERSION,
-    choose_best_fresh_reference,
+    choose_fresh_reference,
     classify_score,
 )
 
@@ -360,10 +360,10 @@ def build_reference_data(
                 "crop and center-crop fallback"
             ),
             "classification_rule": (
-                "Compares uploads against the single aggregate fresh baseline "
+                "Compares uploads against the just_flash daylight fresh baseline "
                 "for the selected species/cut."
             ),
-            "lighting_baselines_usage": "analysis_only_not_used_by_classify",
+            "lighting_baselines_usage": "just_flash_used_by_classify_others_analysis_only",
             "lighting_groups": sorted(baseline_lightings),
         },
     }
@@ -404,7 +404,7 @@ def add_deviation_scores(successful_records: list[dict], reference_data: dict) -
             continue
 
         hsv_means = {channel: record[channel] for channel in CHANNELS}
-        best_reference = choose_best_fresh_reference(hsv_means, fresh_reference)
+        best_reference = choose_fresh_reference(hsv_means, fresh_reference)
         z_scores = best_reference["z_scores"]
         score = best_reference["score"]
         for channel in CHANNELS:
@@ -418,17 +418,28 @@ def build_analysis_report(successful_records: list[dict]) -> dict:
     classification_counts = defaultdict(int)
     category_classification_counts = defaultdict(lambda: defaultdict(int))
     category_scores = defaultdict(list)
+    category_lighting_counts = defaultdict(int)
+    category_lighting_classification_counts = defaultdict(lambda: defaultdict(int))
+    category_lighting_scores = defaultdict(list)
     experimental_counts = defaultdict(int)
 
     for record in successful_records:
         category_counts[record["dataset_category"]] += 1
+        category_lighting_key = (record["dataset_category"], record["lighting"])
+        category_lighting_counts[category_lighting_key] += 1
         if record["computed_classification"]:
             classification_counts[record["computed_classification"]] += 1
             category_classification_counts[record["dataset_category"]][
                 record["computed_classification"]
             ] += 1
+            category_lighting_classification_counts[category_lighting_key][
+                record["computed_classification"]
+            ] += 1
         if record["deviation_score"] is not None:
             category_scores[record["dataset_category"]].append(
+                float(record["deviation_score"])
+            )
+            category_lighting_scores[category_lighting_key].append(
                 float(record["deviation_score"])
             )
 
@@ -461,6 +472,31 @@ def build_analysis_report(successful_records: list[dict]) -> dict:
             }
             for category in sorted(category_counts)
         },
+        "classification_summary_by_dataset_category_lighting": [
+            {
+                "dataset_category": category,
+                "lighting": lighting,
+                "n": category_lighting_counts[(category, lighting)],
+                "computed_classification_counts": dict(
+                    sorted(
+                        category_lighting_classification_counts[
+                            (category, lighting)
+                        ].items()
+                    )
+                ),
+                "median_score": (
+                    round(
+                        statistics.median(
+                            category_lighting_scores[(category, lighting)]
+                        ),
+                        4,
+                    )
+                    if category_lighting_scores[(category, lighting)]
+                    else None
+                ),
+            }
+            for category, lighting in sorted(category_lighting_counts)
+        ],
         "experimental_condition_counts": [
             {
                 "species": species,

@@ -6,8 +6,9 @@ from pathlib import Path
 CHANNELS = ("H", "S", "V")
 EPSILON = 1e-6
 OPENCV_HUE_RANGE = 180.0
-REFERENCE_PIPELINE_VERSION = "eyesariwa-hsv-zscore-v2"
-EXPECTED_BASELINE_SCOPE = "species_cut_fresh_aggregate"
+REFERENCE_PIPELINE_VERSION = "eyesariwa-hsv-zscore-v3"
+EXPECTED_BASELINE_SCOPE = "species_cut_fresh_daylight"
+DAYLIGHT_BASELINE_KEY = "just_flash"
 MIN_HUE_STD = 5.0
 # S and V floors are provisional tunables until expert-labeled samples exist.
 MIN_S_STD = 8.0
@@ -53,6 +54,12 @@ def validate_reference_schema(reference_data: dict) -> None:
             "Reference data baseline scope is unsupported. "
             "Regenerate reference_data.json with utils.reference_builder."
         )
+
+
+def reference_requires_rembg(reference_data: dict | None = None) -> bool:
+    if reference_data is None:
+        reference_data = load_reference_data()
+    return bool(reference_data["_rembg_enabled"])
 
 
 def signed_hue_difference(observed_hue: float, reference_hue: float) -> float:
@@ -129,12 +136,30 @@ def score_against_reference(hsv_means: dict, fresh_reference: dict) -> dict:
     }
 
 
-def choose_best_fresh_reference(hsv_means: dict, fresh_reference: dict) -> dict:
+def select_daylight_reference(fresh_reference: dict) -> dict:
     if not isinstance(fresh_reference, dict):
         raise ValueError("Fresh reference data is missing for selected meat cut.")
 
-    scored = score_against_reference(hsv_means, fresh_reference)
-    scored["reference_name"] = fresh_reference.get("selection_method", "fresh")
+    lighting_baselines = fresh_reference.get("lighting_baselines")
+    if not isinstance(lighting_baselines, dict):
+        raise ValueError("Fresh daylight reference data is missing for selected meat cut.")
+
+    daylight_reference = lighting_baselines.get(DAYLIGHT_BASELINE_KEY)
+    if not isinstance(daylight_reference, dict):
+        raise ValueError("Fresh daylight reference data is missing for selected meat cut.")
+
+    for channel in CHANNELS:
+        channel_reference = daylight_reference.get(channel)
+        if not isinstance(channel_reference, dict):
+            raise ValueError(f"Fresh daylight reference data for {channel} is missing.")
+
+    return daylight_reference
+
+
+def choose_fresh_reference(hsv_means: dict, fresh_reference: dict) -> dict:
+    daylight_reference = select_daylight_reference(fresh_reference)
+    scored = score_against_reference(hsv_means, daylight_reference)
+    scored["reference_name"] = DAYLIGHT_BASELINE_KEY
     return scored
 
 
@@ -166,7 +191,7 @@ def classify_hsv(hsv_means: dict, species: str, cut: str) -> dict:
     if not isinstance(fresh_reference, dict):
         raise ValueError("Fresh reference data is missing for selected meat cut.")
 
-    best_reference = choose_best_fresh_reference(hsv_means, fresh_reference)
+    best_reference = choose_fresh_reference(hsv_means, fresh_reference)
     score = best_reference["score"]
     z_scores = best_reference["z_scores"]
 

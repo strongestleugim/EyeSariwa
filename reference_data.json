@@ -1,9 +1,9 @@
 {
   "_note": "Generated from verified fresh dataset images using the EyeSariwa backend pipeline. Experimental records are excluded from the baseline and kept for analysis only. Treat these values as preliminary until validated.",
-  "_pipeline_version": "eyesariwa-hsv-zscore-v2",
+  "_pipeline_version": "eyesariwa-hsv-zscore-v3",
   "_rembg_enabled": true,
   "_baseline_rule": {
-    "baseline_scope": "species_cut_fresh_aggregate",
+    "baseline_scope": "species_cut_fresh_daylight",
     "source_dataset_category": "fresh",
     "source_freshness_label": "fresh",
     "excluded_dataset_categories": [
@@ -11,8 +11,8 @@
       "labeled"
     ],
     "hsv_pipeline": "rembg foreground extraction with largest-component bounding-box crop and center-crop fallback",
-    "classification_rule": "Compares uploads against the single aggregate fresh baseline for the selected species/cut.",
-    "lighting_baselines_usage": "analysis_only_not_used_by_classify",
+    "classification_rule": "Compares uploads against the just_flash daylight fresh baseline for the selected species/cut.",
+    "lighting_baselines_usage": "just_flash_used_by_classify_others_analysis_only",
     "lighting_groups": [
       "cool_lighting",
       "just_flash",
