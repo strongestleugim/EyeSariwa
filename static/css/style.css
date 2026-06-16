@@ -638,13 +638,58 @@ img    { display: block; max-width: 100%; }
   min-height: 280px;
   background: var(--maroon-800);
   overflow: hidden;
+  touch-action: none;            /* gestures drive the crop, not page scroll/zoom */
 }
-#camera-video, #capture-preview {
+#camera-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+/* Captured image is positioned/scaled by the crop module (aim-at-box). */
+#capture-preview {
+  position: absolute;
+  top: 0; left: 0;
+  width: auto; height: auto;
+  max-width: none; max-height: none;
+  transform-origin: 0 0;
+  z-index: 1;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+/* Crop frame: the square region that gets analyzed; dims everything outside it. */
+.crop-frame {
+  position: absolute;
+  border: 2px solid rgba(255,255,255,0.95);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+  pointer-events: none;
+  z-index: 3;
+}
+.crop-frame::before, .crop-frame::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border-color: #fff; border-style: solid;
+}
+.crop-frame::before { top: -2px; left: -2px; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+.crop-frame::after  { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+.crop-hint {
+  position: absolute;
+  top: 12px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  text-align: center;
+  max-width: 88%;
 }
 .cam-placeholder {
   position: absolute; inset: 0;

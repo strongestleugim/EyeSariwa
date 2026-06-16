@@ -61,20 +61,17 @@ The current backend pipeline is:
 1. Receive an image and metadata from the frontend.
 2. Validate the uploaded image and request fields.
 3. Compress and resize the image if needed.
-4. Try background removal with `rembg` unless `EYESARIWA_ENABLE_REMBG=false`.
-5. Resize the image passed to `rembg` to a maximum edge of 768px by default to reduce inference time.
-6. Keep the largest foreground component from the rembg mask.
-7. Crop to the foreground bounding box with padding so off-center meat is analyzed around the detected object.
-8. Extract HSV mean values from the foreground meat region.
-9. Fall back to center-crop HSV extraction if background removal fails or if `rembg` is disabled.
-10. Compute calibrated Z-scores against the `just_flash` daylight Fresh baseline for the selected species/cut.
-11. Return Fresh, Suspicious, or Stale.
+4. Extract HSV means using the center crop of the submitted image.
+5. Compute calibrated Z-scores against the `just_flash` daylight Fresh baseline for the selected species/cut.
+6. Return Fresh, Suspicious, or Stale.
 
-The current reference values are cut-specific daylight baselines generated from the collected dataset. `/classify` uses `fresh.lighting_baselines.just_flash` for the selected species/cut. Other lighting-group baselines remain in `reference_data.json` for analysis only. The values should still be treated as preliminary until validated.
+The frontend sends a user-framed meat crop to `/classify`. The user aligns the meat inside the fixed scan box, and the app submits that crop as the image. Because the meat is already isolated by the user framing step, runtime no longer uses `rembg`.
+
+The current reference values are cut-specific daylight baselines generated from the collected dataset. `/classify` uses `fresh.lighting_baselines.just_flash` for the selected species/cut. Other lighting-group baselines remain in `reference_data.json` for analysis only. The baseline values were generated with offline `rembg` meat isolation and are metadata-stamped as compatible with runtime manual-aim center-crop extraction. The values should still be treated as preliminary until validated.
 
 The current calibration compares each uploaded image against the selected species/cut `just_flash` Fresh reference distribution. It uses circular Hue distance for OpenCV HSV values, applies minimum standard-deviation floors for H, S, and V, and uses a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `<= 2.0` for Fresh, `> 2.0` and `<= 4.0` for Suspicious, and `> 4.0` for Stale.
 
-For deployment reliability, the image passed into `rembg` is downsized using `EYESARIWA_REMBG_MAX_DIMENSION` with a default of `768`. If the active reference data was generated with `rembg`, `/classify` will not silently fall back to center-crop extraction. A failed or disabled `rembg` path returns a clear JSON error instead of classifying against a mismatched baseline.
+For deployment reliability, `rembg` and ONNX Runtime are not runtime dependencies. Reference rebuilding from the raw dataset is a developer-only workflow that requires installing `rembg` locally.
 
 ## Reference Data Workflow
 
@@ -90,14 +87,14 @@ dataset/species/cut/experimental/condition/lighting/exposure_time/image.jpg
 The backend utility `utils/reference_builder.py` can generate:
 
 - per-image HSV CSV and JSON outputs for analysis
-- per-image HSV method labels showing `rembg` or `center_crop_fallback`
+- per-image HSV method labels for development reference-building analysis
 - per-image Z-scores, deviation scores, and computed classifications against the generated fresh baseline
 - grouped HSV statistics by species, cut, dataset category, lighting, and experimental condition
 - a cut-specific daylight `reference_data.generated.json` baseline candidate
 - a copy-ready `reference_data.json` baseline candidate in the output folder
 - a QA report for failed images, missing groups, and low sample counts
 
-Only verified `fresh` records are used to generate each species/cut backend baseline. Fresh records are grouped by lighting, and `/classify` uses the `just_flash` group as the intended daylight/flash baseline. `experimental` folders are treated as study metadata and are not treated as validated Suspicious or Stale labels.
+Only verified `fresh` records are used to generate each species/cut backend baseline. Fresh records are grouped by lighting, and `/classify` uses the `just_flash` group as the intended daylight/flash baseline. Rebuilding the meat-isolated baseline from the raw dataset requires `rembg` installed locally, but deployed classification does not. `experimental` folders are treated as study metadata and are not treated as validated Suspicious or Stale labels.
 
 The generated reference data should be reviewed before replacing the root `reference_data.json`.
 

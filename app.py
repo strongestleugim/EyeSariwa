@@ -1,16 +1,9 @@
-import logging
-
 from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
 
-from utils.background_remover import (
-    extract_hsv_with_rembg_fallback,
-    get_rembg_session,
-    is_rembg_enabled,
-)
 from utils.hsv_extractor import extract_hsv_means
 from utils.input_validator import validate_and_compress
-from utils.zscore import classify_hsv, load_reference_data, reference_requires_rembg
+from utils.zscore import classify_hsv
 
 
 ALLOWED_SPECIES = {"beef", "pork", "chicken"}
@@ -31,32 +24,7 @@ SPECIES_TO_CUTS = {
 }
 
 app = Flask(__name__)
-app.logger.setLevel(logging.INFO)
 CORS(app)
-
-
-REMBG_CONTRACT_ERROR = (
-    "The meat surface could not be isolated from the background. "
-    "Please try again in better lighting."
-)
-
-
-def warm_up_rembg() -> None:
-    if not is_rembg_enabled():
-        app.logger.warning(
-            "rembg warmup skipped because EYESARIWA_ENABLE_REMBG is disabled."
-        )
-        return
-
-    try:
-        get_rembg_session()
-    except ValueError as error:
-        app.logger.error("rembg startup warmup failed: %s", error)
-    else:
-        app.logger.info("rembg startup warmup completed.")
-
-
-warm_up_rembg()
 
 
 @app.get("/")
@@ -103,36 +71,8 @@ def classify():
 
     image_bytes = image.read()
     try:
-        reference_data = load_reference_data()
-        requires_rembg = reference_requires_rembg(reference_data)
         compressed_image_bytes = validate_and_compress(image_bytes)
-
-        if requires_rembg:
-            hsv_means, hsv_method = extract_hsv_with_rembg_fallback(compressed_image_bytes)
-            app.logger.info(
-                "HSV extraction method=%s for species=%s cut=%s.",
-                hsv_method,
-                species,
-                cut,
-            )
-            if hsv_method != "rembg":
-                app.logger.warning(
-                    "HSV extraction contract mismatch method=%s for species=%s cut=%s; "
-                    "active baseline requires rembg.",
-                    hsv_method,
-                    species,
-                    cut,
-                )
-                raise ValueError(REMBG_CONTRACT_ERROR)
-        else:
-            hsv_means = extract_hsv_means(compressed_image_bytes)
-            hsv_method = "center_crop_baseline"
-            app.logger.info(
-                "HSV extraction method=%s for species=%s cut=%s.",
-                hsv_method,
-                species,
-                cut,
-            )
+        hsv_means = extract_hsv_means(compressed_image_bytes)
         result = classify_hsv(hsv_means, species, cut)
     except ValueError as error:
         return jsonify({"error": str(error)}), 400

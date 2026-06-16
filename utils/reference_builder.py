@@ -11,7 +11,11 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from utils.background_remover import extract_hsv_with_rembg_fallback, is_rembg_enabled
+from utils.background_remover import (
+    extract_hsv_with_rembg_fallback,
+    get_rembg_session,
+    is_rembg_enabled,
+)
 from utils.input_validator import validate_and_compress
 from utils.zscore import (
     EXPECTED_BASELINE_SCOPE,
@@ -60,6 +64,22 @@ CSV_FIELDS = (
     "deviation_score",
     "computed_classification",
 )
+
+
+def ensure_rembg_available_for_rebuild() -> None:
+    if not is_rembg_enabled():
+        raise ValueError(
+            "Reference rebuild requires rembg enabled locally. "
+            "The deployed runtime does not need rembg."
+        )
+
+    try:
+        get_rembg_session()
+    except ValueError as exc:
+        raise ValueError(
+            "Reference rebuild requires rembg installed locally. "
+            "The deployed runtime does not need rembg."
+        ) from exc
 
 
 def normalize_label(value: str) -> str:
@@ -341,6 +361,9 @@ def build_reference_data(
     successful_records: list[dict],
     baseline_lightings: set[str],
 ) -> tuple[dict, list[str]]:
+    # Reference rebuilding is a developer-only workflow. Rebuilding a meat-isolated
+    # baseline from the raw dataset still requires rembg installed locally; the
+    # deployed runtime uses manual-aim center-crop extraction and does not need rembg.
     reference_data = {
         "_note": (
             "Generated from verified fresh dataset images using the EyeSariwa "
@@ -349,20 +372,25 @@ def build_reference_data(
             "preliminary until validated."
         ),
         "_pipeline_version": REFERENCE_PIPELINE_VERSION,
-        "_rembg_enabled": is_rembg_enabled(),
+        "_rembg_enabled": False,
         "_baseline_rule": {
             "baseline_scope": EXPECTED_BASELINE_SCOPE,
             "source_dataset_category": "fresh",
             "source_freshness_label": "fresh",
             "excluded_dataset_categories": ["experimental", "labeled"],
             "hsv_pipeline": (
-                "rembg foreground extraction with largest-component bounding-box "
-                "crop and center-crop fallback"
+                "Baseline values were generated with offline rembg meat isolation. "
+                "Runtime uses manual-aim center-crop extraction from the user-framed "
+                "meat box, validated as compatible with the rembg baseline."
             ),
             "classification_rule": (
                 "Compares uploads against the just_flash daylight fresh baseline "
                 "for the selected species/cut."
             ),
+            "baseline_generation_method": (
+                "offline_rembg_meat_isolation_requires_local_rembg_for_rebuild"
+            ),
+            "runtime_extraction_method": "manual_aim_center_crop",
             "lighting_baselines_usage": "just_flash_used_by_classify_others_analysis_only",
             "lighting_groups": sorted(baseline_lightings),
         },
@@ -623,6 +651,8 @@ def build_outputs(
 ) -> dict:
     if not dataset_dir.exists():
         raise ValueError(f"Dataset directory does not exist: {dataset_dir}")
+
+    ensure_rembg_available_for_rebuild()
 
     image_paths = find_image_paths(dataset_dir)
     if not image_paths:

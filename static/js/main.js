@@ -59,7 +59,9 @@ var TRANSLATIONS = {
     // Step 4 — Scan
     step4_title:        'I-scan ang Karne',
     scan_empty_hint:    'Pindutin ang “Kuhanan ang Karne” para magsimula. Gumamit ng flash o puting ilaw at igitna ang karne sa frame.',
-    scan_captured_hint: 'Mukhang okay? Pindutin ang Tingnan ang Karne.',
+    scan_captured_hint: 'Punuin ng karne ang kahon, tapos pindutin ang Tingnan ang Karne.',
+    crop_hint:          'I-pinch at i-drag — punuin ng karne ang puting kahon.',
+    crop_bg_warning:    'Mukhang background ang nasa loob ng kahon. I-adjust para mapuno ng karne, o pindutin ulit ang Tingnan ang Karne para ituloy.',
     btn_take_photo:     'Kuhanan ang Karne',
     btn_upload_gallery: 'Pumili sa Gallery',
     btn_check_meat:     'Tingnan ang Karne',
@@ -175,7 +177,9 @@ var TRANSLATIONS = {
     // Step 4
     step4_title:        'Scan Meat Surface',
     scan_empty_hint:    'Tap “Take Photo” to start. Use your flash or a bright white light and center the meat in the frame.',
-    scan_captured_hint: 'Looks good? Tap Check Meat.',
+    scan_captured_hint: 'Fill the box with meat, then tap Check Meat.',
+    crop_hint:          'Pinch & drag so the meat fills the white box.',
+    crop_bg_warning:    'The box looks like background. Adjust so meat fills it, or tap Check Meat again to continue.',
     btn_take_photo:     'Take Photo',
     btn_upload_gallery: 'Upload from Gallery',
     btn_check_meat:     'Check Meat',
@@ -419,6 +423,8 @@ function showScreen(id) {
     hideScanError();
     if (selectedImageBlob) {
       updateScanState('captured');
+      if (crop.ready) layoutCrop();
+      else if (previewURL) initCropImage(previewURL);
     } else {
       updateScanState('empty');
       startCamera();
@@ -447,30 +453,30 @@ function updateContextStrip() {
 // SCAN STATE (empty / live / captured)
 // ===================================================================
 function updateScanState(state) {
+  currentScanState = state;
   var video      = document.getElementById('camera-video');
   var preview    = document.getElementById('capture-preview');
   var ph         = document.getElementById('cam-placeholder');
+  var cropFrame  = document.getElementById('crop-frame');
+  var cropHint   = document.getElementById('crop-hint');
+  var scanFrame  = document.querySelector('#screen-scan .scan-frame');
   var defActions = document.getElementById('scan-actions-default');
   var capActions = document.getElementById('scan-actions-captured');
 
+  function show(el, on) { if (el) el.classList.toggle('hidden', !on); }
+
   if (state === 'live') {
-    if (video)      video.classList.remove('hidden');
-    if (preview)    preview.classList.add('hidden');
-    if (ph)         ph.classList.add('hidden');
-    if (defActions) defActions.classList.remove('hidden');
-    if (capActions) capActions.classList.add('hidden');
+    show(video, true);  show(preview, false); show(ph, false);
+    show(cropFrame, false); show(cropHint, false); show(scanFrame, true);
+    show(defActions, true); show(capActions, false);
   } else if (state === 'captured') {
-    if (video)      video.classList.add('hidden');
-    if (preview)    preview.classList.remove('hidden');
-    if (ph)         ph.classList.add('hidden');
-    if (defActions) defActions.classList.add('hidden');
-    if (capActions) capActions.classList.remove('hidden');
+    show(video, false); show(preview, true); show(ph, false);
+    show(cropFrame, true);  show(cropHint, true);  show(scanFrame, false);
+    show(defActions, false); show(capActions, true);
   } else { // empty
-    if (video)      video.classList.add('hidden');
-    if (preview)    preview.classList.add('hidden');
-    if (ph)         ph.classList.remove('hidden');
-    if (defActions) defActions.classList.remove('hidden');
-    if (capActions) capActions.classList.add('hidden');
+    show(video, false); show(preview, false); show(ph, true);
+    show(cropFrame, false); show(cropHint, false); show(scanFrame, true);
+    show(defActions, true); show(capActions, false);
   }
 }
 
@@ -485,11 +491,9 @@ function setCapture(blob, filename) {
   lastClassifyName  = filename;
   previewURL = URL.createObjectURL(blob);
 
-  var preview = document.getElementById('capture-preview');
-  if (preview) preview.src = previewURL;
-
   stopCamera();
   updateScanState('captured');
+  initCropImage(previewURL);   // load image into the aim-at-box cropper
   hideScanError();
 }
 
@@ -497,8 +501,196 @@ function clearCapture() {
   if (previewURL) { URL.revokeObjectURL(previewURL); previewURL = null; }
   selectedImageBlob = null;
   selectedImageName = null;
+  crop.ready = false;
+  crop.bgConfirmed = false;
   var preview = document.getElementById('capture-preview');
-  if (preview) { preview.src = ''; preview.classList.add('hidden'); }
+  if (preview) { preview.src = ''; preview.classList.add('hidden'); preview.style.transform = ''; }
+}
+
+// ===================================================================
+// CROP / AIM-AT-BOX  (the analyzed region = the white square)
+// ===================================================================
+var currentScanState = 'empty';
+var crop = {
+  natW: 0, natH: 0, scale: 1, minScale: 1, tx: 0, ty: 0,
+  cropL: 0, cropT: 0, size: 0, ready: false, bgConfirmed: false,
+  dragging: false, lastX: 0, lastY: 0,
+  pinchDist: 0, pinchScale: 1, pinchMidX: 0, pinchMidY: 0
+};
+
+function previewEl()   { return document.querySelector('#screen-scan .camera-preview'); }
+function previewRect() { var p = previewEl(); return p ? p.getBoundingClientRect() : null; }
+
+function layoutCrop() {
+  var p = previewEl();
+  var img = document.getElementById('capture-preview');
+  if (!p || !img || !crop.natW) return;
+
+  var W = p.clientWidth, H = p.clientHeight;
+  var size = Math.round(Math.min(W, H) * 0.74);
+  crop.size  = size;
+  crop.cropL = Math.round((W - size) / 2);
+  crop.cropT = Math.round((H - size) / 2);
+
+  var cover = Math.max(size / crop.natW, size / crop.natH); // image always covers the square
+  crop.minScale = cover;
+  crop.scale = cover;
+  crop.tx = crop.cropL + size / 2 - (crop.natW / 2) * cover;
+  crop.ty = crop.cropT + size / 2 - (crop.natH / 2) * cover;
+
+  var f = document.getElementById('crop-frame');
+  if (f) {
+    f.style.width = size + 'px'; f.style.height = size + 'px';
+    f.style.left = crop.cropL + 'px'; f.style.top = crop.cropT + 'px';
+  }
+  applyCropTransform();
+}
+
+function clampCrop() {
+  var iw = crop.natW * crop.scale, ih = crop.natH * crop.scale;
+  if (crop.tx > crop.cropL) crop.tx = crop.cropL;
+  if (crop.tx + iw < crop.cropL + crop.size) crop.tx = crop.cropL + crop.size - iw;
+  if (crop.ty > crop.cropT) crop.ty = crop.cropT;
+  if (crop.ty + ih < crop.cropT + crop.size) crop.ty = crop.cropT + crop.size - ih;
+}
+
+function applyCropTransform() {
+  clampCrop();
+  var img = document.getElementById('capture-preview');
+  if (img) img.style.transform = 'translate(' + crop.tx + 'px,' + crop.ty + 'px) scale(' + crop.scale + ')';
+}
+
+function initCropImage(url) {
+  crop.ready = false;
+  crop.bgConfirmed = false;
+  var img = document.getElementById('capture-preview');
+  if (!img) return;
+  img.onload = function () {
+    crop.natW = img.naturalWidth  || 1;
+    crop.natH = img.naturalHeight || 1;
+    layoutCrop();
+    crop.ready = true;
+  };
+  img.src = url;
+}
+
+function cropActive() { return currentScanState === 'captured' && crop.ready; }
+
+function setScaleAround(ns, mx, my) {
+  ns = Math.max(crop.minScale, Math.min(ns, crop.minScale * 6));
+  var ipx = (mx - crop.tx) / crop.scale, ipy = (my - crop.ty) / crop.scale;
+  crop.scale = ns;
+  crop.tx = mx - ipx * ns;
+  crop.ty = my - ipy * ns;
+  applyCropTransform();
+}
+
+function touchDist(a, b) {
+  var dx = a.clientX - b.clientX, dy = a.clientY - b.clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function onCropTouchStart(e) {
+  if (!cropActive()) return;
+  if (e.touches.length === 1) {
+    crop.dragging = true; crop.lastX = e.touches[0].clientX; crop.lastY = e.touches[0].clientY;
+  } else if (e.touches.length === 2) {
+    crop.dragging = false;
+    crop.pinchDist = touchDist(e.touches[0], e.touches[1]);
+    crop.pinchScale = crop.scale;
+    var r = previewRect();
+    crop.pinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left;
+    crop.pinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top;
+  }
+  e.preventDefault();
+}
+function onCropTouchMove(e) {
+  if (!cropActive()) return;
+  if (e.touches.length === 1 && crop.dragging) {
+    var x = e.touches[0].clientX, y = e.touches[0].clientY;
+    crop.tx += x - crop.lastX; crop.ty += y - crop.lastY;
+    crop.lastX = x; crop.lastY = y;
+    applyCropTransform();
+  } else if (e.touches.length === 2 && crop.pinchDist) {
+    var d = touchDist(e.touches[0], e.touches[1]);
+    setScaleAround(crop.pinchScale * (d / crop.pinchDist), crop.pinchMidX, crop.pinchMidY);
+  }
+  e.preventDefault();
+}
+function onCropTouchEnd() { crop.dragging = false; }
+
+// Mouse fallback for desktop browsers
+function onCropMouseDown(e) {
+  if (!cropActive()) return;
+  crop.dragging = true; crop.lastX = e.clientX; crop.lastY = e.clientY; e.preventDefault();
+}
+function onCropMouseMove(e) {
+  if (!cropActive() || !crop.dragging) return;
+  crop.tx += e.clientX - crop.lastX; crop.ty += e.clientY - crop.lastY;
+  crop.lastX = e.clientX; crop.lastY = e.clientY;
+  applyCropTransform();
+}
+function onCropMouseUp() { crop.dragging = false; }
+function onCropWheel(e) {
+  if (!cropActive()) return;
+  var r = previewRect();
+  var factor = e.deltaY < 0 ? 1.08 : 1 / 1.08;
+  setScaleAround(crop.scale * factor, e.clientX - r.left, e.clientY - r.top);
+  e.preventDefault();
+}
+
+function initCropGestures() {
+  var p = previewEl();
+  if (!p) return;
+  p.addEventListener('touchstart', onCropTouchStart, { passive: false });
+  p.addEventListener('touchmove',  onCropTouchMove,  { passive: false });
+  p.addEventListener('touchend',   onCropTouchEnd);
+  p.addEventListener('mousedown',  onCropMouseDown);
+  window.addEventListener('mousemove', onCropMouseMove);
+  window.addEventListener('mouseup',   onCropMouseUp);
+  p.addEventListener('wheel', onCropWheel, { passive: false });
+  window.addEventListener('resize', function () {
+    if (currentScanState === 'captured' && crop.ready) layoutCrop();
+  });
+}
+
+// Render only the white-box region to a JPEG blob; flag if it looks like background.
+function extractCropBlob(callback) {
+  var img = document.getElementById('capture-preview');
+  var canvas = document.getElementById('camera-canvas');
+  if (!img || !canvas || !crop.ready) { callback(null, false); return; }
+
+  var s = crop.scale;
+  var srcSize = crop.size / s;
+  var srcX = (crop.cropL - crop.tx) / s;
+  var srcY = (crop.cropT - crop.ty) / s;
+  srcX = Math.max(0, Math.min(srcX, crop.natW - srcSize));
+  srcY = Math.max(0, Math.min(srcY, crop.natH - srcSize));
+
+  var OUT = 512;
+  canvas.width = OUT; canvas.height = OUT;
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(img, srcX, srcY, srcSize, srcSize, 0, 0, OUT, OUT);
+
+  var looksBg = cropLooksLikeBackground(ctx, OUT);
+  canvas.toBlob(function (blob) { callback(blob, looksBg); }, 'image/jpeg', 0.92);
+}
+
+// Heuristic: a near-white, very low-saturation crop is probably background (paper/table), not meat.
+function cropLooksLikeBackground(ctx, size) {
+  try {
+    var data = ctx.getImageData(0, 0, size, size).data;
+    var n = 0, sumS = 0, sumV = 0;
+    for (var i = 0; i < data.length; i += 4 * 53) {
+      var r = data[i], g = data[i + 1], b = data[i + 2];
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+      sumV += mx;
+      sumS += (mx === 0 ? 0 : (mx - mn) / mx);
+      n++;
+    }
+    if (!n) return false;
+    return (sumV / n) > 205 && (sumS / n) < 0.16;
+  } catch (e) { return false; }
 }
 
 // ===================================================================
@@ -677,13 +869,30 @@ function initScanScreen() {
   });
 
   analyzeBtn.addEventListener('click', function () {
-    if (selectedImageBlob) submitImage(selectedImageBlob, selectedImageName || 'image.jpg');
+    if (!crop.ready) {
+      if (selectedImageBlob) submitImage(selectedImageBlob, selectedImageName || 'image.jpg');
+      return;
+    }
+    extractCropBlob(function (blob, looksBg) {
+      if (!blob) {
+        if (selectedImageBlob) submitImage(selectedImageBlob, selectedImageName || 'image.jpg');
+        return;
+      }
+      if (looksBg && !crop.bgConfirmed) {
+        crop.bgConfirmed = true;          // a second tap overrides the warning
+        showScanError(t('crop_bg_warning'));
+        return;
+      }
+      submitImage(blob, 'crop.jpg');
+    });
   });
 
   retakeBtn.addEventListener('click', function () {
     clearCapture();
     startCamera();
   });
+
+  initCropGestures();
 }
 
 // ===================================================================

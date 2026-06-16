@@ -399,8 +399,11 @@
       <div class="camera-preview" role="img" aria-label="Camera preview area">
         <!-- Live camera feed -->
         <video id="camera-video" class="hidden" autoplay playsinline muted aria-hidden="true"></video>
-        <!-- Captured image preview -->
+        <!-- Captured image (transformable for crop / aim-at-box) -->
         <img  id="capture-preview" class="hidden" src="" alt="Captured meat photo" aria-hidden="true">
+        <!-- Crop frame: marks the square region that will be analyzed -->
+        <div class="crop-frame hidden" id="crop-frame" aria-hidden="true"></div>
+        <p class="crop-hint hidden" id="crop-hint" data-i18n="crop_hint">Pinch &amp; drag so the meat fills the white box.</p>
         <!-- Empty placeholder -->
         <div id="cam-placeholder" class="cam-placeholder">
           <div class="cam-placeholder-icon" aria-hidden="true">📷</div>

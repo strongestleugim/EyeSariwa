@@ -45,8 +45,6 @@ Backend:
 - Pillow
 - OpenCV headless
 - NumPy
-- rembg (optional foreground removal path)
-- ONNX Runtime (used only when `rembg` is enabled)
 
 Frontend later:
 
@@ -161,27 +159,17 @@ Expected error response:
 }
 ```
 
-The current backend validates the request, validates and compresses the image, extracts HSV values, and classifies against the cut-specific `just_flash` daylight Fresh baseline in `reference_data.json`.
+The current backend validates the request, validates and compresses the image, extracts center-crop HSV values from the user-framed meat crop, and classifies against the cut-specific `just_flash` daylight Fresh baseline in `reference_data.json`.
 
-By default, `/classify` uses `rembg` foreground extraction because the current `reference_data.json` baseline was generated from the same pipeline. To reduce server work, the image passed into `rembg` is resized to a maximum edge of 768px by default.
+The frontend asks the user to aim the meat inside a fixed crop box before submitting. The backend receives that meat-filled crop and no longer uses `rembg` at runtime.
 
-You can tune the rembg input size before starting Flask:
+The current baseline values were originally generated with offline `rembg` meat isolation, but the runtime manual-aim center-crop path is metadata-stamped as compatible with that baseline:
 
-```powershell
-$env:EYESARIWA_REMBG_MAX_DIMENSION = "768"
-python app.py
+```text
+_pipeline_version: eyesariwa-hsv-zscore-v4
+_rembg_enabled: false
+runtime_extraction_method: manual_aim_center_crop
 ```
-
-When `rembg` is enabled, the backend tries foreground extraction, keeps the largest foreground component, crops to the foreground bounding box with padding, and falls back to center-crop HSV extraction if foreground removal fails.
-
-If a future center-crop reference baseline is generated, you can disable `rembg`:
-
-```powershell
-$env:EYESARIWA_ENABLE_REMBG = "false"
-python app.py
-```
-
-That fallback is faster, but it must be paired with a matching center-crop generated baseline. The current `rembg`-built baseline rejects center-crop fallback instead of silently classifying mismatched HSV values.
 
 Classification compares the uploaded HSV values against the `just_flash` Fresh baseline for the selected species/cut. Other lighting baselines are retained in `reference_data.json` for analysis only and do not affect `/classify`. The score uses circular Hue distance, minimum standard-deviation floors for H, S, and V, and a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `FRESH <= 2.0`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
 
@@ -264,13 +252,15 @@ Run the builder:
 python -m utils.reference_builder --dataset-dir dataset --output-dir outputs/reference_builder
 ```
 
+Reference rebuilding from the raw dataset is a developer-only workflow and requires `rembg` installed locally. The deployed runtime does not need `rembg` or ONNX Runtime.
+
 By default, the generated runtime baseline uses the verified `fresh/just_flash` records for each species/cut. The generated `reference_data.json` also includes separate fresh lighting baselines for `warm_lighting`, `cool_lighting`, and `red_lighting`, but those non-daylight groups are analysis-only and are not used by `/classify`. `experimental` records are excluded from the baseline and kept for per-image analysis only.
 
 Outputs:
 
 - `per_image_hsv.csv`: per-image HSV values, metadata, Z-scores, deviation scores, and computed classifications for spreadsheet analysis
 - `per_image_hsv.json`: per-image HSV values, metadata, Z-scores, deviation scores, and computed classifications for JSON analysis
-- `hsv_method`: included per image as `rembg` or `center_crop_fallback`
+- `hsv_method`: included per image for development reference-building analysis
 - `grouped_statistics.json`: grouped means and standard deviations by species, cut, dataset category, lighting, and experimental condition
 - `analysis_report.json`: dataset-category and lighting-level computed-classification counts, median scores, and experimental condition counts
 - `reference_data.generated.json`: generated daylight baseline candidate for the backend
@@ -288,27 +278,15 @@ Use these settings:
 ```text
 Runtime: Python 3
 Build Command: pip install -r requirements.txt
-Start Command: gunicorn --timeout 180 app:app
+Start Command: gunicorn app:app
 ```
 
-Optional Render environment variables:
-
-```text
-EYESARIWA_REMBG_MAX_DIMENSION=768
-```
-
-Only use this setting with a matching center-crop generated baseline:
-
-```text
-EYESARIWA_ENABLE_REMBG=false
-```
-
-The current `rembg`-built reference data requires `rembg`; if `rembg` is disabled or fails, `/classify` returns a clear JSON error rather than classifying center-crop HSV values.
+No `rembg` or ONNX Runtime environment variables are required.
 
 The repository also includes this `Procfile`:
 
 ```text
-web: gunicorn --timeout 180 app:app
+web: gunicorn app:app
 ```
 
 After deployment, test:
@@ -325,7 +303,5 @@ POST https://your-render-service.onrender.com/classify
 ```
 
 Render free-tier services may sleep after inactivity. The first request after sleep may take longer while the server starts again.
-
-The first request that uses background removal may also take longer because `rembg` downloads and loads the `u2netp` model. The Gunicorn timeout is set to 180 seconds, and `EYESARIWA_REMBG_MAX_DIMENSION=768` keeps the foreground-removal input smaller for faster scans.
 
 No `.env` file or secrets are required for the current prototype.

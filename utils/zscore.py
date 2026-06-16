@@ -6,7 +6,7 @@ from pathlib import Path
 CHANNELS = ("H", "S", "V")
 EPSILON = 1e-6
 OPENCV_HUE_RANGE = 180.0
-REFERENCE_PIPELINE_VERSION = "eyesariwa-hsv-zscore-v3"
+REFERENCE_PIPELINE_VERSION = "eyesariwa-hsv-zscore-v4"
 EXPECTED_BASELINE_SCOPE = "species_cut_fresh_daylight"
 DAYLIGHT_BASELINE_KEY = "just_flash"
 MIN_HUE_STD = 5.0
@@ -42,8 +42,10 @@ def validate_reference_schema(reference_data: dict) -> None:
             "Regenerate reference_data.json with utils.reference_builder."
         )
 
-    if not isinstance(reference_data.get("_rembg_enabled"), bool):
-        raise ValueError("Reference data must include a valid _rembg_enabled stamp.")
+    if reference_data.get("_rembg_enabled") is not False:
+        raise ValueError(
+            "Reference data must be stamped for center-crop runtime extraction."
+        )
 
     baseline_rule = reference_data.get("_baseline_rule")
     if not isinstance(baseline_rule, dict):
@@ -54,12 +56,6 @@ def validate_reference_schema(reference_data: dict) -> None:
             "Reference data baseline scope is unsupported. "
             "Regenerate reference_data.json with utils.reference_builder."
         )
-
-
-def reference_requires_rembg(reference_data: dict | None = None) -> bool:
-    if reference_data is None:
-        reference_data = load_reference_data()
-    return bool(reference_data["_rembg_enabled"])
 
 
 def signed_hue_difference(observed_hue: float, reference_hue: float) -> float:

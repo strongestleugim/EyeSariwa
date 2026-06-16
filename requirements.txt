@@ -4,5 +4,3 @@ gunicorn
 pillow
 opencv-python-headless
 numpy
-rembg
-onnxruntime
