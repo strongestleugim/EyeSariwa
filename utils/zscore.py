@@ -14,7 +14,7 @@ MIN_HUE_STD = 5.0
 MIN_S_STD = 8.0
 MIN_V_STD = 10.0
 CHANNEL_WEIGHTS = {"H": 1.0, "S": 1.0, "V": 0.5}
-FRESH_SCORE_THRESHOLD = 2.0
+FRESH_SCORE_THRESHOLD = 2.5
 SUSPICIOUS_SCORE_THRESHOLD = 4.0
 REFERENCE_DATA_PATH = Path(__file__).resolve().parents[1] / "reference_data.json"
 

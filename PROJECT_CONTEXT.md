@@ -67,11 +67,11 @@ The current backend pipeline is:
 
 The frontend sends a user-framed meat crop to `/classify`. The user aligns the meat inside the fixed scan box, and the app submits that crop as the image. Because the meat is already isolated by the user framing step, runtime no longer uses `rembg`.
 
-The current reference values are cut-specific daylight baselines generated from the collected dataset. `/classify` uses `fresh.lighting_baselines.just_flash` for the selected species/cut. Other lighting-group baselines remain in `reference_data.json` for analysis only. The baseline values were generated with offline `rembg` meat isolation and are metadata-stamped as compatible with runtime manual-aim center-crop extraction. The values should still be treated as preliminary until validated.
+The current reference values are cut-specific daylight baselines generated from re-cropped, meat-focused `fresh/just_flash` dataset images. `/classify` uses `fresh.lighting_baselines.just_flash` for the selected species/cut. Warm, cool, and red lighting groups are not runtime baselines. The baseline values are generated with the same center-crop HSV extraction used at runtime and should still be treated as preliminary until validated.
 
-The current calibration compares each uploaded image against the selected species/cut `just_flash` Fresh reference distribution. It uses circular Hue distance for OpenCV HSV values, applies minimum standard-deviation floors for H, S, and V, and uses a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `<= 2.0` for Fresh, `> 2.0` and `<= 4.0` for Suspicious, and `> 4.0` for Stale.
+The current calibration compares each uploaded image against the selected species/cut `just_flash` Fresh reference distribution. It uses circular Hue distance for OpenCV HSV values, applies minimum standard-deviation floors for H, S, and V, and uses a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `<= 2.5` for Fresh, `> 2.5` and `<= 4.0` for Suspicious, and `> 4.0` for Stale.
 
-For deployment reliability, `rembg` and ONNX Runtime are not runtime dependencies. Reference rebuilding from the raw dataset is a developer-only workflow that requires installing `rembg` locally.
+For deployment reliability, `rembg` and ONNX Runtime are not dependencies. Reference rebuilding uses center-crop extraction only.
 
 ## Reference Data Workflow
 
@@ -94,7 +94,7 @@ The backend utility `utils/reference_builder.py` can generate:
 - a copy-ready `reference_data.json` baseline candidate in the output folder
 - a QA report for failed images, missing groups, and low sample counts
 
-Only verified `fresh` records are used to generate each species/cut backend baseline. Fresh records are grouped by lighting, and `/classify` uses the `just_flash` group as the intended daylight/flash baseline. Rebuilding the meat-isolated baseline from the raw dataset requires `rembg` installed locally, but deployed classification does not. `experimental` folders are treated as study metadata and are not treated as validated Suspicious or Stale labels.
+Only verified `fresh/just_flash` records are used to generate each species/cut backend baseline. `/classify` uses the `just_flash` group as the intended daylight/flash baseline. The builder uses center-crop HSV extraction and does not require `rembg`. `experimental` folders are treated as study metadata and are not treated as validated Suspicious or Stale labels.
 
 The generated reference data should be reviewed before replacing the root `reference_data.json`.
 

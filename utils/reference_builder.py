@@ -11,11 +11,7 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from utils.background_remover import (
-    extract_hsv_with_rembg_fallback,
-    get_rembg_session,
-    is_rembg_enabled,
-)
+from utils.hsv_extractor import extract_hsv_means
 from utils.input_validator import validate_and_compress
 from utils.zscore import (
     EXPECTED_BASELINE_SCOPE,
@@ -27,12 +23,7 @@ from utils.zscore import (
 
 CHANNELS = ("H", "S", "V")
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
-FRESH_LIGHTING_GROUPS = (
-    "just_flash",
-    "warm_lighting",
-    "cool_lighting",
-    "red_lighting",
-)
+FRESH_LIGHTING_GROUPS = ("just_flash",)
 
 DATASET_CATEGORIES = {"fresh", "experimental", "suspicious", "stale"}
 
@@ -64,22 +55,6 @@ CSV_FIELDS = (
     "deviation_score",
     "computed_classification",
 )
-
-
-def ensure_rembg_available_for_rebuild() -> None:
-    if not is_rembg_enabled():
-        raise ValueError(
-            "Reference rebuild requires rembg enabled locally. "
-            "The deployed runtime does not need rembg."
-        )
-
-    try:
-        get_rembg_session()
-    except ValueError as exc:
-        raise ValueError(
-            "Reference rebuild requires rembg installed locally. "
-            "The deployed runtime does not need rembg."
-        ) from exc
 
 
 def normalize_label(value: str) -> str:
@@ -193,7 +168,8 @@ def process_image(path: Path, dataset_dir: Path) -> dict:
     try:
         image_bytes = path.read_bytes()
         compressed_bytes = validate_and_compress(image_bytes)
-        hsv_means, hsv_method = extract_hsv_with_rembg_fallback(compressed_bytes)
+        hsv_means = extract_hsv_means(compressed_bytes)
+        hsv_method = "center_crop"
     except OSError as error:
         record["status"] = "error"
         record["error"] = f"Could not read image file: {error}"
@@ -322,6 +298,7 @@ def fresh_baseline_records(
     successful_records: list[dict],
     species: str,
     cut: str,
+    baseline_lightings: set[str],
 ) -> list[dict]:
     fresh_records = [
         record
@@ -330,6 +307,7 @@ def fresh_baseline_records(
         and record["cut"] == cut
         and record["dataset_category"] == "fresh"
         and record["freshness_label"] == "fresh"
+        and record["lighting"] in baseline_lightings
     ]
     return fresh_records
 
@@ -361,15 +339,13 @@ def build_reference_data(
     successful_records: list[dict],
     baseline_lightings: set[str],
 ) -> tuple[dict, list[str]]:
-    # Reference rebuilding is a developer-only workflow. Rebuilding a meat-isolated
-    # baseline from the raw dataset still requires rembg installed locally; the
-    # deployed runtime uses manual-aim center-crop extraction and does not need rembg.
     reference_data = {
         "_note": (
-            "Generated from verified fresh dataset images using the EyeSariwa "
-            "backend pipeline. Experimental records are excluded from the "
-            "baseline and kept for analysis only. Treat these values as "
-            "preliminary until validated."
+            "Generated from verified, re-cropped fresh just_flash dataset images "
+            "using the EyeSariwa center-crop HSV pipeline without rembg. "
+            "Experimental records are excluded from the baseline and kept for "
+            "analysis only. Bone-dominant beef-shank outliers were excluded "
+            "before generation. Treat these values as preliminary until validated."
         ),
         "_pipeline_version": REFERENCE_PIPELINE_VERSION,
         "_rembg_enabled": False,
@@ -379,19 +355,16 @@ def build_reference_data(
             "source_freshness_label": "fresh",
             "excluded_dataset_categories": ["experimental", "labeled"],
             "hsv_pipeline": (
-                "Baseline values were generated with offline rembg meat isolation. "
-                "Runtime uses manual-aim center-crop extraction from the user-framed "
-                "meat box, validated as compatible with the rembg baseline."
+                "Baseline values are generated with validate_and_compress followed "
+                "by extract_hsv_means center-crop extraction, matching runtime."
             ),
             "classification_rule": (
                 "Compares uploads against the just_flash daylight fresh baseline "
                 "for the selected species/cut."
             ),
-            "baseline_generation_method": (
-                "offline_rembg_meat_isolation_requires_local_rembg_for_rebuild"
-            ),
+            "baseline_generation_method": "recropped_just_flash_center_crop_no_rembg",
             "runtime_extraction_method": "manual_aim_center_crop",
-            "lighting_baselines_usage": "just_flash_used_by_classify_others_analysis_only",
+            "lighting_baselines_usage": "just_flash_only_runtime_baseline",
             "lighting_groups": sorted(baseline_lightings),
         },
     }
@@ -404,6 +377,7 @@ def build_reference_data(
                 successful_records,
                 species,
                 cut,
+                baseline_lightings,
             )
             if not selected_records:
                 warnings.append(f"No verified fresh records found for {species}/{cut}.")
@@ -652,8 +626,6 @@ def build_outputs(
     if not dataset_dir.exists():
         raise ValueError(f"Dataset directory does not exist: {dataset_dir}")
 
-    ensure_rembg_available_for_rebuild()
-
     image_paths = find_image_paths(dataset_dir)
     if not image_paths:
         raise ValueError(f"No supported image files found in: {dataset_dir}")
@@ -733,8 +705,8 @@ def parse_args() -> argparse.Namespace:
         "--baseline-lighting",
         default=",".join(FRESH_LIGHTING_GROUPS),
         help=(
-            "Comma-separated fresh lighting folders to include in analysis-only "
-            "lighting baselines."
+            "Comma-separated fresh lighting folders to include in generated "
+            "runtime lighting baselines."
         ),
     )
     parser.add_argument(

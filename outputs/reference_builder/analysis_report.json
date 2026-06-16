@@ -1,33 +1,33 @@
 {
-  "generated_at_utc": "2026-06-15T14:38:01.825836+00:00",
-  "record_count": 324,
+  "generated_at_utc": "2026-06-16T17:39:22.647518+00:00",
+  "record_count": 320,
   "dataset_category_counts": {
     "experimental": 84,
-    "fresh": 240
+    "fresh": 236
   },
   "computed_classification_counts": {
-    "FRESH": 125,
-    "STALE": 89,
-    "SUSPICIOUS": 110
+    "FRESH": 102,
+    "STALE": 117,
+    "SUSPICIOUS": 101
   },
   "classification_summary_by_dataset_category": {
     "experimental": {
       "n": 84,
       "computed_classification_counts": {
-        "FRESH": 12,
-        "STALE": 35,
-        "SUSPICIOUS": 37
+        "FRESH": 8,
+        "STALE": 54,
+        "SUSPICIOUS": 22
       },
-      "median_score": 3.6442
+      "median_score": 4.604
     },
     "fresh": {
-      "n": 240,
+      "n": 236,
       "computed_classification_counts": {
-        "FRESH": 113,
-        "STALE": 54,
-        "SUSPICIOUS": 73
+        "FRESH": 94,
+        "STALE": 63,
+        "SUSPICIOUS": 79
       },
-      "median_score": 2.1462
+      "median_score": 2.9596
     }
   },
   "classification_summary_by_dataset_category_lighting": [
@@ -36,54 +36,54 @@
       "lighting": "just_flash",
       "n": 84,
       "computed_classification_counts": {
-        "FRESH": 12,
-        "STALE": 35,
-        "SUSPICIOUS": 37
+        "FRESH": 8,
+        "STALE": 54,
+        "SUSPICIOUS": 22
       },
-      "median_score": 3.6442
+      "median_score": 4.604
     },
     {
       "dataset_category": "fresh",
       "lighting": "cool_lighting",
       "n": 60,
       "computed_classification_counts": {
-        "FRESH": 49,
-        "SUSPICIOUS": 11
+        "FRESH": 8,
+        "STALE": 37,
+        "SUSPICIOUS": 15
       },
-      "median_score": 1.2987
+      "median_score": 4.9601
     },
     {
       "dataset_category": "fresh",
       "lighting": "just_flash",
-      "n": 60,
+      "n": 56,
       "computed_classification_counts": {
-        "FRESH": 56,
-        "STALE": 1,
-        "SUSPICIOUS": 3
+        "FRESH": 54,
+        "SUSPICIOUS": 2
       },
-      "median_score": 0.816
+      "median_score": 1.0256
     },
     {
       "dataset_category": "fresh",
       "lighting": "red_lighting",
       "n": 60,
       "computed_classification_counts": {
-        "FRESH": 5,
-        "STALE": 28,
-        "SUSPICIOUS": 27
+        "FRESH": 13,
+        "STALE": 13,
+        "SUSPICIOUS": 34
       },
-      "median_score": 3.9564
+      "median_score": 3.2054
     },
     {
       "dataset_category": "fresh",
       "lighting": "warm_lighting",
       "n": 60,
       "computed_classification_counts": {
-        "FRESH": 3,
-        "STALE": 25,
-        "SUSPICIOUS": 32
+        "FRESH": 19,
+        "STALE": 13,
+        "SUSPICIOUS": 28
       },
-      "median_score": 3.5043
+      "median_score": 2.9897
     }
   ],
   "experimental_condition_counts": [

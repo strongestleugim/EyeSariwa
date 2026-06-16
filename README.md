@@ -163,7 +163,7 @@ The current backend validates the request, validates and compresses the image, e
 
 The frontend asks the user to aim the meat inside a fixed crop box before submitting. The backend receives that meat-filled crop and no longer uses `rembg` at runtime.
 
-The current baseline values were originally generated with offline `rembg` meat isolation, but the runtime manual-aim center-crop path is metadata-stamped as compatible with that baseline:
+The current baseline values are generated from re-cropped, meat-focused `fresh/just_flash` images using the same center-crop HSV path used by runtime:
 
 ```text
 _pipeline_version: eyesariwa-hsv-zscore-v4
@@ -171,7 +171,7 @@ _rembg_enabled: false
 runtime_extraction_method: manual_aim_center_crop
 ```
 
-Classification compares the uploaded HSV values against the `just_flash` Fresh baseline for the selected species/cut. Other lighting baselines are retained in `reference_data.json` for analysis only and do not affect `/classify`. The score uses circular Hue distance, minimum standard-deviation floors for H, S, and V, and a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `FRESH <= 2.0`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
+Classification compares the uploaded HSV values against the `just_flash` Fresh baseline for the selected species/cut. Warm, cool, and red lighting groups are not generated as runtime baselines. The score uses circular Hue distance, minimum standard-deviation floors for H, S, and V, and a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `FRESH <= 2.5`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
 
 ## Postman Test
 
@@ -249,12 +249,12 @@ dataset/species/cut/experimental/condition/lighting/exposure_time/image.jpg
 Run the builder:
 
 ```powershell
-python -m utils.reference_builder --dataset-dir dataset --output-dir outputs/reference_builder
+python -m utils.reference_builder --dataset-dir dataset --output-dir outputs/reference_builder --baseline-lighting just_flash
 ```
 
-Reference rebuilding from the raw dataset is a developer-only workflow and requires `rembg` installed locally. The deployed runtime does not need `rembg` or ONNX Runtime.
+Reference rebuilding uses the same center-crop HSV extraction as runtime. It does not require `rembg` or ONNX Runtime.
 
-By default, the generated runtime baseline uses the verified `fresh/just_flash` records for each species/cut. The generated `reference_data.json` also includes separate fresh lighting baselines for `warm_lighting`, `cool_lighting`, and `red_lighting`, but those non-daylight groups are analysis-only and are not used by `/classify`. `experimental` records are excluded from the baseline and kept for per-image analysis only.
+By default, the generated runtime baseline uses the verified `fresh/just_flash` records for each species/cut. `experimental` records are excluded from the baseline and kept for per-image analysis only.
 
 Outputs:
 
