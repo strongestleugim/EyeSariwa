@@ -67,7 +67,7 @@ The current backend pipeline is:
 
 The frontend sends a user-framed meat crop to `/classify`. The user aligns the meat inside the fixed scan box, and the app submits that crop as the image. Because the meat is already isolated by the user framing step, runtime no longer uses `rembg`.
 
-The current reference values are cut-specific daylight baselines generated from re-cropped, meat-focused `fresh/just_flash` dataset images. `/classify` uses `fresh.lighting_baselines.just_flash` for the selected species/cut. Warm, cool, and red lighting groups are not runtime baselines. The baseline values are generated with the same center-crop HSV extraction used at runtime and should still be treated as preliminary until validated.
+The current reference values are cut-specific daylight baselines generated from re-cropped, meat-focused `fresh/just_flash` dataset images. `/classify` uses `fresh.lighting_baselines.just_flash` for the selected species/cut. Warm, cool, and red lighting groups are not runtime baselines. The baseline values are generated with the same center-crop HSV extraction used at runtime. Hue is averaged with a circular mean, while Saturation and Value use linear means. The values should still be treated as preliminary until validated.
 
 The current calibration compares each uploaded image against the selected species/cut `just_flash` Fresh reference distribution. It uses circular Hue distance for OpenCV HSV values, applies minimum standard-deviation floors for H, S, and V, and uses a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `<= 2.5` for Fresh, `> 2.5` and `<= 4.0` for Suspicious, and `> 4.0` for Stale.
 

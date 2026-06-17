@@ -1,6 +1,7 @@
 import argparse
 import csv
 import json
+import math
 import statistics
 import sys
 from collections import defaultdict
@@ -11,7 +12,11 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from utils.hsv_extractor import extract_hsv_means
+from utils.hsv_extractor import (
+    OPENCV_HUE_RANGE,
+    calculate_circular_hue_mean,
+    extract_hsv_means,
+)
 from utils.input_validator import validate_and_compress
 from utils.zscore import (
     EXPECTED_BASELINE_SCOPE,
@@ -190,11 +195,28 @@ def summarize_records(records: list[dict]) -> dict:
     summary = {"n": len(records)}
     for channel in CHANNELS:
         values = [float(record[channel]) for record in records]
-        summary[channel] = {
-            "mean": round(statistics.fmean(values), 4),
-            "std": round(statistics.stdev(values), 4) if len(values) > 1 else 0.0,
-        }
+        if channel == "H":
+            summary[channel] = {
+                "mean": round(calculate_circular_hue_mean(values), 4),
+                "std": round(circular_hue_std(values), 4),
+            }
+        else:
+            summary[channel] = {
+                "mean": round(statistics.fmean(values), 4),
+                "std": round(statistics.stdev(values), 4) if len(values) > 1 else 0.0,
+            }
     return summary
+
+
+def circular_hue_std(values: list[float]) -> float:
+    if len(values) <= 1:
+        return 0.0
+
+    angles = [value * (2.0 * math.pi / OPENCV_HUE_RANGE) for value in values]
+    sin_mean = statistics.fmean(math.sin(angle) for angle in angles)
+    cos_mean = statistics.fmean(math.cos(angle) for angle in angles)
+    resultant_length = min(1.0, max(1e-12, math.hypot(sin_mean, cos_mean)))
+    return math.degrees(math.sqrt(-2.0 * math.log(resultant_length))) / 2.0
 
 
 def grouped_statistics(successful_records: list[dict]) -> dict:
@@ -356,7 +378,8 @@ def build_reference_data(
             "excluded_dataset_categories": ["experimental", "labeled"],
             "hsv_pipeline": (
                 "Baseline values are generated with validate_and_compress followed "
-                "by extract_hsv_means center-crop extraction, matching runtime."
+                "by extract_hsv_means center-crop extraction, using circular Hue "
+                "mean and linear Saturation/Value means, matching runtime."
             ),
             "classification_rule": (
                 "Compares uploads against the just_flash daylight fresh baseline "

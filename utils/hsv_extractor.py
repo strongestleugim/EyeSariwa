@@ -7,6 +7,32 @@ from PIL import Image
 
 FOREGROUND_ALPHA_THRESHOLD = 10
 MIN_FOREGROUND_PIXELS = 100
+OPENCV_HUE_RANGE = 180.0
+RED_WRAP_CANONICAL_THRESHOLD = 150.0
+
+
+def canonicalize_hue_mean(hue_mean: float) -> float:
+    if hue_mean > RED_WRAP_CANONICAL_THRESHOLD:
+        return OPENCV_HUE_RANGE - hue_mean
+    return hue_mean
+
+
+def calculate_circular_hue_mean(hue_values) -> float:
+    hue = np.asarray(hue_values, dtype=np.float64)
+    # OpenCV hue uses 0..180 for a full 0..360 degree color wheel, so Hue
+    # must be averaged circularly.
+    angles = hue * (2.0 * np.pi / OPENCV_HUE_RANGE)
+    mean_angle = np.arctan2(np.sin(angles).mean(), np.cos(angles).mean())
+    h_mean = (np.degrees(mean_angle) % 360.0) / 2.0
+    return float(canonicalize_hue_mean(h_mean))
+
+
+def calculate_hsv_means(hsv_pixels: np.ndarray) -> dict:
+    return {
+        "H": calculate_circular_hue_mean(hsv_pixels[..., 0]),
+        "S": float(hsv_pixels[..., 1].mean()),
+        "V": float(hsv_pixels[..., 2].mean()),
+    }
 
 
 def extract_hsv_means(image_bytes: bytes) -> dict:
@@ -24,12 +50,7 @@ def extract_hsv_means(image_bytes: bytes) -> dict:
         if crop.size == 0:
             raise ValueError
 
-        h_mean, s_mean, v_mean = np.mean(crop, axis=(0, 1))
-        return {
-            "H": float(h_mean),
-            "S": float(s_mean),
-            "V": float(v_mean),
-        }
+        return calculate_hsv_means(crop)
     except Exception as exc:
         raise ValueError("Could not extract HSV values from image.") from exc
 
@@ -52,11 +73,6 @@ def extract_hsv_means_from_foreground(image_bytes: bytes) -> dict:
         hsv_image = cv2.cvtColor(rgb_array, cv2.COLOR_RGB2HSV)
         foreground_pixels = hsv_image[alpha_mask]
 
-        h_mean, s_mean, v_mean = np.mean(foreground_pixels, axis=0)
-        return {
-            "H": float(h_mean),
-            "S": float(s_mean),
-            "V": float(v_mean),
-        }
+        return calculate_hsv_means(foreground_pixels)
     except Exception as exc:
         raise ValueError("Could not extract HSV values from foreground.") from exc

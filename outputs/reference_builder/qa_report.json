@@ -1,14 +1,14 @@
 {
-  "generated_at_utc": "2026-06-16T17:39:22.647518+00:00",
-  "total_images": 320,
-  "successful_images": 320,
+  "generated_at_utc": "2026-06-17T04:53:49.227999+00:00",
+  "total_images": 345,
+  "successful_images": 345,
   "failed_images": 0,
   "dataset_category_counts": {
     "experimental": 84,
-    "fresh": 236
+    "fresh": 261
   },
   "hsv_method_counts": {
-    "center_crop": 320
+    "center_crop": 345
   },
   "warnings": [],
   "failed_records": []

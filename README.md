@@ -166,12 +166,12 @@ The frontend asks the user to aim the meat inside a fixed crop box before submit
 The current baseline values are generated from re-cropped, meat-focused `fresh/just_flash` images using the same center-crop HSV path used by runtime:
 
 ```text
-_pipeline_version: eyesariwa-hsv-zscore-v4
+_pipeline_version: eyesariwa-hsv-zscore-v5
 _rembg_enabled: false
 runtime_extraction_method: manual_aim_center_crop
 ```
 
-Classification compares the uploaded HSV values against the `just_flash` Fresh baseline for the selected species/cut. Warm, cool, and red lighting groups are not generated as runtime baselines. The score uses circular Hue distance, minimum standard-deviation floors for H, S, and V, and a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `FRESH <= 2.5`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
+Classification compares the uploaded HSV values against the `just_flash` Fresh baseline for the selected species/cut. Warm, cool, and red lighting groups are not generated as runtime baselines. Hue is averaged with a circular mean, while Saturation and Value use linear means. The score uses circular Hue distance, minimum standard-deviation floors for H, S, and V, and a weighted Euclidean anomaly score with a provisional lower weight for V because brightness is highly illumination-dependent. Current score thresholds remain `FRESH <= 2.5`, `SUSPICIOUS <= 4.0`, and `STALE > 4.0`.
 
 ## Postman Test
 

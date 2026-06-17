@@ -1,6 +1,6 @@
 {
   "_note": "Generated from verified, re-cropped fresh just_flash dataset images using the EyeSariwa center-crop HSV pipeline without rembg. Experimental records are excluded from the baseline and kept for analysis only. Bone-dominant beef-shank outliers were excluded before generation. Treat these values as preliminary until validated.",
-  "_pipeline_version": "eyesariwa-hsv-zscore-v4",
+  "_pipeline_version": "eyesariwa-hsv-zscore-v5",
   "_rembg_enabled": false,
   "_baseline_rule": {
     "baseline_scope": "species_cut_fresh_daylight",
@@ -10,7 +10,7 @@
       "experimental",
       "labeled"
     ],
-    "hsv_pipeline": "Baseline values are generated with validate_and_compress followed by extract_hsv_means center-crop extraction, matching runtime.",
+    "hsv_pipeline": "Baseline values are generated with validate_and_compress followed by extract_hsv_means center-crop extraction, using circular Hue mean and linear Saturation/Value means, matching runtime.",
     "classification_rule": "Compares uploads against the just_flash daylight fresh baseline for the selected species/cut.",
     "baseline_generation_method": "recropped_just_flash_center_crop_no_rembg",
     "runtime_extraction_method": "manual_aim_center_crop",
@@ -23,34 +23,34 @@
     "cuts": {
       "beef_shank": {
         "fresh": {
-          "n": 7,
+          "n": 11,
           "H": {
-            "mean": 11.1013,
-            "std": 5.6209
+            "mean": 6.3381,
+            "std": 2.0029
           },
           "S": {
-            "mean": 117.1127,
-            "std": 17.461
+            "mean": 108.7644,
+            "std": 19.6631
           },
           "V": {
-            "mean": 152.2421,
-            "std": 9.2666
+            "mean": 170.3039,
+            "std": 27.6008
           },
           "selection_method": "all_verified_fresh_records",
           "lighting_baselines": {
             "just_flash": {
-              "n": 7,
+              "n": 11,
               "H": {
-                "mean": 11.1013,
-                "std": 5.6209
+                "mean": 6.3381,
+                "std": 2.0029
               },
               "S": {
-                "mean": 117.1127,
-                "std": 17.461
+                "mean": 108.7644,
+                "std": 19.6631
               },
               "V": {
-                "mean": 152.2421,
-                "std": 9.2666
+                "mean": 170.3039,
+                "std": 27.6008
               }
             }
           }
@@ -58,34 +58,34 @@
       },
       "beef_sirloin": {
         "fresh": {
-          "n": 10,
+          "n": 17,
           "H": {
-            "mean": 12.5062,
-            "std": 4.211
+            "mean": 5.6685,
+            "std": 3.0681
           },
           "S": {
-            "mean": 126.8894,
-            "std": 14.9219
+            "mean": 111.1681,
+            "std": 23.6071
           },
           "V": {
-            "mean": 149.9026,
-            "std": 8.5534
+            "mean": 170.4645,
+            "std": 29.8309
           },
           "selection_method": "all_verified_fresh_records",
           "lighting_baselines": {
             "just_flash": {
-              "n": 10,
+              "n": 17,
               "H": {
-                "mean": 12.5062,
-                "std": 4.211
+                "mean": 5.6685,
+                "std": 3.0681
               },
               "S": {
-                "mean": 126.8894,
-                "std": 14.9219
+                "mean": 111.1681,
+                "std": 23.6071
               },
               "V": {
-                "mean": 149.9026,
-                "std": 8.5534
+                "mean": 170.4645,
+                "std": 29.8309
               }
             }
           }
@@ -97,34 +97,34 @@
     "cuts": {
       "chicken_breast": {
         "fresh": {
-          "n": 10,
+          "n": 12,
           "H": {
-            "mean": 10.1528,
-            "std": 0.7169
+            "mean": 9.9512,
+            "std": 1.5929
           },
           "S": {
-            "mean": 122.4012,
-            "std": 9.342
+            "mean": 112.0938,
+            "std": 26.6533
           },
           "V": {
-            "mean": 161.6234,
-            "std": 8.0253
+            "mean": 167.8672,
+            "std": 16.3904
           },
           "selection_method": "all_verified_fresh_records",
           "lighting_baselines": {
             "just_flash": {
-              "n": 10,
+              "n": 12,
               "H": {
-                "mean": 10.1528,
-                "std": 0.7169
+                "mean": 9.9512,
+                "std": 1.5929
               },
               "S": {
-                "mean": 122.4012,
-                "std": 9.342
+                "mean": 112.0938,
+                "std": 26.6533
               },
               "V": {
-                "mean": 161.6234,
-                "std": 8.0253
+                "mean": 167.8672,
+                "std": 16.3904
               }
             }
           }
@@ -132,34 +132,34 @@
       },
       "chicken_drumstick": {
         "fresh": {
-          "n": 9,
+          "n": 13,
           "H": {
-            "mean": 16.3234,
-            "std": 2.5809
+            "mean": 13.3476,
+            "std": 2.2092
           },
           "S": {
-            "mean": 76.0653,
-            "std": 12.6621
+            "mean": 63.0237,
+            "std": 23.1027
           },
           "V": {
-            "mean": 174.3887,
-            "std": 8.5749
+            "mean": 189.0448,
+            "std": 25.3445
           },
           "selection_method": "all_verified_fresh_records",
           "lighting_baselines": {
             "just_flash": {
-              "n": 9,
+              "n": 13,
               "H": {
-                "mean": 16.3234,
-                "std": 2.5809
+                "mean": 13.3476,
+                "std": 2.2092
               },
               "S": {
-                "mean": 76.0653,
-                "std": 12.6621
+                "mean": 63.0237,
+                "std": 23.1027
               },
               "V": {
-                "mean": 174.3887,
-                "std": 8.5749
+                "mean": 189.0448,
+                "std": 25.3445
               }
             }
           }
@@ -171,34 +171,34 @@
     "cuts": {
       "pork_belly": {
         "fresh": {
-          "n": 10,
+          "n": 14,
           "H": {
-            "mean": 23.1168,
-            "std": 10.052
+            "mean": 5.4879,
+            "std": 1.8928
           },
           "S": {
-            "mean": 125.3405,
-            "std": 14.1146
+            "mean": 108.3836,
+            "std": 31.1878
           },
           "V": {
-            "mean": 134.2541,
-            "std": 12.0083
+            "mean": 159.4431,
+            "std": 42.5296
           },
           "selection_method": "all_verified_fresh_records",
           "lighting_baselines": {
             "just_flash": {
-              "n": 10,
+              "n": 14,
               "H": {
-                "mean": 23.1168,
-                "std": 10.052
+                "mean": 5.4879,
+                "std": 1.8928
               },
               "S": {
-                "mean": 125.3405,
-                "std": 14.1146
+                "mean": 108.3836,
+                "std": 31.1878
               },
               "V": {
-                "mean": 134.2541,
-                "std": 12.0083
+                "mean": 159.4431,
+                "std": 42.5296
               }
             }
           }
@@ -206,34 +206,34 @@
       },
       "pork_chop": {
         "fresh": {
-          "n": 10,
+          "n": 14,
           "H": {
-            "mean": 7.073,
-            "std": 0.8954
+            "mean": 5.9501,
+            "std": 0.701
           },
           "S": {
-            "mean": 107.1519,
-            "std": 7.3141
+            "mean": 92.7779,
+            "std": 24.416
           },
           "V": {
-            "mean": 151.3477,
-            "std": 7.7743
+            "mean": 168.7661,
+            "std": 29.5592
           },
           "selection_method": "all_verified_fresh_records",
           "lighting_baselines": {
             "just_flash": {
-              "n": 10,
+              "n": 14,
               "H": {
-                "mean": 7.073,
-                "std": 0.8954
+                "mean": 5.9501,
+                "std": 0.701
               },
               "S": {
-                "mean": 107.1519,
-                "std": 7.3141
+                "mean": 92.7779,
+                "std": 24.416
               },
               "V": {
-                "mean": 151.3477,
-                "std": 7.7743
+                "mean": 168.7661,
+                "std": 29.5592
               }
             }
           }

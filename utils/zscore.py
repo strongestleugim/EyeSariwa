@@ -6,7 +6,7 @@ from pathlib import Path
 CHANNELS = ("H", "S", "V")
 EPSILON = 1e-6
 OPENCV_HUE_RANGE = 180.0
-REFERENCE_PIPELINE_VERSION = "eyesariwa-hsv-zscore-v4"
+REFERENCE_PIPELINE_VERSION = "eyesariwa-hsv-zscore-v5"
 EXPECTED_BASELINE_SCOPE = "species_cut_fresh_daylight"
 DAYLIGHT_BASELINE_KEY = "just_flash"
 MIN_HUE_STD = 5.0
