@@ -50,8 +50,8 @@ var TRANSLATIONS = {
     // Step 3 — Before You Scan
     step3_title:       'Bago Mag-scan',
     step3_sub:         'Sundin ang mga ito para mas malinaw ang kuha.',
-    tip_lighting:      'Gamitin ang flash o maliwanag na puting ilaw sa karne. Iwasan ang dilaw o pulang ilaw ng tindahan.',
-    tip_focus:         'Igitna ang karne sa loob ng frame.',
+    tip_lighting:      'Gamitin ang flash (maaaring patayin kung maliwanag). Iwasan ang tindahang may dilaw o pula na ilaw.',
+    tip_focus:         'Igitna ang karne sa frame. Isama ang kahina-hinalang bahagi.',
     tip_blur:          'Iwasang malabo ang kuha — huwag igalaw ang telepono.',
     tip_confirm:       'Siguraduhing tama ang napiling hiwa bago mag-scan.',
     btn_continue_scan: 'Ituloy sa Pag-scan',
@@ -168,8 +168,8 @@ var TRANSLATIONS = {
     // Step 3
     step3_title:       'Before You Scan',
     step3_sub:         'Follow these tips for a clearer photo.',
-    tip_lighting:      'Light the meat with your phone flash or a bright white light. Avoid the warm or red stall lights.',
-    tip_focus:         'Place the meat in the center of the frame.',
+    tip_lighting:      'Use flash when capturing the meat (optional in well-lit areas). Avoid stalls with warm or red lights.',
+    tip_focus:         'Center the meat in the frame. Include any suspicious spots.',
     tip_blur:          'Avoid blurry photos — keep your phone steady.',
     tip_confirm:       'Make sure the selected cut is correct before scanning.',
     btn_continue_scan: 'Continue to Scan',
