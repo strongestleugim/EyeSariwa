@@ -498,13 +498,43 @@
         <summary data-i18n="details_label">Ipakita ang teknikal na detalye</summary>
         <dl class="details-dl">
           <dt>Score</dt>  <dd id="detail-score">—</dd>
-          <dt>H mean</dt> <dd id="detail-h">—</dd>
-          <dt>S mean</dt> <dd id="detail-s">—</dd>
-          <dt>V mean</dt> <dd id="detail-v">—</dd>
-          <dt>H z-score</dt> <dd id="detail-zh">—</dd>
-          <dt>S z-score</dt> <dd id="detail-zs">—</dd>
-          <dt>V z-score</dt> <dd id="detail-zv">—</dd>
+          <dt>Hue mean</dt> <dd id="detail-h">—</dd>
+          <dt>Saturation mean</dt> <dd id="detail-s">—</dd>
+          <dt>Value mean</dt> <dd id="detail-v">—</dd>
+          <dt data-i18n="detail_surface_color">Surface color</dt>
+          <dd class="detail-swatch-cell">
+            <span class="hsv-swatch" id="detail-swatch"></span>
+            <span id="detail-swatch-hex">—</span>
+          </dd>
+          <dt>Hue z-score</dt> <dd id="detail-zh">—</dd>
+          <dt>Saturation z-score</dt> <dd id="detail-zs">—</dd>
+          <dt>Value z-score</dt> <dd id="detail-zv">—</dd>
         </dl>
+        <div class="details-legend">
+          <div class="details-legend-block">
+            <h3 data-i18n="score_basis_title">Classification basis</h3>
+            <p data-i18n="score_basis_copy">
+              The final label comes from the combined HSV deviation score from the selected cut's Fresh baseline.
+            </p>
+            <ul class="score-band-list">
+              <li><strong data-i18n="result_fresh_label">Fresh</strong> <span>score &lt;= 2.5</span></li>
+              <li><strong data-i18n="result_suspicious_label">Suspicious</strong> <span>2.5 &lt; score &lt;= 4.0</span></li>
+              <li><strong data-i18n="result_stale_label">Stale</strong> <span>score &gt; 4.0</span></li>
+            </ul>
+          </div>
+          <div class="details-legend-block">
+            <h3 data-i18n="zscore_legend_title">Z-score legend</h3>
+            <p data-i18n="zscore_legend_copy">
+              Each z-score shows one HSV channel's distance from the selected cut's Fresh baseline. The final label uses the combined score above.
+            </p>
+            <ul class="zscore-band-list">
+              <li><strong data-i18n="z_level_normal">Normal</strong> <span>|z| &lt; 1</span></li>
+              <li><strong data-i18n="z_level_mild">Mild</strong> <span>1 &lt;= |z| &lt; 2</span></li>
+              <li><strong data-i18n="z_level_moderate">Moderate</strong> <span>2 &lt;= |z| &lt; 3</span></li>
+              <li><strong data-i18n="z_level_strong">Strong</strong> <span>&gt;= 3</span></li>
+            </ul>
+          </div>
+        </div>
       </details>
 
       <p class="scope-note" data-i18n="scope_note">

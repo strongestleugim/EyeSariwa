@@ -1,12 +1,12 @@
 // ===================================================================
-// EyeSariwa Service Worker v39
+// EyeSariwa Service Worker v40
 // Strategy:
 //   • Install  — precache the app shell (HTML, CSS, JS, assets, offline page)
 //   • Activate — delete stale caches, claim all open clients
 //   • Fetch    — cache-first for shell assets, network-only for /classify
 // ===================================================================
 
-var CACHE_NAME = 'eyesariwa-shell-v39';
+var CACHE_NAME = 'eyesariwa-shell-v40';
 
 // App shell files cached at install time.
 // Missing asset files are tolerated (Promise.allSettled) so the SW

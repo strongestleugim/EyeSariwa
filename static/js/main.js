@@ -91,6 +91,15 @@ var TRANSLATIONS = {
     result_stale_rec:              'Hindi na ito inirerekomenda.',
     rec_label:                     'Rekomendasyon',
     details_label:                 'Ipakita ang teknikal na detalye',
+    detail_surface_color:          'Kulay ng ibabaw',
+    score_basis_title:             'Batayan ng klasipikasyon',
+    score_basis_copy:              'Ang final label ay galing sa combined HSV deviation score mula sa Fresh baseline ng napiling hiwa.',
+    zscore_legend_title:           'Legend ng z-score',
+    zscore_legend_copy:            'Ang bawat z-score ay layo ng isang HSV channel mula sa Fresh baseline ng napiling hiwa. Ang final label ay gumagamit ng combined score sa itaas.',
+    z_level_normal:                'Normal',
+    z_level_mild:                  'Banayad',
+    z_level_moderate:              'Katamtaman',
+    z_level_strong:                'Malakas',
     scope_note:                    'Batay sa kulay lang ng karne sa kuha. Hindi ito kapalit ng opisyal na inspeksyon.',
     btn_scan_again: 'Ulitin ang Scan',
     btn_back_home:  'Bumalik sa Home',
@@ -209,6 +218,15 @@ var TRANSLATIONS = {
     result_stale_rec:              'Purchase is not recommended.',
     rec_label:                     'Recommendation',
     details_label:                 'Show technical details',
+    detail_surface_color:          'Surface color',
+    score_basis_title:             'Classification basis',
+    score_basis_copy:              "The final label comes from the combined HSV deviation score from the selected cut's Fresh baseline.",
+    zscore_legend_title:           'Z-score legend',
+    zscore_legend_copy:            "Each z-score shows one HSV channel's distance from the selected cut's Fresh baseline. The final label uses the combined score above.",
+    z_level_normal:                'Normal',
+    z_level_mild:                  'Mild',
+    z_level_moderate:              'Moderate',
+    z_level_strong:                'Strong',
     scope_note:                    'Based on visible surface color only. Does not replace official meat inspection.',
     btn_scan_again: 'Scan Again',
     btn_back_home:  'Back to Home',
@@ -979,6 +997,54 @@ window.retryClassify = retryClassify;
 // ===================================================================
 // RESULT SCREEN — populate dynamically
 // ===================================================================
+function zScoreLevelKey(value) {
+  var magnitude = Math.abs(value);
+  if (magnitude < 1) return 'z_level_normal';
+  if (magnitude < 2) return 'z_level_mild';
+  if (magnitude < 3) return 'z_level_moderate';
+  return 'z_level_strong';
+}
+
+function formatZScore(value) {
+  if (typeof value !== 'number') return '-';
+  return value.toFixed(4) + ' (' + t(zScoreLevelKey(value)) + ')';
+}
+
+/**
+ * Reconstruct the average surface color from the HSV means so it can be shown
+ * as a swatch. The backend reports OpenCV-style HSV (H: 0–179, S/V: 0–255).
+ * Returns { css, hex } or null when the means are missing/unusable.
+ */
+function hsvMeanToColor(hsv) {
+  if (!hsv || typeof hsv.H !== 'number' || typeof hsv.S !== 'number' || typeof hsv.V !== 'number') {
+    return null;
+  }
+  var h = Math.max(0, Math.min(179, hsv.H)) * 2;   // OpenCV hue 0–179 → 0–358°
+  var s = Math.max(0, Math.min(255, hsv.S)) / 255; // → 0–1
+  var v = Math.max(0, Math.min(255, hsv.V)) / 255; // → 0–1
+
+  var c = v * s;
+  var x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  var m = v - c;
+  var r = 0, g = 0, b = 0;
+  if      (h <  60) { r = c; g = x; b = 0; }
+  else if (h < 120) { r = x; g = c; b = 0; }
+  else if (h < 180) { r = 0; g = c; b = x; }
+  else if (h < 240) { r = 0; g = x; b = c; }
+  else if (h < 300) { r = x; g = 0; b = c; }
+  else              { r = c; g = 0; b = x; }
+
+  var R = Math.round((r + m) * 255);
+  var G = Math.round((g + m) * 255);
+  var B = Math.round((b + m) * 255);
+
+  function hex2(n) { return ('0' + n.toString(16)).slice(-2); }
+  return {
+    css: 'rgb(' + R + ', ' + G + ', ' + B + ')',
+    hex: ('#' + hex2(R) + hex2(G) + hex2(B)).toUpperCase()
+  };
+}
+
 function renderResult(cls, species, cut, score, hsvMeans, zScores) {
   lastResultData = {
     classification: cls,
@@ -1026,9 +1092,18 @@ function renderResult(cls, species, cut, score, hsvMeans, zScores) {
     document.getElementById('detail-h').textContent     = typeof hsvMeans.H === 'number' ? hsvMeans.H.toFixed(2) : '—';
     document.getElementById('detail-s').textContent     = typeof hsvMeans.S === 'number' ? hsvMeans.S.toFixed(2) : '—';
     document.getElementById('detail-v').textContent     = typeof hsvMeans.V === 'number' ? hsvMeans.V.toFixed(2) : '—';
-    document.getElementById('detail-zh').textContent    = typeof zScores.H  === 'number' ? zScores.H.toFixed(4)  : '—';
-    document.getElementById('detail-zs').textContent    = typeof zScores.S  === 'number' ? zScores.S.toFixed(4)  : '—';
-    document.getElementById('detail-zv').textContent    = typeof zScores.V  === 'number' ? zScores.V.toFixed(4)  : '—';
+    document.getElementById('detail-zh').textContent    = formatZScore(zScores.H);
+    document.getElementById('detail-zs').textContent    = formatZScore(zScores.S);
+    document.getElementById('detail-zv').textContent    = formatZScore(zScores.V);
+
+    var swatch    = document.getElementById('detail-swatch');
+    var swatchHex = document.getElementById('detail-swatch-hex');
+    var color     = hsvMeanToColor(hsvMeans);
+    if (swatch) {
+      swatch.style.background = color ? color.css : 'transparent';
+      swatch.title            = color ? color.hex : '';
+    }
+    if (swatchHex) swatchHex.textContent = color ? color.hex : '—';
   }
 
   var details = document.getElementById('result-details');

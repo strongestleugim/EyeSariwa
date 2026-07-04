@@ -865,6 +865,66 @@ details.result-details[open] summary::after { transform: rotate(90deg); }
 }
 .details-dl dt { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
 .details-dl dd { font-size: 0.78rem; color: var(--text-primary); font-family: monospace; }
+.detail-swatch-cell { display: flex; align-items: center; gap: 8px; }
+.hsv-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: transparent;
+  flex-shrink: 0;
+}
+.details-legend {
+  border-top: 1px solid var(--border);
+  padding: 12px 16px 16px;
+  display: grid;
+  gap: 12px;
+}
+.details-legend-block {
+  display: grid;
+  gap: 6px;
+}
+.details-legend h3 {
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+.details-legend p {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.score-band-list,
+.zscore-band-list {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+.score-band-list li,
+.zscore-band-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(233, 226, 216, 0.8);
+  font-size: 0.74rem;
+}
+.score-band-list li:last-child,
+.zscore-band-list li:last-child {
+  border-bottom: 0;
+}
+.score-band-list strong,
+.zscore-band-list strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+.score-band-list span,
+.zscore-band-list span {
+  color: var(--text-muted);
+  font-family: monospace;
+  white-space: nowrap;
+}
 .scope-note {
   font-size: 0.76rem;
   color: var(--text-light);
